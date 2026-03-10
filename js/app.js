@@ -3,6 +3,33 @@
    Navigation, Search, Booking Flow, Chat, etc.
    ============================================ */
 
+// ---- NLF DATA ----
+const NLF_DESTINATIONS = [
+  { city: 'Kigali', code: 'KGL', country: 'Rwanda' },
+  { city: 'Nairobi', code: 'NBO', country: 'Kenya' },
+  { city: 'Johannesburg', code: 'JNB', country: 'South Africa' },
+  { city: 'Lagos', code: 'LOS', country: 'Nigeria' },
+  { city: 'Accra', code: 'ACC', country: 'Ghana' },
+  { city: 'Entebbe', code: 'EBB', country: 'Uganda' },
+  { city: 'Dar es Salaam', code: 'DAR', country: 'Tanzania' },
+  { city: 'Lusaka', code: 'LUN', country: 'Zambia' },
+  { city: 'Harare', code: 'HRE', country: 'Zimbabwe' },
+  { city: 'Kinshasa', code: 'FIH', country: 'DR Congo' },
+  { city: 'Bujumbura', code: 'BJM', country: 'Burundi' },
+  { city: 'Addis Ababa', code: 'ADD', country: 'Ethiopia' },
+  { city: 'Douala', code: 'DLA', country: 'Cameroon' },
+  { city: 'Dubai', code: 'DXB', country: 'UAE' },
+  { city: 'London', code: 'LHR', country: 'United Kingdom' },
+  { city: 'Brussels', code: 'BRU', country: 'Belgium' },
+  { city: 'Paris', code: 'CDG', country: 'France' },
+  { city: 'Mumbai', code: 'BOM', country: 'India' },
+  { city: 'Guangzhou', code: 'CAN', country: 'China' },
+];
+const NLF_PASSENGERS = ['1 adult', '2 adults', '3 adults', '1 adult, 1 child', '2 adults, 1 child', '2 adults, 2 children'];
+const NLF_CLASSES = ['Economy', 'Business'];
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH_FULL = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+
 // ---- PAGE NAVIGATION ----
 const NAV_MAP = {
   home: 'Book', destinations: 'Destinations',
@@ -74,7 +101,10 @@ function swapCities() {
 })();
 
 function formatDate(d) {
-  return d.toISOString().split('T')[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
 }
 
 function formatDateDisplay(dateStr) {
@@ -89,14 +119,17 @@ function searchFlights() {
   const from = document.getElementById('searchFrom').value;
   const to = document.getElementById('searchTo').value;
   const depart = document.getElementById('searchDepart').value;
+  const nlfVisible = document.getElementById('nlfCard') && !document.getElementById('nlfCard').classList.contains('hidden');
 
   // Validate
   if (!from || !to) {
-    showFieldError('searchTo', 'Please enter a destination city or airport');
+    if (nlfVisible) showNLFGapError('nlfGapTo');
+    else showFieldError('searchTo', 'Please enter a destination city or airport');
     return;
   }
   if (!depart) {
-    showFieldError('searchDepart', 'Please select a departure date');
+    if (nlfVisible) showNLFGapError('nlfGapDepart');
+    else showFieldError('searchDepart', 'Please select a departure date');
     return;
   }
 
@@ -111,11 +144,21 @@ function searchFlights() {
 }
 
 function selectDestination(city) {
-  const codes = { Nairobi: 'NBO', Dubai: 'DXB', Lagos: 'LOS', London: 'LHR', Johannesburg: 'JNB' };
-  document.getElementById('searchTo').value = city + ' (' + (codes[city] || city) + ')';
-  document.getElementById('searchTo').focus();
-  // Scroll to search
-  document.getElementById('searchCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const dest = NLF_DESTINATIONS.find(d => d.city === city);
+  const value = dest ? city + ' (' + dest.code + ')' : city;
+  document.getElementById('searchTo').value = value;
+
+  // Update NLF gap if visible
+  const nlfGap = document.getElementById('nlfGapTo');
+  const nlfCard = document.getElementById('nlfCard');
+  if (nlfGap && nlfCard && !nlfCard.classList.contains('hidden')) {
+    nlfGap.textContent = value;
+    nlfGap.classList.remove('nlf-gap--empty');
+    nlfGap.classList.add('nlf-gap--filled');
+    nlfCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    document.getElementById('searchCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 function showFieldError(fieldId, msg) {
@@ -448,5 +491,353 @@ window.addEventListener('scroll', () => {
   }
 });
 
+// ---- NATURAL LANGUAGE FORM ----
+function initNLF() {
+  // Set default dates
+  const today = new Date();
+  const dep = new Date(today); dep.setDate(dep.getDate() + 14);
+  const ret = new Date(dep); ret.setDate(ret.getDate() + 7);
+  document.getElementById('searchDepart').value = formatDate(dep);
+  document.getElementById('searchReturn').value = formatDate(ret);
+
+  const gapDepart = document.getElementById('nlfGapDepart');
+  const gapReturn = document.getElementById('nlfGapReturn');
+  if (gapDepart) { gapDepart.textContent = formatDateDisplay(formatDate(dep)); gapDepart.classList.add('nlf-gap--filled'); gapDepart.classList.remove('nlf-gap--empty'); }
+  if (gapReturn) { gapReturn.textContent = formatDateDisplay(formatDate(ret)); gapReturn.classList.add('nlf-gap--filled'); gapReturn.classList.remove('nlf-gap--empty'); }
+
+  // City gap events
+  ['nlfGapFrom', 'nlfGapTo'].forEach(id => {
+    const gap = document.getElementById(id);
+    if (!gap) return;
+    gap.addEventListener('focus', function() {
+      if (this.classList.contains('nlf-gap--empty')) { this.textContent = ''; }
+      showSuggestions(this, '');
+    });
+    gap.addEventListener('input', function() {
+      const q = this.textContent.trim();
+      showSuggestions(this, q);
+      updateGhostText(this, q);
+    });
+    gap.addEventListener('keydown', function(e) { handleNLFKeydown(e, this); });
+    gap.addEventListener('blur', function() {
+      setTimeout(() => {
+        hideSuggestions(this);
+        hideGhost(this);
+        if (!this.textContent.trim()) {
+          this.textContent = this.dataset.placeholder;
+          this.classList.add('nlf-gap--empty');
+          this.classList.remove('nlf-gap--filled');
+        }
+      }, 200);
+    });
+  });
+
+  // Date gap events
+  ['nlfGapDepart', 'nlfGapReturn'].forEach(id => {
+    const gap = document.getElementById(id);
+    if (!gap) return;
+    gap.addEventListener('focus', function() {
+      if (this.classList.contains('nlf-gap--filled')) {
+        this.dataset.prevValue = this.textContent;
+        this.textContent = '';
+      } else { this.textContent = ''; }
+      hideGhost(this);
+    });
+    gap.addEventListener('input', function() {
+      const q = this.textContent.trim();
+      updateDateGhost(this, q);
+    });
+    gap.addEventListener('keydown', function(e) { handleDateKeydown(e, this); });
+    gap.addEventListener('blur', function() {
+      setTimeout(() => {
+        hideGhost(this);
+        if (!this.textContent.trim() || !this.dataset.parsedDate) {
+          // Restore previous value or placeholder
+          const prev = this.dataset.prevValue;
+          if (prev) { this.textContent = prev; this.classList.add('nlf-gap--filled'); }
+          else { this.textContent = this.dataset.placeholder; this.classList.add('nlf-gap--empty'); this.classList.remove('nlf-gap--filled'); }
+        }
+      }, 150);
+    });
+  });
+
+  // Passengers gap — click to cycle
+  const paxGap = document.getElementById('nlfGapPax');
+  if (paxGap) paxGap.addEventListener('click', function() { cycleOption(this, NLF_PASSENGERS, 'searchPax'); });
+
+  // Class gap — click to cycle
+  const classGap = document.getElementById('nlfGapClass');
+  if (classGap) classGap.addEventListener('click', function() { cycleOption(this, NLF_CLASSES, 'searchClass'); });
+
+  // Trip toggle
+  document.querySelectorAll('.nlf-trip-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nlf-trip-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const clause = document.getElementById('nlfReturnClause');
+      if (this.dataset.trip === 'oneway') clause.style.display = 'none';
+      else clause.style.display = '';
+    });
+  });
+
+  // Close suggestions on outside click
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nlf-gap-wrapper')) {
+      document.querySelectorAll('.nlf-suggestions').forEach(s => s.style.display = 'none');
+      document.querySelectorAll('.nlf-ghost').forEach(g => g.style.display = 'none');
+    }
+  });
+}
+
+// City autocomplete
+function showSuggestions(gap, query) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  let box = wrapper.querySelector('.nlf-suggestions');
+  if (!box) { box = document.createElement('div'); box.className = 'nlf-suggestions'; wrapper.appendChild(box); }
+
+  const q = query.toLowerCase();
+  const matches = NLF_DESTINATIONS.filter(d =>
+    d.city.toLowerCase().startsWith(q) || d.code.toLowerCase().startsWith(q) || d.country.toLowerCase().startsWith(q)
+  ).slice(0, 4);
+
+  if (matches.length === 0 || (matches.length === 1 && matches[0].city.toLowerCase() + ' (' + matches[0].code.toLowerCase() + ')' === q.toLowerCase())) {
+    box.style.display = 'none'; return;
+  }
+
+  box.innerHTML = matches.map((d, i) =>
+    '<div class="nlf-suggestion-item' + (i === 0 ? ' nlf-suggestion-item--active' : '') + '" data-value="' + d.city + ' (' + d.code + ')">' +
+    '<span>' + d.city + ', ' + d.country + '</span><span class="nlf-suggestion-code">' + d.code + '</span></div>'
+  ).join('');
+  box.style.display = 'block';
+
+  box.querySelectorAll('.nlf-suggestion-item').forEach(item => {
+    item.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      acceptCitySuggestion(gap, this.dataset.value);
+    });
+  });
+}
+
+function hideSuggestions(gap) {
+  const box = gap.closest('.nlf-gap-wrapper').querySelector('.nlf-suggestions');
+  if (box) box.style.display = 'none';
+}
+
+function updateGhostText(gap, query) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  let ghost = wrapper.querySelector('.nlf-ghost');
+  if (!ghost) { ghost = document.createElement('span'); ghost.className = 'nlf-ghost'; wrapper.appendChild(ghost); }
+
+  if (!query) { ghost.style.display = 'none'; return; }
+
+  const q = query.toLowerCase();
+  const match = NLF_DESTINATIONS.find(d => d.city.toLowerCase().startsWith(q) || d.code.toLowerCase().startsWith(q));
+  if (match) {
+    const full = match.city + ' (' + match.code + ')';
+    const rest = full.substring(query.length);
+    ghost.textContent = rest;
+    ghost.style.display = 'inline';
+  } else { ghost.style.display = 'none'; }
+}
+
+function hideGhost(gap) {
+  const ghost = gap.closest('.nlf-gap-wrapper').querySelector('.nlf-ghost');
+  if (ghost) ghost.style.display = 'none';
+}
+
+function acceptCitySuggestion(gap, value) {
+  gap.textContent = value;
+  gap.classList.remove('nlf-gap--empty', 'nlf-gap--error');
+  gap.classList.add('nlf-gap--filled');
+  hideSuggestions(gap);
+  hideGhost(gap);
+
+  // Sync hidden input
+  const hiddenId = gap.id === 'nlfGapFrom' ? 'searchFrom' : 'searchTo';
+  document.getElementById(hiddenId).value = value;
+
+  // Auto-advance
+  advanceNLF(gap.id);
+}
+
+function handleNLFKeydown(e, gap) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  const box = wrapper.querySelector('.nlf-suggestions');
+
+  if (e.key === 'Tab' || e.key === 'ArrowRight') {
+    // Accept ghost suggestion
+    const ghost = wrapper.querySelector('.nlf-ghost');
+    if (ghost && ghost.style.display !== 'none' && ghost.textContent) {
+      e.preventDefault();
+      const full = gap.textContent + ghost.textContent;
+      acceptCitySuggestion(gap, full);
+      return;
+    }
+  }
+
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    // Accept first suggestion
+    if (box && box.style.display !== 'none') {
+      const active = box.querySelector('.nlf-suggestion-item--active');
+      if (active) { acceptCitySuggestion(gap, active.dataset.value); return; }
+    }
+    // Or accept current text
+    const val = gap.textContent.trim();
+    if (val) acceptCitySuggestion(gap, val);
+  }
+
+  if (e.key === 'ArrowDown' && box && box.style.display !== 'none') {
+    e.preventDefault();
+    const items = box.querySelectorAll('.nlf-suggestion-item');
+    let idx = [...items].findIndex(i => i.classList.contains('nlf-suggestion-item--active'));
+    items.forEach(i => i.classList.remove('nlf-suggestion-item--active'));
+    idx = Math.min(idx + 1, items.length - 1);
+    items[idx].classList.add('nlf-suggestion-item--active');
+  }
+  if (e.key === 'ArrowUp' && box && box.style.display !== 'none') {
+    e.preventDefault();
+    const items = box.querySelectorAll('.nlf-suggestion-item');
+    let idx = [...items].findIndex(i => i.classList.contains('nlf-suggestion-item--active'));
+    items.forEach(i => i.classList.remove('nlf-suggestion-item--active'));
+    idx = Math.max(idx - 1, 0);
+    items[idx].classList.add('nlf-suggestion-item--active');
+  }
+  if (e.key === 'Escape') { hideSuggestions(gap); hideGhost(gap); gap.blur(); }
+}
+
+// Date parsing
+function parseNLFDate(str) {
+  if (!str) return null;
+  const s = str.trim().toLowerCase();
+  const today = new Date();
+
+  // Try "24 Mar", "24 March", "Mar 24", "March 24"
+  for (let mi = 0; mi < 12; mi++) {
+    const short = MONTH_NAMES[mi].toLowerCase();
+    const full = MONTH_FULL[mi];
+    const regA = new RegExp('^(\\d{1,2})\\s*' + short);
+    const regB = new RegExp('^(\\d{1,2})\\s*' + full);
+    const regC = new RegExp('^' + short + '\\s*(\\d{1,2})');
+    const regD = new RegExp('^' + full + '\\s*(\\d{1,2})');
+
+    let m;
+    if ((m = s.match(regA)) || (m = s.match(regB)) || (m = s.match(regC)) || (m = s.match(regD))) {
+      const day = parseInt(m[1]);
+      let year = today.getFullYear();
+      const candidate = new Date(year, mi, day);
+      if (candidate < today) candidate.setFullYear(year + 1);
+      if (day >= 1 && day <= 31) return candidate;
+    }
+  }
+
+  // Try "24/3", "24-3", "24.3"
+  const slashMatch = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})(?:[\/\-\.](\d{2,4}))?$/);
+  if (slashMatch) {
+    const day = parseInt(slashMatch[1]);
+    const month = parseInt(slashMatch[2]) - 1;
+    let year = slashMatch[3] ? parseInt(slashMatch[3]) : today.getFullYear();
+    if (year < 100) year += 2000;
+    const candidate = new Date(year, month, day);
+    if (candidate < today && !slashMatch[3]) candidate.setFullYear(candidate.getFullYear() + 1);
+    return candidate;
+  }
+
+  // Try just a number "24" → 24th of current or next month
+  const numMatch = s.match(/^(\d{1,2})$/);
+  if (numMatch) {
+    const day = parseInt(numMatch[1]);
+    if (day >= 1 && day <= 31) {
+      let candidate = new Date(today.getFullYear(), today.getMonth(), day);
+      if (candidate <= today) candidate.setMonth(candidate.getMonth() + 1);
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function updateDateGhost(gap, query) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  let ghost = wrapper.querySelector('.nlf-ghost');
+  if (!ghost) { ghost = document.createElement('span'); ghost.className = 'nlf-ghost'; wrapper.appendChild(ghost); }
+
+  const parsed = parseNLFDate(query);
+  if (parsed) {
+    gap.dataset.parsedDate = formatDate(parsed);
+    ghost.textContent = ' → ' + formatDateDisplay(formatDate(parsed));
+    ghost.style.display = 'inline';
+  } else {
+    gap.dataset.parsedDate = '';
+    ghost.style.display = 'none';
+  }
+}
+
+function handleDateKeydown(e, gap) {
+  if (e.key === 'Tab' || e.key === 'Enter') {
+    if (gap.dataset.parsedDate) {
+      e.preventDefault();
+      acceptDate(gap);
+    }
+  }
+  if (e.key === 'Escape') { hideGhost(gap); gap.blur(); }
+}
+
+function acceptDate(gap) {
+  const dateStr = gap.dataset.parsedDate;
+  gap.textContent = formatDateDisplay(dateStr);
+  gap.classList.remove('nlf-gap--empty', 'nlf-gap--error');
+  gap.classList.add('nlf-gap--filled');
+  gap.dataset.prevValue = gap.textContent;
+  hideGhost(gap);
+
+  // Sync hidden input
+  const hiddenId = gap.id === 'nlfGapDepart' ? 'searchDepart' : 'searchReturn';
+  document.getElementById(hiddenId).value = dateStr;
+
+  advanceNLF(gap.id);
+}
+
+// Cycle options (passengers, class)
+function cycleOption(gap, options, hiddenId) {
+  const current = gap.textContent.trim().toLowerCase();
+  let idx = options.findIndex(o => o.toLowerCase() === current);
+  idx = (idx + 1) % options.length;
+  gap.textContent = options[idx];
+  gap.classList.add('nlf-gap--filled');
+  document.getElementById(hiddenId).value = options[idx];
+}
+
+// Auto-advance
+function advanceNLF(currentId) {
+  const order = ['nlfGapFrom', 'nlfGapTo', 'nlfGapDepart', 'nlfGapReturn', 'nlfGapPax', 'nlfGapClass'];
+  const idx = order.indexOf(currentId);
+  for (let i = idx + 1; i < order.length; i++) {
+    // Skip return if one-way
+    if (order[i] === 'nlfGapReturn') {
+      const clause = document.getElementById('nlfReturnClause');
+      if (clause && clause.style.display === 'none') continue;
+    }
+    const next = document.getElementById(order[i]);
+    if (next) { setTimeout(() => next.focus(), 80); return; }
+  }
+}
+
+// Toggle advanced search
+function toggleAdvancedSearch(e) {
+  e.preventDefault();
+  document.getElementById('nlfCard').classList.toggle('hidden');
+  document.getElementById('searchCard').classList.toggle('hidden');
+}
+
+// NLF error shake
+function showNLFGapError(gapId) {
+  const gap = document.getElementById(gapId);
+  gap.classList.add('nlf-gap--error');
+  gap.focus();
+  setTimeout(() => gap.classList.remove('nlf-gap--error'), 2000);
+}
+
 // ---- INIT ----
+initNLF();
 console.log('RwandAir Prototype loaded');

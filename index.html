@@ -59,53 +59,79 @@
         <p class="hero-tagline">Fly the Dream of Africa</p>
         <h1 class="hero-title">Where will you go next?</h1>
 
-        <!-- Flight Search Widget -->
-        <div class="search-card" id="searchCard">
+        <!-- Natural Language Flight Search -->
+        <div class="nlf-card" id="nlfCard">
+          <div class="nlf-trip-toggle">
+            <button class="nlf-trip-btn active" data-trip="roundtrip">Round Trip</button>
+            <button class="nlf-trip-btn" data-trip="oneway">One Way</button>
+          </div>
+          <p class="nlf-sentence">I'd like to fly from
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapFrom" contenteditable="true" role="combobox" data-placeholder="type city" tabindex="1">Kigali (KGL)</span></span>
+            to
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapTo" contenteditable="true" role="combobox" data-placeholder="type destination" tabindex="2">type destination</span></span>
+            on
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapDepart" contenteditable="true" data-placeholder="type date" tabindex="3">type date</span></span><span id="nlfReturnClause">, returning
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapReturn" contenteditable="true" data-placeholder="type date" tabindex="4">type date</span></span></span>, for
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapPax" tabindex="5">1 adult</span></span>
+            in
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapClass" tabindex="6">Economy</span></span>.
+          </p>
+          <input type="hidden" id="searchFrom" value="Kigali (KGL)"/>
+          <input type="hidden" id="searchTo" value=""/>
+          <input type="hidden" id="searchDepart" value=""/>
+          <input type="hidden" id="searchReturn" value=""/>
+          <input type="hidden" id="searchPax" value="1 adult"/>
+          <input type="hidden" id="searchClass" value="Economy"/>
+          <div class="nlf-actions">
+            <button class="btn-primary btn-lg" onclick="searchFlights()" tabindex="7">
+              Search Flights
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <a href="#" class="nlf-advanced-link" onclick="toggleAdvancedSearch(event)">Advanced search</a>
+          </div>
+        </div>
+
+        <!-- Old form (hidden, accessible via Advanced search) -->
+        <div class="search-card hidden" id="searchCard">
+          <div class="nlf-back-link-wrapper">
+            <a href="#" onclick="toggleAdvancedSearch(event)">&larr; Back to simple search</a>
+          </div>
           <div class="search-tabs">
             <button class="search-tab active" data-tab="roundtrip">Round Trip</button>
             <button class="search-tab" data-tab="oneway">One Way</button>
             <button class="search-tab" data-tab="multicity">Multi-City</button>
           </div>
-
           <div class="search-form">
             <div class="search-row">
               <div class="search-field search-field-route">
                 <label>From</label>
-                <input type="text" id="searchFrom" placeholder="City or airport" value="Kigali (KGL)" autocomplete="off"/>
-                <span class="field-hint">e.g. Kigali, Nairobi, Dubai</span>
+                <input type="text" id="advSearchFrom" placeholder="City or airport" value="Kigali (KGL)" autocomplete="off"/>
               </div>
               <button class="swap-btn" onclick="swapCities()" title="Swap cities">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
               </button>
               <div class="search-field search-field-route">
                 <label>To</label>
-                <input type="text" id="searchTo" placeholder="City or airport" autocomplete="off"/>
-                <span class="field-hint">e.g. Nairobi, Lagos, London</span>
+                <input type="text" id="advSearchTo" placeholder="City or airport" autocomplete="off"/>
               </div>
             </div>
-
             <div class="search-row">
               <div class="search-field">
                 <label>Depart</label>
-                <input type="date" id="searchDepart"/>
+                <input type="date" id="advSearchDepart"/>
               </div>
               <div class="search-field" id="returnField">
                 <label>Return</label>
-                <input type="date" id="searchReturn"/>
+                <input type="date" id="advSearchReturn"/>
               </div>
               <div class="search-field search-field-pax">
                 <label>Passengers</label>
-                <select id="searchPax">
-                  <option>1 Adult</option>
-                  <option>2 Adults</option>
-                  <option>3 Adults</option>
-                  <option>1 Adult, 1 Child</option>
-                  <option>2 Adults, 1 Child</option>
-                  <option>2 Adults, 2 Children</option>
+                <select id="advSearchPax">
+                  <option>1 Adult</option><option>2 Adults</option><option>3 Adults</option>
+                  <option>1 Adult, 1 Child</option><option>2 Adults, 1 Child</option><option>2 Adults, 2 Children</option>
                 </select>
               </div>
             </div>
-
             <div class="search-row search-row-actions">
               <label class="toggle-label">
                 <input type="checkbox" id="flexDates"/>
