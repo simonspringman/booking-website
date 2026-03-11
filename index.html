@@ -7,20 +7,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="icon" type="image/png" href="images/favi.png"/>
+  <link rel="stylesheet" href="css/styles.css?v=2"/>
 </head>
 <body>
+  <!-- ============ PROMO ALERT BAR ============ -->
+  <div class="promo-alert-bar" id="promoAlertBar">
+    <div class="promo-alert-inner">
+      <span class="promo-alert-badge" id="promoAlertBadge"></span>
+      <span class="promo-alert-text" id="promoAlertText"></span>
+      <button class="promo-alert-cta" id="promoAlertCta"></button>
+      <button class="promo-alert-close" onclick="dismissPromoAlert()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
   <!-- ============ PERSISTENT TOP BAR ============ -->
   <nav class="topbar" id="topbar">
     <div class="topbar-inner">
       <div class="topbar-logo" onclick="navigateTo('home')">
-        <svg class="logo-svg" viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="18" cy="20" r="14" fill="#00529b"/>
-          <path d="M10 20 L18 12 L26 20 L18 16Z" fill="#fee014"/>
-          <path d="M10 20 L18 28 L26 20 L18 24Z" fill="#94c943"/>
-          <text x="40" y="26" font-family="Lato,sans-serif" font-weight="700" font-size="18" fill="#00529b">Rwand</text>
-          <text x="95" y="26" font-family="Lato,sans-serif" font-weight="700" font-size="18" fill="#1ea2dc">Air</text>
-        </svg>
+        <img class="logo-emblem" src="images/favi.png" alt=""/>
+        <span class="logo-text"><span class="logo-rwand">Rwand</span><span class="logo-air">Air</span></span>
       </div>
 
       <div class="topbar-nav" id="topbar-nav">
@@ -28,6 +36,7 @@
         <a href="#" class="nav-link" onclick="navigateTo('destinations')">Destinations</a>
         <a href="#" class="nav-link" onclick="navigateTo('travelinfo')">Travel Info</a>
         <a href="#" class="nav-link" onclick="navigateTo('loyalty')">Loyalty</a>
+        <a href="#" class="nav-link" onclick="navigateTo('cargo')">Cargo</a>
         <a href="#" class="nav-link" onclick="navigateTo('help')">Help</a>
       </div>
 
@@ -50,6 +59,8 @@
       <a href="#" onclick="navigateTo('destinations');toggleMobileMenu()">Destinations</a>
       <a href="#" onclick="navigateTo('travelinfo');toggleMobileMenu()">Travel Info</a>
       <a href="#" onclick="navigateTo('loyalty');toggleMobileMenu()">Loyalty</a>
+      <a href="#" onclick="navigateTo('cargo');toggleMobileMenu()">Cargo & Freight</a>
+      <a href="#" onclick="navigateTo('baggageclaim');toggleMobileMenu()">Baggage Claims</a>
       <a href="#" onclick="navigateTo('help');toggleMobileMenu()">Help & Contact</a>
     </div>
   </nav>
@@ -58,9 +69,8 @@
   <section class="page active" id="page-home">
     <!-- Hero with Search -->
     <div class="hero">
-      <div class="hero-bg">
+      <div class="hero-bg" style="background: url('images/qatar-codeshare.jpg') center/cover no-repeat;">
         <div class="hero-overlay"></div>
-        <div class="hero-pattern"></div>
       </div>
       <div class="hero-content">
         <p class="hero-tagline">Fly the Dream of Africa</p>
@@ -94,11 +104,11 @@
             <div class="search-row">
               <div class="search-field">
                 <label>Depart</label>
-                <input type="date" id="searchDepart"/>
+                <input type="text" id="searchDepart" readonly onclick="openCalendar('searchDepart')" placeholder="Select date" class="date-picker-input"/>
               </div>
               <div class="search-field" id="returnField">
                 <label>Return</label>
-                <input type="date" id="searchReturn"/>
+                <input type="text" id="searchReturn" readonly onclick="openCalendar('searchReturn')" placeholder="Select date" class="date-picker-input"/>
               </div>
               <div class="search-field search-field-pax">
                 <label>Passengers</label>
@@ -158,6 +168,15 @@
       </div>
     </div>
 
+    <!-- Special Offers -->
+    <div class="container section" id="promoSection">
+      <div class="section-header">
+        <h2>Special Offers</h2>
+        <p class="section-sub">Exclusive deals and promotions for you</p>
+      </div>
+      <div class="promo-grid" id="promoGrid"></div>
+    </div>
+
     <!-- Popular Destinations -->
     <div class="container section">
       <div class="section-header">
@@ -166,7 +185,7 @@
       </div>
       <div class="dest-grid">
         <div class="dest-card" onclick="selectDestination('Nairobi')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #1ea2dc 0%, #00529b 100%)">
+          <div class="dest-img" style="background: url('images/companion-fare.jpg') center/cover no-repeat;">
             <span class="dest-tag">Trending</span>
           </div>
           <div class="dest-info">
@@ -177,7 +196,7 @@
           </div>
         </div>
         <div class="dest-card" onclick="selectDestination('Dubai')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #fee014 0%, #f59e0b 100%)">
+          <div class="dest-img" style="background: url('images/7days-flights.jpg') center/cover no-repeat;">
             <span class="dest-tag">Popular</span>
           </div>
           <div class="dest-info">
@@ -188,7 +207,7 @@
           </div>
         </div>
         <div class="dest-card" onclick="selectDestination('Lagos')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #94c943 0%, #166534 100%)">
+          <div class="dest-img" style="background: url('images/stopover.jpg') center/cover no-repeat;">
           </div>
           <div class="dest-info">
             <h3>Lagos</h3>
@@ -198,7 +217,7 @@
           </div>
         </div>
         <div class="dest-card" onclick="selectDestination('London')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #00529b 0%, #0f172a 100%)">
+          <div class="dest-img" style="background: url('images/qatar-codeshare.jpg') center 30%/cover no-repeat;">
           </div>
           <div class="dest-info">
             <h3>London</h3>
@@ -225,7 +244,7 @@
           </div>
           <div class="trust-item">
             <div class="trust-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <img src="images/skytrax-2025.png" alt="Skytrax 2025" class="trust-badge-img"/>
             </div>
             <div>
               <strong>Award-Winning</strong>
@@ -234,7 +253,7 @@
           </div>
           <div class="trust-item">
             <div class="trust-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <img src="images/safety.png" alt="Safety Certified" class="trust-badge-img"/>
             </div>
             <div>
               <strong>IATA Certified</strong>
@@ -257,13 +276,21 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="container">
+        <div class="footer-awards">
+          <img src="images/awards.png" alt="RwandAir Awards" class="footer-awards-img"/>
+        </div>
         <div class="footer-grid">
           <div>
+            <div class="footer-logo-wrap">
+              <img class="logo-emblem" src="images/favi.png" alt=""/>
+              <span class="logo-text"><span class="logo-rwand" style="color:#fff">Rwand</span><span class="logo-air">Air</span></span>
+            </div>
             <h4>Fly With Us</h4>
             <a href="#">Book a Flight</a>
             <a href="#">Destinations</a>
             <a href="#">Flight Schedule</a>
             <a href="#">Fleet</a>
+            <a href="#" onclick="navigateTo('cargo')">Cargo & Freight</a>
           </div>
           <div>
             <h4>Travel Info</h4>
@@ -276,6 +303,7 @@
             <h4>Support</h4>
             <a href="#">Contact Us</a>
             <a href="#">FAQs</a>
+            <a href="#" onclick="navigateTo('baggageclaim')">Baggage Claims</a>
             <a href="#">Feedback</a>
             <a href="#">Refunds</a>
           </div>
@@ -917,7 +945,7 @@
 
   <!-- ============ PAGE: DESTINATIONS ============ -->
   <section class="page" id="page-destinations">
-    <div class="page-hero page-hero-blue">
+    <div class="page-hero page-hero-blue" style="background: linear-gradient(135deg, rgba(0,82,155,.85), rgba(0,61,117,.85)), url('images/7days-flights.jpg') center/cover no-repeat;">
       <div class="container">
         <h1>Our Destinations</h1>
         <p>RwandAir connects Kigali to 30+ cities across Africa, the Middle East, Europe, and Asia.</p>
@@ -1070,7 +1098,7 @@
 
   <!-- ============ PAGE: TRAVEL INFO ============ -->
   <section class="page" id="page-travelinfo">
-    <div class="page-hero page-hero-blue">
+    <div class="page-hero page-hero-blue" style="background: linear-gradient(135deg, rgba(0,82,155,.85), rgba(0,61,117,.85)), url('images/travelinfo.jpg') center/cover no-repeat;">
       <div class="container">
         <h1>Travel Information</h1>
         <p>Everything you need to know before you fly with RwandAir.</p>
@@ -1155,13 +1183,18 @@
 
   <!-- ============ PAGE: LOYALTY ============ -->
   <section class="page" id="page-loyalty">
-    <div class="page-hero page-hero-gold">
+    <div class="page-hero page-hero-gold" style="background: linear-gradient(135deg, rgba(184,134,11,.85), rgba(212,160,23,.85)), url('images/companion-fare.jpg') center/cover no-repeat;">
       <div class="container">
         <h1>DreamMiles Loyalty Program</h1>
         <p>Earn miles every time you fly. Redeem them for flights, upgrades, and more.</p>
       </div>
     </div>
     <div class="container section">
+      <!-- DreamMiles Card -->
+      <div class="dreammiles-banner">
+        <img src="images/dreammiles.jpg" alt="DreamMiles Card" class="dreammiles-img"/>
+      </div>
+
       <!-- Tiers -->
       <div class="section-header">
         <h2>Membership Tiers</h2>
@@ -1292,9 +1325,629 @@
     </div>
   </section>
 
+  <!-- ============ PAGE: CARGO ============ -->
+  <section class="page" id="page-cargo">
+    <div class="page-hero page-hero-blue" style="background: linear-gradient(135deg, rgba(0,82,155,.85), rgba(0,61,117,.85)), url('images/7days-flights.jpg') center/cover no-repeat;">
+      <div class="container">
+        <h1>RwandAir Cargo</h1>
+        <p>Ship freight worldwide with Africa's most connected airline. Express, standard, and special cargo services.</p>
+      </div>
+    </div>
+    <div class="container section">
+      <!-- Cargo Quote Form -->
+      <div class="card" id="cargoSearchCard">
+        <h2>Get a Cargo Quote</h2>
+        <p class="card-sub">Enter your shipment details to see available options and pricing.</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cargoOrigin">Origin *</label>
+            <select id="cargoOrigin" required>
+              <option value="">Select origin</option>
+              <option value="KGL">Kigali (KGL)</option>
+              <option value="NBO">Nairobi (NBO)</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="LOS">Lagos (LOS)</option>
+              <option value="LHR">London (LHR)</option>
+              <option value="JNB">Johannesburg (JNB)</option>
+              <option value="BRU">Brussels (BRU)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cargoDest">Destination *</label>
+            <select id="cargoDest" required>
+              <option value="">Select destination</option>
+              <option value="KGL">Kigali (KGL)</option>
+              <option value="NBO">Nairobi (NBO)</option>
+              <option value="DXB">Dubai (DXB)</option>
+              <option value="LOS">Lagos (LOS)</option>
+              <option value="LHR">London (LHR)</option>
+              <option value="JNB">Johannesburg (JNB)</option>
+              <option value="BRU">Brussels (BRU)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cargoType">Cargo Type *</label>
+            <select id="cargoType" required>
+              <option value="">Select type</option>
+              <option value="General Cargo">General Cargo</option>
+              <option value="Perishables">Perishables</option>
+              <option value="Dangerous Goods">Dangerous Goods</option>
+              <option value="Live Animals">Live Animals</option>
+              <option value="Pharmaceuticals">Pharmaceuticals</option>
+              <option value="Valuables">Valuables</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cargoWeight">Weight (kg) *</label>
+            <input type="number" id="cargoWeight" placeholder="e.g. 500" min="1" required/>
+          </div>
+          <div class="form-group">
+            <label for="cargoDims">Dimensions (L x W x H cm)</label>
+            <input type="text" id="cargoDims" placeholder="e.g. 120 x 80 x 100"/>
+          </div>
+          <div class="form-group">
+            <label for="cargoDate">Preferred Ship Date *</label>
+            <input type="date" id="cargoDate"/>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary btn-lg" onclick="searchCargoQuotes()">
+            Get Quote
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cargo Services -->
+      <div class="section-header" style="margin-top:48px">
+        <h2>Our Cargo Services</h2>
+        <p class="section-sub">Tailored solutions for every shipment type</p>
+      </div>
+      <div class="cargo-services-grid">
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3>Express Cargo</h3>
+          <p>Time-sensitive shipments with priority handling and guaranteed next-flight-out service. Ideal for urgent documents, spare parts, and e-commerce.</p>
+          <h4 style="margin-top:12px">Transit Time</h4>
+          <p>24-48 hours door-to-door</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <h3>Standard Freight</h3>
+          <p>Cost-effective solution for non-urgent general cargo. Scheduled departures across our entire network with reliable transit times.</p>
+          <h4 style="margin-top:12px">Transit Time</h4>
+          <p>3-5 business days</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Special Cargo</h3>
+          <p>Specialized handling for dangerous goods, perishables, live animals, pharmaceuticals, and high-value shipments. IATA-compliant procedures.</p>
+          <h4 style="margin-top:12px">Includes</h4>
+          <p>Temperature-controlled, hazmat certified, live animal approved</p>
+        </div>
+      </div>
+
+      <!-- How It Works -->
+      <div class="section-header" style="margin-top:48px">
+        <h2>How It Works</h2>
+        <p class="section-sub">Ship your cargo in four simple steps</p>
+      </div>
+      <div class="cargo-steps-grid">
+        <div class="cargo-step">
+          <div class="cargo-step-num">1</div>
+          <div><strong>Get a Quote</strong><span>Enter shipment details and receive instant pricing</span></div>
+        </div>
+        <div class="cargo-step">
+          <div class="cargo-step-num">2</div>
+          <div><strong>Book Your Shipment</strong><span>Provide shipper and consignee details</span></div>
+        </div>
+        <div class="cargo-step">
+          <div class="cargo-step-num">3</div>
+          <div><strong>Drop Off or Collect</strong><span>Deliver cargo to our warehouse or schedule pickup</span></div>
+        </div>
+        <div class="cargo-step">
+          <div class="cargo-step-num">4</div>
+          <div><strong>Track & Receive</strong><span>Monitor your shipment with real-time AWB tracking</span></div>
+        </div>
+      </div>
+
+      <!-- Cargo Tracking -->
+      <div class="manage-card" style="margin-top:48px" id="cargoTrackingCard">
+        <h1>Track Your Shipment</h1>
+        <p>Enter your Air Waybill (AWB) number to check shipment status.</p>
+        <div class="manage-form">
+          <div class="form-group">
+            <label>AWB Number</label>
+            <input type="text" id="cargoAwbInput" placeholder="e.g. 459-12345678" maxlength="15"/>
+          </div>
+          <button class="btn-primary btn-lg" onclick="trackCargo()">Track Shipment</button>
+        </div>
+        <div id="cargoTrackResult" class="hidden" style="margin-top:24px; text-align:left;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: CARGO RESULTS ============ -->
+  <section class="page" id="page-cargoresults">
+    <div class="container">
+      <div class="results-summary">
+        <button class="btn-back" onclick="navigateTo('cargo')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Modify Quote
+        </button>
+        <div class="route-summary">
+          <h2><span id="cargoResultOrigin">KGL</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> <span id="cargoResultDest">NBO</span></h2>
+          <p id="cargoResultMeta"></p>
+        </div>
+      </div>
+      <div id="cargoQuoteResults"></div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: CARGO BOOKING ============ -->
+  <section class="page" id="page-cargobooking">
+    <div class="container">
+      <div class="booking-progress">
+        <div class="progress-step active" data-step="1"><div class="step-circle">1</div><span>Shipment</span></div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2"><div class="step-circle">2</div><span>Parties</span></div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3"><div class="step-circle">3</div><span>Review & Pay</span></div>
+      </div>
+
+      <div class="booking-layout">
+        <!-- Step 1: Shipment Details -->
+        <div class="booking-main" id="cargoStep1">
+          <div class="card">
+            <h2>Shipment Details</h2>
+            <p class="card-sub">Provide complete details about your cargo.</p>
+            <h3 class="form-section-title">Cargo Information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Cargo Type</label>
+                <select id="cargoBookType"><option>General Cargo</option><option>Perishables</option><option>Dangerous Goods</option><option>Live Animals</option><option>Pharmaceuticals</option><option>Valuables</option></select>
+              </div>
+              <div class="form-group">
+                <label>Number of Pieces *</label>
+                <input type="number" id="cargoPieces" placeholder="e.g. 5" min="1" value="1" required/>
+              </div>
+              <div class="form-group">
+                <label>Total Weight (kg) *</label>
+                <input type="number" id="cargoBookWeight" placeholder="e.g. 500" min="1" required/>
+              </div>
+            </div>
+            <h3 class="form-section-title">Dimensions & Description</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Length (cm)</label><input type="number" id="cargoLength" placeholder="120"/></div>
+              <div class="form-group"><label>Width (cm)</label><input type="number" id="cargoWidth" placeholder="80"/></div>
+              <div class="form-group"><label>Height (cm)</label><input type="number" id="cargoHeight" placeholder="100"/></div>
+            </div>
+            <div style="margin-bottom:20px">
+              <div class="form-group">
+                <label>Cargo Description *</label>
+                <textarea id="cargoDesc" rows="3" placeholder="Describe the contents of your shipment..." style="width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font);resize:vertical;"></textarea>
+              </div>
+            </div>
+            <h3 class="form-section-title">Special Handling</h3>
+            <div class="extra-options">
+              <label class="extra-option"><input type="checkbox" id="cargoTempControl" style="accent-color:var(--blue);width:18px;height:18px;"/><div class="extra-option-content"><strong>Temperature Controlled</strong><span class="extra-option-price">+$120</span></div></label>
+              <label class="extra-option"><input type="checkbox" id="cargoDG" style="accent-color:var(--blue);width:18px;height:18px;"/><div class="extra-option-content"><strong>Dangerous Goods Handling</strong><span class="extra-option-price">+$200</span></div></label>
+              <label class="extra-option"><input type="checkbox" id="cargoInsurance" style="accent-color:var(--blue);width:18px;height:18px;"/><div class="extra-option-content"><strong>Cargo Insurance</strong><span class="extra-option-price">+$85</span></div></label>
+            </div>
+            <div class="form-actions">
+              <button class="btn-primary btn-lg" onclick="goToCargoStep(2)">Continue to Shipper & Consignee <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Shipper & Consignee -->
+        <div class="booking-main hidden" id="cargoStep2">
+          <div class="card">
+            <h2>Shipper & Consignee</h2>
+            <p class="card-sub">Enter the sender and receiver details for this shipment.</p>
+            <h3 class="form-section-title">Shipper (Sender)</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Company Name *</label><input type="text" id="shipperCompany" placeholder="Company name" required/></div>
+              <div class="form-group"><label>Contact Person *</label><input type="text" id="shipperContact" placeholder="Full name" required/></div>
+              <div class="form-group"><label>Email *</label><input type="email" id="shipperEmail" placeholder="email@company.com" required/></div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label>Phone *</label><input type="tel" id="shipperPhone" placeholder="+250 7XX XXX XXX" required/></div>
+              <div class="form-group"><label>Address *</label><input type="text" id="shipperAddress" placeholder="Street address" required/></div>
+              <div class="form-group"><label>City *</label><input type="text" id="shipperCity" placeholder="City" required/></div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label>Country *</label><select id="shipperCountry"><option>Rwanda</option><option>Kenya</option><option>Uganda</option><option>Tanzania</option><option>Nigeria</option><option>South Africa</option><option>United Kingdom</option><option>UAE</option><option>Belgium</option></select></div>
+            </div>
+
+            <h3 class="form-section-title">Consignee (Receiver)</h3>
+            <div class="form-grid">
+              <div class="form-group"><label>Company Name *</label><input type="text" id="consigneeCompany" placeholder="Company name" required/></div>
+              <div class="form-group"><label>Contact Person *</label><input type="text" id="consigneeContact" placeholder="Full name" required/></div>
+              <div class="form-group"><label>Email *</label><input type="email" id="consigneeEmail" placeholder="email@company.com" required/></div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label>Phone *</label><input type="tel" id="consigneePhone" placeholder="+254 7XX XXX XXX" required/></div>
+              <div class="form-group"><label>Address *</label><input type="text" id="consigneeAddress" placeholder="Street address" required/></div>
+              <div class="form-group"><label>City *</label><input type="text" id="consigneeCity" placeholder="City" required/></div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group"><label>Country *</label><select id="consigneeCountry"><option>Kenya</option><option>Rwanda</option><option>Uganda</option><option>Tanzania</option><option>Nigeria</option><option>South Africa</option><option>United Kingdom</option><option>UAE</option><option>Belgium</option></select></div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-outline" onclick="goToCargoStep(1)">Back</button>
+              <button class="btn-primary btn-lg" onclick="goToCargoStep(3)">Continue to Review <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Review & Payment -->
+        <div class="booking-main hidden" id="cargoStep3">
+          <div class="card">
+            <h2>Review & Payment</h2>
+            <p class="card-sub">Review your shipment details and complete payment.</p>
+            <div id="cargoReviewSummary"></div>
+            <div class="price-breakdown" id="cargoPriceBreakdown">
+              <h3>Price Summary</h3>
+              <div class="price-row"><span>Base freight</span><span id="cargoBasePrice">$0.00</span></div>
+              <div class="price-row"><span>Fuel surcharge</span><span id="cargoFuelPrice">$0.00</span></div>
+              <div class="price-row"><span>Security surcharge</span><span id="cargoSecPrice">$0.00</span></div>
+              <div class="price-row hidden" id="cargoExtrasRow"><span>Special handling</span><span id="cargoExtrasAmount">$0.00</span></div>
+              <div class="price-row price-total"><span>Total</span><span id="cargoTotalPrice">$0.00</span></div>
+              <p class="price-note">All prices in USD. Subject to actual weight/volume.</p>
+            </div>
+            <div class="payment-methods">
+              <h3>Select Payment Method</h3>
+              <div class="payment-tabs">
+                <button class="payment-tab active" onclick="selectCargoPayTab(this,'cargoPayMobile')">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                  Mobile Money
+                </button>
+                <button class="payment-tab" onclick="selectCargoPayTab(this,'cargoPayCard')">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  Credit/Debit Card
+                </button>
+                <button class="payment-tab" onclick="selectCargoPayTab(this,'cargoPayBank')">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                  Bank Transfer
+                </button>
+              </div>
+              <div id="cargoPayMobile" class="payment-form">
+                <div class="form-grid"><div class="form-group"><label>Provider</label><select><option>MTN Mobile Money</option><option>Airtel Money</option></select></div><div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+250 7XX XXX XXX"/></div></div>
+              </div>
+              <div id="cargoPayCard" class="payment-form hidden">
+                <div class="form-grid"><div class="form-group"><label>Card Number</label><input type="text" placeholder="1234 5678 9012 3456"/></div><div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY"/></div><div class="form-group"><label>CVV</label><input type="text" placeholder="123"/></div></div>
+              </div>
+              <div id="cargoPayBank" class="payment-form hidden">
+                <div class="alert alert-info"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Bank transfer details will be sent via email after booking confirmation.</div>
+              </div>
+            </div>
+            <label class="checkbox-label" style="margin-top:20px;display:flex;gap:10px;align-items:flex-start;font-size:14px;">
+              <input type="checkbox" id="cargoTermsCheck" style="accent-color:var(--blue);width:18px;height:18px;margin-top:2px;"/>
+              <span>I agree to the <a href="#">Cargo Terms & Conditions</a> and <a href="#">Privacy Policy</a></span>
+            </label>
+            <div class="form-actions">
+              <button class="btn-outline" onclick="goToCargoStep(2)">Back</button>
+              <button class="btn-primary btn-lg btn-pay" id="cargoPayBtn" onclick="processCargoPayment()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Pay Securely
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cargo Payment Processing Modal -->
+        <div class="modal-overlay hidden" id="cargoPaymentModal">
+          <div class="modal">
+            <div class="processing-spinner"></div>
+            <h3>Processing your payment...</h3>
+            <p>Please do not close or refresh this page.</p>
+            <div class="progress-bar-container"><div class="progress-bar-fill" id="cargoPaymentProgress"></div></div>
+            <p class="processing-step" id="cargoProcessingStep">Verifying payment details...</p>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="booking-sidebar">
+          <div class="card sidebar-summary">
+            <h3>Shipment Summary</h3>
+            <div class="summary-route">
+              <div class="summary-segment">
+                <span class="summary-dir">Route</span>
+                <strong id="cargoSidebarRoute">KGL &rarr; NBO</strong>
+                <span id="cargoSidebarService">Express Cargo</span>
+                <span class="summary-flight" id="cargoSidebarDate"></span>
+              </div>
+              <div class="summary-segment">
+                <span class="summary-dir">Cargo Details</span>
+                <strong id="cargoSidebarWeight">0 kg</strong>
+                <span id="cargoSidebarType">General Cargo</span>
+              </div>
+            </div>
+            <div class="summary-price">
+              <span>Total</span>
+              <strong id="cargoSidebarTotal">$0.00</strong>
+            </div>
+            <p class="summary-note">Includes all surcharges</p>
+          </div>
+          <div class="card sidebar-help">
+            <h4>Need help?</h4>
+            <p>Our cargo team is here to assist you.</p>
+            <button class="btn-outline btn-sm" onclick="openChat()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Chat with us
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: CARGO CONFIRMATION ============ -->
+  <section class="page" id="page-cargoconfirmation">
+    <div class="container">
+      <div class="confirmation-card">
+        <div class="confirm-success">
+          <div class="confirm-check">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h1>Shipment Booked!</h1>
+          <p class="confirm-ref">AWB Number: <strong id="cargoAwbNumber">459-00000000</strong></p>
+          <p>A confirmation email has been sent to the shipper and consignee.</p>
+        </div>
+        <div class="confirm-details">
+          <div class="confirm-segment">
+            <span class="confirm-badge">Shipment</span>
+            <div class="confirm-flight-info">
+              <div class="confirm-city"><strong id="cargoConfOrigin">KGL</strong></div>
+              <div class="confirm-duration">
+                <span class="confirm-line"></span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span id="cargoConfTransit">3-5 business days</span>
+                <span class="confirm-line"></span>
+              </div>
+              <div class="confirm-city"><strong id="cargoConfDest">NBO</strong></div>
+            </div>
+            <span class="confirm-flight-num" id="cargoConfDetails"></span>
+          </div>
+          <div class="confirm-passenger">
+            <h3>Shipper</h3>
+            <p id="cargoConfShipper"></p>
+          </div>
+          <div class="confirm-passenger">
+            <h3>Consignee</h3>
+            <p id="cargoConfConsignee"></p>
+          </div>
+          <div class="confirm-price">
+            <h3>Payment</h3>
+            <p>Total Paid: <strong id="cargoConfTotal">$0.00 USD</strong></p>
+            <p>Payment Method: Mobile Money</p>
+          </div>
+        </div>
+        <div class="confirm-actions">
+          <h3>What's Next?</h3>
+          <div class="action-grid">
+            <button class="action-card" onclick="navigateTo('cargo')">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <strong>Track Shipment</strong><span>Monitor with AWB number</span>
+            </button>
+            <button class="action-card" onclick="navigateTo('cargo')">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              <strong>New Shipment</strong><span>Book another cargo</span>
+            </button>
+            <button class="action-card" onclick="navigateTo('home')">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <strong>Back to Home</strong><span>Return to booking</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: BAGGAGE CLAIM ============ -->
+  <section class="page" id="page-baggageclaim">
+    <div class="page-hero page-hero-blue" style="background: linear-gradient(135deg, rgba(0,82,155,.85), rgba(0,61,117,.85)), url('images/travelinfo.jpg') center/cover no-repeat;">
+      <div class="container">
+        <h1>Baggage Claims & Feedback</h1>
+        <p>Report missing, delayed, or damaged baggage. We'll resolve your issue as quickly as possible.</p>
+      </div>
+    </div>
+    <div class="container section">
+      <!-- Claim Type Selector -->
+      <div class="claim-type-grid">
+        <button class="claim-type-card active" onclick="selectClaimType(this,'delayed')">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <strong>Delayed Baggage</strong>
+          <span>My baggage hasn't arrived yet</span>
+        </button>
+        <button class="claim-type-card" onclick="selectClaimType(this,'damaged')">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <strong>Damaged Baggage</strong>
+          <span>My baggage was damaged</span>
+        </button>
+        <button class="claim-type-card" onclick="selectClaimType(this,'lost')">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          <strong>Lost Baggage</strong>
+          <span>My baggage has been lost</span>
+        </button>
+        <button class="claim-type-card" onclick="selectClaimType(this,'feedback')">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <strong>General Feedback</strong>
+          <span>Share your experience</span>
+        </button>
+      </div>
+
+      <!-- Claim Form -->
+      <div class="card" id="claimFormCard" style="max-width:720px;margin:32px auto 0;">
+        <h2 id="claimFormTitle">Report Delayed Baggage</h2>
+        <p class="card-sub" id="claimFormSub">Please provide your flight and baggage details so we can locate your bag.</p>
+
+        <div class="claim-progress-bar">
+          <div class="claim-progress-fill" id="claimProgressFill" style="width:33%"></div>
+        </div>
+
+        <!-- Step 1: Flight Info -->
+        <div id="claimStep1">
+          <h3 class="form-section-title">Flight Information</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="claimBookingRef">Booking Reference *</label>
+              <input type="text" id="claimBookingRef" placeholder="e.g. WB-2025-NBO-78421" required/>
+            </div>
+            <div class="form-group">
+              <label for="claimFlightNum">Flight Number *</label>
+              <input type="text" id="claimFlightNum" placeholder="e.g. WB 400" required/>
+            </div>
+            <div class="form-group">
+              <label for="claimFlightDate">Flight Date *</label>
+              <input type="date" id="claimFlightDate" required/>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="claimFromCity">Departure Airport *</label>
+              <select id="claimFromCity" required>
+                <option value="">Select airport</option>
+                <option value="KGL">Kigali (KGL)</option>
+                <option value="NBO">Nairobi (NBO)</option>
+                <option value="DXB">Dubai (DXB)</option>
+                <option value="LOS">Lagos (LOS)</option>
+                <option value="LHR">London (LHR)</option>
+                <option value="JNB">Johannesburg (JNB)</option>
+                <option value="BRU">Brussels (BRU)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="claimToCity">Arrival Airport *</label>
+              <select id="claimToCity" required>
+                <option value="">Select airport</option>
+                <option value="KGL">Kigali (KGL)</option>
+                <option value="NBO">Nairobi (NBO)</option>
+                <option value="DXB">Dubai (DXB)</option>
+                <option value="LOS">Lagos (LOS)</option>
+                <option value="LHR">London (LHR)</option>
+                <option value="JNB">Johannesburg (JNB)</option>
+                <option value="BRU">Brussels (BRU)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary btn-lg" onclick="goClaimStep(2)">Next: Contact Details <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Step 2: Contact & Baggage -->
+        <div id="claimStep2" class="hidden">
+          <h3 class="form-section-title">Your Contact Details</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="claimFullName">Full Name *</label>
+              <input type="text" id="claimFullName" placeholder="As on your ticket" required/>
+            </div>
+            <div class="form-group">
+              <label for="claimEmail">Email *</label>
+              <input type="email" id="claimEmail" placeholder="email@example.com" required/>
+            </div>
+            <div class="form-group">
+              <label for="claimPhone">Phone Number *</label>
+              <input type="tel" id="claimPhone" placeholder="+250 7XX XXX XXX" required/>
+            </div>
+          </div>
+
+          <h3 class="form-section-title">Baggage Description</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="claimBagTag">Bag Tag Number</label>
+              <input type="text" id="claimBagTag" placeholder="e.g. WB123456 (on your luggage receipt)"/>
+            </div>
+            <div class="form-group">
+              <label for="claimBagColor">Bag Color *</label>
+              <select id="claimBagColor" required>
+                <option value="">Select color</option>
+                <option>Black</option><option>Blue</option><option>Red</option>
+                <option>Brown</option><option>Grey</option><option>Green</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="claimBagType">Bag Type *</label>
+              <select id="claimBagType" required>
+                <option value="">Select type</option>
+                <option>Hard-shell suitcase</option><option>Soft suitcase</option>
+                <option>Duffel bag</option><option>Backpack</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="claimBagDesc">Additional Description</label>
+            <textarea id="claimBagDesc" rows="3" placeholder="Describe your bag (brand, distinguishing features, contents)..." style="width:100%;padding:12px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font);resize:vertical;"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn-outline" onclick="goClaimStep(1)">Back</button>
+            <button class="btn-primary btn-lg" onclick="goClaimStep(3)">Next: Review & Submit <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+
+        <!-- Step 3: Review & Submit -->
+        <div id="claimStep3" class="hidden">
+          <h3 class="form-section-title">Review Your Claim</h3>
+          <div id="claimReviewContent" class="claim-review"></div>
+          <label class="checkbox-label" style="margin-top:16px;display:flex;gap:10px;align-items:flex-start;font-size:14px;">
+            <input type="checkbox" id="claimAgree" style="accent-color:var(--blue);width:18px;height:18px;margin-top:2px;"/>
+            <span>I confirm the information provided is accurate. I agree to be contacted regarding this claim.</span>
+          </label>
+          <div class="form-actions">
+            <button class="btn-outline" onclick="goClaimStep(2)">Back</button>
+            <button class="btn-primary btn-lg" onclick="submitBaggageClaim()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Submit Claim
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirmation -->
+        <div id="claimConfirmation" class="hidden" style="text-align:center;padding:40px 0;">
+          <div class="confirm-check" style="margin-bottom:16px;">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h2>Claim Submitted Successfully</h2>
+          <p class="confirm-ref" style="margin-top:8px;">Reference: <strong id="claimRefNum">BC-000000</strong></p>
+          <p style="color:var(--gray-500);max-width:400px;margin:12px auto;">We'll investigate and get back to you within 24-48 hours via email. You can track your claim status using your reference number.</p>
+          <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;">
+            <button class="btn-outline" onclick="navigateTo('home')">Back to Home</button>
+            <button class="btn-primary" onclick="resetBaggageClaim()">Submit Another Claim</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Track Existing Claim -->
+      <div class="manage-card" style="margin-top:40px;">
+        <h2>Track Existing Claim</h2>
+        <p>Already filed a claim? Enter your reference number to check the status.</p>
+        <div class="manage-form">
+          <div class="form-group">
+            <label>Claim Reference</label>
+            <input type="text" id="claimTrackRef" placeholder="e.g. BC-240310-5678"/>
+          </div>
+          <button class="btn-primary btn-lg" onclick="trackBaggageClaim()">Track Claim</button>
+        </div>
+        <div id="claimTrackResult" class="hidden" style="margin-top:20px;text-align:left;"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ PAGE: HELP ============ -->
   <section class="page" id="page-help">
-    <div class="page-hero page-hero-blue">
+    <div class="page-hero page-hero-blue" style="background: linear-gradient(135deg, rgba(0,82,155,.85), rgba(0,61,117,.85)), url('images/mobileapp.jpg') center/cover no-repeat;">
       <div class="container">
         <h1>Help & Contact</h1>
         <p>We're here to help. Find answers or get in touch with our team.</p>
@@ -1400,8 +2053,13 @@
         <button onclick="chatQuickReply('Check-in help')">Check-in help</button>
       </div>
     </div>
+    <div class="chat-suggestions hidden" id="chatSuggestions"></div>
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()"/>
+      <input type="text" id="chatInput" placeholder="Try: Fly to Dubai next week..."
+        onkeypress="if(event.key==='Enter')sendChat()"
+        oninput="onChatInput(this.value)"
+        onfocus="onChatInputFocus()"
+        autocomplete="off"/>
       <button onclick="sendChat()" class="chat-send">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
       </button>
@@ -1412,6 +2070,19 @@
     </div>
   </div>
 
-  <script src="js/app.js"></script>
+  <!-- ============ CUSTOM CALENDAR PICKER ============ -->
+  <div class="cal-overlay hidden" id="calOverlay" onclick="if(event.target===this)closeCalendar()">
+    <div class="cal-popup">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="calNavMonth(-1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <strong id="calMonthLabel"></strong>
+        <button class="cal-nav" onclick="calNavMonth(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="cal-weekdays"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+      <div class="cal-days" id="calDays"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js?v=4"></script>
 </body>
 </html>
