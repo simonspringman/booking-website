@@ -61,6 +61,7 @@
 
         <!-- Natural Language Flight Search -->
         <div class="nlf-card" id="nlfCard">
+          <div class="nlf-label">&#9889; Fast Track Booking</div>
           <div class="nlf-trip-toggle">
             <button class="nlf-trip-btn active" data-trip="roundtrip">Round Trip</button>
             <button class="nlf-trip-btn" data-trip="oneway">One Way</button>
@@ -83,7 +84,7 @@
           <input type="hidden" id="searchPax" value="1 adult"/>
           <input type="hidden" id="searchClass" value="Economy"/>
           <div class="nlf-actions">
-            <a href="#" class="nlf-advanced-link" onclick="toggleAdvancedSearch(event)">Advanced search</a>
+            <a href="#" class="nlf-advanced-link" onclick="toggleAdvancedSearch(event)">&#128269; Classic search</a>
             <button class="btn-primary btn-lg" onclick="searchFlights()" tabindex="7">
               Search Flights
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -91,10 +92,10 @@
           </div>
         </div>
 
-        <!-- Old form (hidden, accessible via Advanced search) -->
+        <!-- Classic search form (hidden, accessible via Classic search link) -->
         <div class="search-card hidden" id="searchCard">
           <div class="nlf-back-link-wrapper">
-            <a href="#" onclick="toggleAdvancedSearch(event)">&larr; Back to simple search</a>
+            <a href="#" onclick="toggleAdvancedSearch(event)">&larr; Back to Fast Track</a>
           </div>
           <div class="search-tabs">
             <button class="search-tab active" data-tab="roundtrip">Round Trip</button>
@@ -414,6 +415,7 @@
           <div class="card">
             <h2>Passenger Details</h2>
             <p class="card-sub">Please enter details exactly as they appear on your passport or ID.</p>
+            <p class="required-legend"><span class="required">*</span> Required field</p>
 
             <div class="alert alert-info">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -552,7 +554,7 @@
               <div class="extra-header">
                 <div>
                   <h3>Extra Baggage</h3>
-                  <p>Your fare includes 1 x 23 kg checked bag</p>
+                  <p>Your fare includes 7 kg carry-on + 1 x 23 kg checked bag</p>
                 </div>
               </div>
               <div class="extra-options">
@@ -703,7 +705,7 @@
             <!-- Terms -->
             <label class="checkbox-label">
               <input type="checkbox" id="termsCheck"/>
-              <span>I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></span>
+              <span>I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a> <span class="required">*</span></span>
             </label>
 
             <div class="form-actions">
