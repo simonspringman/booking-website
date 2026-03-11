@@ -3,6 +3,11 @@
    Navigation, Search, Booking Flow, Chat, etc.
    ============================================ */
 
+// ---- DREAMMILES CONFIG ----
+const DREAMMILES_BALANCE = 45000;
+const MILES_PER_DOLLAR = 100;
+const BOOKING_TOTAL = 358.50;
+
 // ---- NLF DATA ----
 const NLF_DESTINATIONS = [
   { city: 'Kigali', code: 'KGL', country: 'Rwanda' },
@@ -379,6 +384,8 @@ function processPayment() {
     return;
   }
 
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
   // Show modal
   const modal = document.getElementById('paymentModal');
   modal.classList.remove('hidden');
@@ -386,13 +393,38 @@ function processPayment() {
   const progressBar = document.getElementById('paymentProgress');
   const stepText = document.getElementById('processingStep');
 
-  const steps = [
-    { pct: 25, text: 'Verifying payment details...' },
-    { pct: 50, text: 'Connecting to payment provider...' },
-    { pct: 75, text: 'Authorizing payment...' },
-    { pct: 95, text: 'Finalizing booking...' },
-    { pct: 100, text: 'Complete!' }
-  ];
+  // Customize steps based on payment method
+  let steps;
+  if (paymentMethod === 'miles') {
+    const totalMiles = Math.ceil(BOOKING_TOTAL * MILES_PER_DOLLAR);
+    steps = [
+      { pct: 25, text: 'Verifying DreamMiles membership...' },
+      { pct: 50, text: 'Checking miles balance...' },
+      { pct: 75, text: 'Redeeming ' + totalMiles.toLocaleString() + ' DreamMiles...' },
+      { pct: 95, text: 'Confirming award booking...' },
+      { pct: 100, text: 'Complete!' }
+    ];
+  } else if (paymentMethod === 'split') {
+    const slider = document.getElementById('splitSlider');
+    const pct = parseInt(slider.value);
+    const cashPortion = BOOKING_TOTAL * (1 - pct / 100);
+    steps = [
+      { pct: 20, text: 'Verifying DreamMiles membership...' },
+      { pct: 40, text: 'Redeeming miles portion...' },
+      { pct: 60, text: 'Processing $' + cashPortion.toFixed(2) + ' payment...' },
+      { pct: 80, text: 'Authorizing split payment...' },
+      { pct: 95, text: 'Finalizing booking...' },
+      { pct: 100, text: 'Complete!' }
+    ];
+  } else {
+    steps = [
+      { pct: 25, text: 'Verifying payment details...' },
+      { pct: 50, text: 'Connecting to payment provider...' },
+      { pct: 75, text: 'Authorizing payment...' },
+      { pct: 95, text: 'Finalizing booking...' },
+      { pct: 100, text: 'Complete!' }
+    ];
+  }
 
   let i = 0;
   function nextStep() {
@@ -510,19 +542,26 @@ function initNLF() {
   if (gapDepart) { gapDepart.textContent = formatDateDisplay(formatDate(dep)); gapDepart.classList.add('nlf-gap--filled'); gapDepart.classList.remove('nlf-gap--empty'); }
   if (gapReturn) { gapReturn.textContent = formatDateDisplay(formatDate(ret)); gapReturn.classList.add('nlf-gap--filled'); gapReturn.classList.remove('nlf-gap--empty'); }
 
+  // Helper: remove stray <br> nodes so CSS :empty works on contenteditable
+  function cleanEmptyGap(gap) {
+    if (!gap.textContent.trim()) { gap.innerHTML = ''; }
+  }
+
   // City gap events
   ['nlfGapFrom', 'nlfGapTo'].forEach(id => {
     const gap = document.getElementById(id);
     if (!gap) return;
     // Use both focus and click to ensure suggestions appear on first interaction
     function activateGap() {
-      if (gap.classList.contains('nlf-gap--empty')) { gap.textContent = ''; gap.classList.remove('nlf-gap--empty'); }
-      // Place cursor at end
+      if (gap.classList.contains('nlf-gap--empty')) {
+        gap.textContent = '';
+        gap.classList.remove('nlf-gap--empty');
+      }
+      // Select all text so gap stays visible; typing replaces selection
       try {
         const range = document.createRange();
         const sel = window.getSelection();
         range.selectNodeContents(gap);
-        range.collapse(false);
         sel.removeAllRanges();
         sel.addRange(range);
       } catch(e) {}
@@ -534,6 +573,7 @@ function initNLF() {
       activateGap();
     });
     gap.addEventListener('input', function() {
+      cleanEmptyGap(this);
       const q = this.textContent.trim();
       showSuggestions(this, q);
       updateGhostText(this, q);
@@ -559,11 +599,19 @@ function initNLF() {
     gap.addEventListener('focus', function() {
       if (this.classList.contains('nlf-gap--filled')) {
         this.dataset.prevValue = this.textContent;
-        this.textContent = '';
+        // Select all so gap stays visible; typing replaces selection
+        try {
+          const range = document.createRange();
+          const sel = window.getSelection();
+          range.selectNodeContents(this);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch(e) {}
       } else { this.textContent = ''; }
       hideGhost(this);
     });
     gap.addEventListener('input', function() {
+      cleanEmptyGap(this);
       const q = this.textContent.trim();
       updateDateGhost(this, q);
       // Make ghost clickable for date acceptance
@@ -597,10 +645,20 @@ function initNLF() {
   if (paxGap) {
     paxGap.addEventListener('focus', function() {
       if (this.classList.contains('nlf-gap--empty')) { this.textContent = ''; }
-      else { this.dataset.prevValue = this.textContent; this.textContent = ''; }
+      else {
+        this.dataset.prevValue = this.textContent;
+        try {
+          const range = document.createRange();
+          const sel = window.getSelection();
+          range.selectNodeContents(this);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch(e) {}
+      }
       showOptionSuggestions(this, '', NLF_PASSENGERS, 'searchPax');
     });
     paxGap.addEventListener('input', function() {
+      cleanEmptyGap(this);
       const q = this.textContent.trim();
       showOptionSuggestions(this, q, NLF_PASSENGERS, 'searchPax');
       updateOptionGhost(this, q, NLF_PASSENGERS);
@@ -622,10 +680,20 @@ function initNLF() {
   if (classGap) {
     classGap.addEventListener('focus', function() {
       if (this.classList.contains('nlf-gap--empty')) { this.textContent = ''; }
-      else { this.dataset.prevValue = this.textContent; this.textContent = ''; }
+      else {
+        this.dataset.prevValue = this.textContent;
+        try {
+          const range = document.createRange();
+          const sel = window.getSelection();
+          range.selectNodeContents(this);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch(e) {}
+      }
       showOptionSuggestions(this, '', NLF_CLASSES, 'searchClass');
     });
     classGap.addEventListener('input', function() {
+      cleanEmptyGap(this);
       const q = this.textContent.trim();
       showOptionSuggestions(this, q, NLF_CLASSES, 'searchClass');
       updateOptionGhost(this, q, NLF_CLASSES);
@@ -1001,15 +1069,132 @@ function showNLFGapError(gapId) {
 function initPaymentToggle() {
   document.querySelectorAll('input[name="payment"]').forEach(radio => {
     radio.addEventListener('change', function() {
-      const mobileForm = document.getElementById('payMobile');
-      if (mobileForm) {
-        mobileForm.style.display = this.value === 'mobile' ? '' : 'none';
+      const val = this.value;
+
+      // Hide all conditional payment forms
+      ['payMobile', 'payMiles', 'paySplit', 'milesBalanceBanner'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+
+      // Show relevant forms
+      if (val === 'mobile') {
+        document.getElementById('payMobile').style.display = '';
+      } else if (val === 'miles') {
+        document.getElementById('milesBalanceBanner').style.display = '';
+        document.getElementById('payMiles').style.display = '';
+        updateMilesCalculation();
+      } else if (val === 'split') {
+        document.getElementById('milesBalanceBanner').style.display = '';
+        document.getElementById('paySplit').style.display = '';
+        updateSplitCalculation();
       }
+
       // Update active tab styling
       document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
       this.closest('.payment-tab').classList.add('active');
+
+      // Update pay button text
+      updatePayButtonText(val);
     });
   });
+
+  // Split slider listener
+  const slider = document.getElementById('splitSlider');
+  if (slider) {
+    slider.addEventListener('input', function() {
+      updateSplitCalculation();
+    });
+  }
+
+  // Split cash method toggle
+  document.querySelectorAll('input[name="splitCashMethod"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const splitMobileForm = document.getElementById('splitMobileForm');
+      if (splitMobileForm) {
+        splitMobileForm.style.display = this.value === 'mobile' ? '' : 'none';
+      }
+    });
+  });
+}
+
+// ---- MILES CALCULATIONS ----
+function updateMilesCalculation() {
+  const totalMilesNeeded = Math.ceil(BOOKING_TOTAL * MILES_PER_DOLLAR);
+  const remaining = DREAMMILES_BALANCE - totalMilesNeeded;
+  const hasEnough = remaining >= 0;
+
+  document.getElementById('milesFlightTotal').textContent = '$' + BOOKING_TOTAL.toFixed(2);
+  document.getElementById('milesRequired').textContent = totalMilesNeeded.toLocaleString() + ' miles';
+  document.getElementById('milesRemaining').textContent =
+    (hasEnough ? remaining.toLocaleString() : '(' + Math.abs(remaining).toLocaleString() + ' short)') + ' miles';
+
+  const statusEl = document.getElementById('milesStatus');
+  if (hasEnough) {
+    statusEl.className = 'miles-status miles-status-ok';
+    statusEl.innerHTML = '<span>&#10003;</span><span>You have enough DreamMiles for this booking!</span>';
+  } else {
+    statusEl.className = 'miles-status miles-status-insufficient';
+    statusEl.innerHTML = '<span>&#10007;</span><span>You need ' +
+      Math.abs(remaining).toLocaleString() + ' more miles. Try Split Payment instead.</span>';
+  }
+}
+
+function updateSplitCalculation() {
+  const slider = document.getElementById('splitSlider');
+  const pct = parseInt(slider.value);
+
+  // Update CSS custom property for slider track coloring
+  slider.style.setProperty('--split-pct', pct + '%');
+
+  const milesPortionDollars = BOOKING_TOTAL * (pct / 100);
+  const cashPortion = BOOKING_TOTAL - milesPortionDollars;
+  const milesNeeded = Math.ceil(milesPortionDollars * MILES_PER_DOLLAR);
+  const hasEnough = milesNeeded <= DREAMMILES_BALANCE;
+
+  document.getElementById('splitMilesAmount').textContent = milesNeeded.toLocaleString() + ' miles';
+  document.getElementById('splitMilesDollar').textContent = '($' + milesPortionDollars.toFixed(2) + ')';
+  document.getElementById('splitCashAmount').textContent = '$' + cashPortion.toFixed(2);
+
+  const statusEl = document.getElementById('splitStatus');
+  if (hasEnough) {
+    statusEl.style.background = 'var(--green-soft)';
+    statusEl.style.color = '#15803d';
+    statusEl.innerHTML = '<span>&#10003;</span><span>You have enough miles for this split.</span>';
+  } else {
+    statusEl.style.background = '#fef2f2';
+    statusEl.style.color = '#ef4444';
+    statusEl.innerHTML = '<span>&#10007;</span><span>Not enough miles. Reduce the miles portion.</span>';
+  }
+
+  // Update pay button
+  updatePayButtonText('split');
+}
+
+function updatePayButtonText(method) {
+  const btnText = document.getElementById('payBtnText');
+  if (!btnText) return;
+
+  switch (method) {
+    case 'miles':
+      var totalMiles = Math.ceil(BOOKING_TOTAL * MILES_PER_DOLLAR);
+      btnText.textContent = 'Redeem ' + totalMiles.toLocaleString() + ' Miles';
+      break;
+    case 'split':
+      var slider = document.getElementById('splitSlider');
+      var pct = parseInt(slider.value);
+      var cashPortion = BOOKING_TOTAL * (1 - pct / 100);
+      if (pct === 100) {
+        btnText.textContent = 'Redeem ' + Math.ceil(BOOKING_TOTAL * MILES_PER_DOLLAR).toLocaleString() + ' Miles';
+      } else if (pct === 0) {
+        btnText.textContent = 'Pay $' + BOOKING_TOTAL.toFixed(2) + ' Securely';
+      } else {
+        btnText.textContent = 'Pay $' + cashPortion.toFixed(2) + ' + Miles';
+      }
+      break;
+    default:
+      btnText.textContent = 'Pay $' + BOOKING_TOTAL.toFixed(2) + ' Securely';
+  }
 }
 
 // ---- NATIONALITY SEARCH ----
