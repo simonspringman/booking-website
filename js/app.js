@@ -514,9 +514,24 @@ function initNLF() {
   ['nlfGapFrom', 'nlfGapTo'].forEach(id => {
     const gap = document.getElementById(id);
     if (!gap) return;
-    gap.addEventListener('focus', function() {
-      if (this.classList.contains('nlf-gap--empty')) { this.textContent = ''; }
-      showSuggestions(this, '');
+    // Use both focus and click to ensure suggestions appear on first interaction
+    function activateGap() {
+      if (gap.classList.contains('nlf-gap--empty')) { gap.textContent = ''; gap.classList.remove('nlf-gap--empty'); }
+      // Place cursor at end
+      try {
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(gap);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } catch(e) {}
+      showSuggestions(gap, '');
+    }
+    gap.addEventListener('focus', function() { setTimeout(activateGap, 0); });
+    gap.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent document click from hiding suggestions
+      activateGap();
     });
     gap.addEventListener('input', function() {
       const q = this.textContent.trim();
@@ -551,6 +566,17 @@ function initNLF() {
     gap.addEventListener('input', function() {
       const q = this.textContent.trim();
       updateDateGhost(this, q);
+      // Make ghost clickable for date acceptance
+      const wrapper = this.closest('.nlf-gap-wrapper');
+      const ghost = wrapper.querySelector('.nlf-ghost');
+      if (ghost && !ghost.dataset.clickBound) {
+        ghost.style.cursor = 'pointer';
+        ghost.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          if (gap.dataset.parsedDate) acceptDate(gap);
+        });
+        ghost.dataset.clickBound = 'true';
+      }
     });
     gap.addEventListener('keydown', function(e) { handleDateKeydown(e, this); });
     gap.addEventListener('blur', function() {
@@ -971,6 +997,110 @@ function showNLFGapError(gapId) {
   setTimeout(() => gap.classList.remove('nlf-gap--error'), 2000);
 }
 
+// ---- PAYMENT METHOD TOGGLE ----
+function initPaymentToggle() {
+  document.querySelectorAll('input[name="payment"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      const mobileForm = document.getElementById('payMobile');
+      if (mobileForm) {
+        mobileForm.style.display = this.value === 'mobile' ? '' : 'none';
+      }
+      // Update active tab styling
+      document.querySelectorAll('.payment-tab').forEach(tab => tab.classList.remove('active'));
+      this.closest('.payment-tab').classList.add('active');
+    });
+  });
+}
+
+// ---- NATIONALITY SEARCH ----
+function initNationalitySearch() {
+  const select = document.getElementById('paxNat');
+  if (!select) return;
+
+  // Collect all options
+  const allOptions = [];
+  select.querySelectorAll('option').forEach(opt => {
+    if (opt.value) allOptions.push(opt.textContent.trim());
+  });
+
+  // Create search wrapper
+  const wrapper = document.createElement('div');
+  wrapper.className = 'nat-search-wrapper';
+  wrapper.style.position = 'relative';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Type to search country...';
+  input.className = 'nat-search-input';
+  input.autocomplete = 'off';
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'nlf-suggestions nat-suggestions';
+  dropdown.style.display = 'none';
+
+  select.parentNode.insertBefore(wrapper, select);
+  wrapper.appendChild(input);
+  wrapper.appendChild(dropdown);
+  select.style.display = 'none';
+
+  function showMatches(query) {
+    const q = query.toLowerCase();
+    const matches = q ? allOptions.filter(o => o.toLowerCase().includes(q)) : allOptions;
+    if (matches.length === 0) { dropdown.style.display = 'none'; return; }
+
+    dropdown.innerHTML = matches.slice(0, 8).map((o, i) =>
+      '<div class="nlf-suggestion-item' + (i === 0 ? ' nlf-suggestion-item--active' : '') + '" data-value="' + o + '"><span>' + o + '</span></div>'
+    ).join('');
+    dropdown.style.display = 'block';
+
+    dropdown.querySelectorAll('.nlf-suggestion-item').forEach(item => {
+      item.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        acceptNationality(this.dataset.value);
+      });
+    });
+  }
+
+  function acceptNationality(value) {
+    input.value = value;
+    dropdown.style.display = 'none';
+    // Set the hidden select value
+    const opt = [...select.options].find(o => o.textContent.trim() === value);
+    if (opt) select.value = opt.value || opt.textContent;
+  }
+
+  input.addEventListener('focus', function() { showMatches(this.value); });
+  input.addEventListener('input', function() { showMatches(this.value); });
+  input.addEventListener('keydown', function(e) {
+    const items = dropdown.querySelectorAll('.nlf-suggestion-item');
+    if (e.key === 'ArrowDown' && dropdown.style.display !== 'none') {
+      e.preventDefault();
+      let idx = [...items].findIndex(i => i.classList.contains('nlf-suggestion-item--active'));
+      items.forEach(i => i.classList.remove('nlf-suggestion-item--active'));
+      idx = Math.min(idx + 1, items.length - 1);
+      items[idx].classList.add('nlf-suggestion-item--active');
+    }
+    if (e.key === 'ArrowUp' && dropdown.style.display !== 'none') {
+      e.preventDefault();
+      let idx = [...items].findIndex(i => i.classList.contains('nlf-suggestion-item--active'));
+      items.forEach(i => i.classList.remove('nlf-suggestion-item--active'));
+      idx = Math.max(idx - 1, 0);
+      items[idx].classList.add('nlf-suggestion-item--active');
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const active = dropdown.querySelector('.nlf-suggestion-item--active');
+      if (active) acceptNationality(active.dataset.value);
+    }
+    if (e.key === 'Escape') { dropdown.style.display = 'none'; }
+  });
+  input.addEventListener('blur', function() {
+    setTimeout(() => { dropdown.style.display = 'none'; }, 200);
+  });
+}
+
 // ---- INIT ----
 initNLF();
+initPaymentToggle();
+initNationalitySearch();
 console.log('RwandAir Prototype loaded');
