@@ -14,13 +14,7 @@
   <nav class="topbar" id="topbar">
     <div class="topbar-inner">
       <div class="topbar-logo" onclick="navigateTo('home')">
-        <svg class="logo-svg" viewBox="0 0 180 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="18" cy="20" r="14" fill="#00529b"/>
-          <path d="M10 20 L18 12 L26 20 L18 16Z" fill="#fee014"/>
-          <path d="M10 20 L18 28 L26 20 L18 24Z" fill="#94c943"/>
-          <text x="40" y="26" font-family="Lato,sans-serif" font-weight="700" font-size="18" fill="#00529b">Rwand</text>
-          <text x="95" y="26" font-family="Lato,sans-serif" font-weight="700" font-size="18" fill="#1ea2dc">Air</text>
-        </svg>
+        <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir — Fly the Dream of Africa" class="logo-img"/>
       </div>
 
       <div class="topbar-nav" id="topbar-nav">
@@ -58,61 +52,86 @@
   <section class="page active" id="page-home">
     <!-- Hero with Search -->
     <div class="hero">
-      <div class="hero-bg">
+      <div class="hero-bg" style="background: url('https://booking.rwandair.com/_next/static/media/ZANZIBAR.5a4bc6ab.png') center top / cover no-repeat, linear-gradient(135deg, #00529b 0%, #003d75 50%, #0f172a 100%);">
         <div class="hero-overlay"></div>
-        <div class="hero-pattern"></div>
       </div>
       <div class="hero-content">
         <p class="hero-tagline">Fly the Dream of Africa</p>
         <h1 class="hero-title">Where will you go next?</h1>
 
-        <!-- Flight Search Widget -->
-        <div class="search-card" id="searchCard">
+        <!-- Natural Language Flight Search -->
+        <div class="nlf-card" id="nlfCard">
+          <div class="nlf-trip-toggle">
+            <button class="nlf-trip-btn active" data-trip="roundtrip">Round Trip</button>
+            <button class="nlf-trip-btn" data-trip="oneway">One Way</button>
+          </div>
+          <p class="nlf-sentence">I'd like to fly from
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapFrom" contenteditable="true" role="combobox" data-placeholder="type city" tabindex="1">Kigali (KGL)</span></span>
+            to
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapTo" contenteditable="true" role="combobox" data-placeholder="type destination" tabindex="2">type destination</span></span>
+            on
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapDepart" contenteditable="true" data-placeholder="type date" tabindex="3">type date</span></span><span id="nlfReturnClause">, returning
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapReturn" contenteditable="true" data-placeholder="type date" tabindex="4">type date</span></span></span>, for
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapPax" contenteditable="true" data-placeholder="type passengers" tabindex="5">1 adult</span></span>
+            in
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapClass" contenteditable="true" data-placeholder="type class" tabindex="6">Economy</span></span>.
+          </p>
+          <input type="hidden" id="searchFrom" value="Kigali (KGL)"/>
+          <input type="hidden" id="searchTo" value=""/>
+          <input type="hidden" id="searchDepart" value=""/>
+          <input type="hidden" id="searchReturn" value=""/>
+          <input type="hidden" id="searchPax" value="1 adult"/>
+          <input type="hidden" id="searchClass" value="Economy"/>
+          <div class="nlf-actions">
+            <a href="#" class="nlf-advanced-link" onclick="toggleAdvancedSearch(event)">Advanced search</a>
+            <button class="btn-primary btn-lg" onclick="searchFlights()" tabindex="7">
+              Search Flights
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Old form (hidden, accessible via Advanced search) -->
+        <div class="search-card hidden" id="searchCard">
+          <div class="nlf-back-link-wrapper">
+            <a href="#" onclick="toggleAdvancedSearch(event)">&larr; Back to simple search</a>
+          </div>
           <div class="search-tabs">
             <button class="search-tab active" data-tab="roundtrip">Round Trip</button>
             <button class="search-tab" data-tab="oneway">One Way</button>
             <button class="search-tab" data-tab="multicity">Multi-City</button>
           </div>
-
           <div class="search-form">
             <div class="search-row">
               <div class="search-field search-field-route">
                 <label>From</label>
-                <input type="text" id="searchFrom" placeholder="City or airport" value="Kigali (KGL)" autocomplete="off"/>
-                <span class="field-hint">e.g. Kigali, Nairobi, Dubai</span>
+                <input type="text" id="advSearchFrom" placeholder="City or airport" value="Kigali (KGL)" autocomplete="off"/>
               </div>
               <button class="swap-btn" onclick="swapCities()" title="Swap cities">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
               </button>
               <div class="search-field search-field-route">
                 <label>To</label>
-                <input type="text" id="searchTo" placeholder="City or airport" autocomplete="off"/>
-                <span class="field-hint">e.g. Nairobi, Lagos, London</span>
+                <input type="text" id="advSearchTo" placeholder="City or airport" autocomplete="off"/>
               </div>
             </div>
-
             <div class="search-row">
               <div class="search-field">
                 <label>Depart</label>
-                <input type="date" id="searchDepart"/>
+                <input type="date" id="advSearchDepart"/>
               </div>
               <div class="search-field" id="returnField">
                 <label>Return</label>
-                <input type="date" id="searchReturn"/>
+                <input type="date" id="advSearchReturn"/>
               </div>
               <div class="search-field search-field-pax">
                 <label>Passengers</label>
-                <select id="searchPax">
-                  <option>1 Adult</option>
-                  <option>2 Adults</option>
-                  <option>3 Adults</option>
-                  <option>1 Adult, 1 Child</option>
-                  <option>2 Adults, 1 Child</option>
-                  <option>2 Adults, 2 Children</option>
+                <select id="advSearchPax">
+                  <option>1 Adult</option><option>2 Adults</option><option>3 Adults</option>
+                  <option>1 Adult, 1 Child</option><option>2 Adults, 1 Child</option><option>2 Adults, 2 Children</option>
                 </select>
               </div>
             </div>
-
             <div class="search-row search-row-actions">
               <label class="toggle-label">
                 <input type="checkbox" id="flexDates"/>
@@ -166,7 +185,7 @@
       </div>
       <div class="dest-grid">
         <div class="dest-card" onclick="selectDestination('Nairobi')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #1ea2dc 0%, #00529b 100%)">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/NBO.jpg') center/cover no-repeat;">
             <span class="dest-tag">Trending</span>
           </div>
           <div class="dest-info">
@@ -177,7 +196,7 @@
           </div>
         </div>
         <div class="dest-card" onclick="selectDestination('Dubai')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #fee014 0%, #f59e0b 100%)">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/DXB.jpg') center/cover no-repeat;">
             <span class="dest-tag">Popular</span>
           </div>
           <div class="dest-info">
@@ -188,7 +207,7 @@
           </div>
         </div>
         <div class="dest-card" onclick="selectDestination('Lagos')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #94c943 0%, #166534 100%)">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/LOS.jpg') center/cover no-repeat;">
           </div>
           <div class="dest-info">
             <h3>Lagos</h3>
@@ -198,7 +217,7 @@
           </div>
         </div>
         <div class="dest-card" onclick="selectDestination('London')">
-          <div class="dest-img" style="background: linear-gradient(135deg, #00529b 0%, #0f172a 100%)">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/LHR.jpg') center/cover no-repeat;">
           </div>
           <div class="dest-info">
             <h3>London</h3>
@@ -316,8 +335,8 @@
 
       <!-- Fare Class Explanation -->
       <div class="fare-explainer">
-        <h3>Choose your fare</h3>
-        <p>All fares include taxes and fees. Prices shown are per person for the round trip.</p>
+        <h3>Compare Fares</h3>
+        <p>All fares include taxes and fees. Select your preferred fare on the flight cards below.</p>
         <div class="fare-compare">
           <div class="fare-col">
             <div class="fare-header fare-lite">Economy Lite</div>
@@ -332,7 +351,7 @@
           </div>
           <div class="fare-col fare-col-popular">
             <span class="popular-badge">Most Popular</span>
-            <div class="fare-header fare-classic">Economy Classic</div>
+            <div class="fare-header fare-classic">Economy</div>
             <ul class="fare-features">
               <li class="included">Hand baggage (7 kg)</li>
               <li class="included">Checked bag (23 kg)</li>
@@ -368,17 +387,17 @@
     <div class="container">
       <!-- Progress Steps -->
       <div class="booking-progress">
-        <div class="progress-step active" data-step="1">
+        <div class="progress-step active" data-step="1" onclick="goToCompletedStep(1)">
           <div class="step-circle">1</div>
           <span>Passengers</span>
         </div>
         <div class="progress-line"></div>
-        <div class="progress-step" data-step="2">
+        <div class="progress-step" data-step="2" onclick="goToCompletedStep(2)">
           <div class="step-circle">2</div>
           <span>Extras</span>
         </div>
         <div class="progress-line"></div>
-        <div class="progress-step" data-step="3">
+        <div class="progress-step" data-step="3" onclick="goToCompletedStep(3)">
           <div class="step-circle">3</div>
           <span>Payment</span>
         </div>
@@ -405,7 +424,7 @@
               <h3 class="form-section-title">Adult 1 (Primary Contact)</h3>
               <div class="form-grid">
                 <div class="form-group">
-                  <label for="paxTitle">Title *</label>
+                  <label for="paxTitle">Title <span class="required">*</span></label>
                   <select id="paxTitle" required>
                     <option value="">Select</option>
                     <option>Mr</option>
@@ -415,12 +434,16 @@
                   </select>
                 </div>
                 <div class="form-group form-group-wide">
-                  <label for="paxFirst">First Name *</label>
+                  <label for="paxFirst">First Name <span class="required">*</span></label>
                   <input type="text" id="paxFirst" placeholder="As shown on passport" required/>
                   <span class="field-validation" id="valFirst"></span>
                 </div>
+                <div class="form-group">
+                  <label for="paxMiddle">Middle Name</label>
+                  <input type="text" id="paxMiddle" placeholder="Optional"/>
+                </div>
                 <div class="form-group form-group-wide">
-                  <label for="paxLast">Last Name *</label>
+                  <label for="paxLast">Last Name <span class="required">*</span></label>
                   <input type="text" id="paxLast" placeholder="As shown on passport" required/>
                   <span class="field-validation" id="valLast"></span>
                 </div>
@@ -428,27 +451,45 @@
 
               <div class="form-grid">
                 <div class="form-group">
-                  <label for="paxDob">Date of Birth *</label>
+                  <label for="paxDob">Date of Birth <span class="required">*</span></label>
                   <input type="date" id="paxDob" required/>
                 </div>
                 <div class="form-group">
-                  <label for="paxNat">Nationality *</label>
+                  <label for="paxNat">Nationality <span class="required">*</span></label>
                   <select id="paxNat" required>
                     <option value="">Select country</option>
-                    <option>Rwanda</option>
-                    <option>Kenya</option>
-                    <option>Uganda</option>
-                    <option>Tanzania</option>
-                    <option>DR Congo</option>
-                    <option>Nigeria</option>
-                    <option>South Africa</option>
-                    <option>United Kingdom</option>
-                    <option>United States</option>
-                    <option>Other</option>
+                    <optgroup label="East Africa">
+                      <option>Rwanda</option>
+                      <option>Kenya</option>
+                      <option>Uganda</option>
+                      <option>Tanzania</option>
+                      <option>Burundi</option>
+                      <option>DR Congo</option>
+                      <option>Ethiopia</option>
+                    </optgroup>
+                    <optgroup label="Africa">
+                      <option>Cameroon</option>
+                      <option>Ghana</option>
+                      <option>Nigeria</option>
+                      <option>South Africa</option>
+                      <option>Zambia</option>
+                      <option>Zimbabwe</option>
+                    </optgroup>
+                    <optgroup label="International">
+                      <option>Belgium</option>
+                      <option>China</option>
+                      <option>France</option>
+                      <option>Germany</option>
+                      <option>India</option>
+                      <option>Netherlands</option>
+                      <option>United Arab Emirates</option>
+                      <option>United Kingdom</option>
+                      <option>United States</option>
+                    </optgroup>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="paxPassport">Passport Number *</label>
+                  <label for="paxPassport">Passport Number <span class="required">*</span></label>
                   <input type="text" id="paxPassport" placeholder="e.g. AB1234567" required/>
                 </div>
               </div>
@@ -456,17 +497,18 @@
               <h3 class="form-section-title">Contact Information</h3>
               <div class="form-grid">
                 <div class="form-group form-group-wide">
-                  <label for="paxEmail">Email *</label>
+                  <label for="paxEmail">Email <span class="required">*</span></label>
                   <input type="email" id="paxEmail" placeholder="your@email.com" required/>
                   <span class="field-hint">Booking confirmation will be sent here</span>
                 </div>
                 <div class="form-group">
-                  <label for="paxPhone">Phone *</label>
+                  <label for="paxPhone">Phone <span class="required">*</span></label>
                   <input type="tel" id="paxPhone" placeholder="+250 7XX XXX XXX" required/>
                 </div>
               </div>
 
               <div class="form-actions">
+                <button type="button" class="btn-outline" onclick="navigateTo('results')">Back to Flights</button>
                 <button type="button" class="btn-primary btn-lg" onclick="goToStep(2)">
                   Continue to Extras
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -493,7 +535,7 @@
               </div>
               <div class="seat-map">
                 <div class="seat-legend">
-                  <span class="seat-leg-item"><span class="seat-sample seat-available"></span> Available</span>
+                  <span class="seat-leg-item"><span class="seat-sample seat-available"></span> Available $5</span>
                   <span class="seat-leg-item"><span class="seat-sample seat-selected"></span> Selected</span>
                   <span class="seat-leg-item"><span class="seat-sample seat-occupied"></span> Occupied</span>
                   <span class="seat-leg-item"><span class="seat-sample seat-extra"></span> Extra Legroom +$15</span>
@@ -696,13 +738,13 @@
                 <span class="summary-dir">Outbound</span>
                 <strong>KGL → NBO</strong>
                 <span>Wed, 26 Mar &middot; 08:30</span>
-                <span class="summary-flight">WB 400 &middot; Economy Classic</span>
+                <span class="summary-flight">WB 400 &middot; Economy</span>
               </div>
               <div class="summary-segment">
                 <span class="summary-dir">Return</span>
                 <strong>NBO → KGL</strong>
                 <span>Wed, 2 Apr &middot; 14:15</span>
-                <span class="summary-flight">WB 401 &middot; Economy Classic</span>
+                <span class="summary-flight">WB 401 &middot; Economy</span>
               </div>
             </div>
             <div class="summary-price">
