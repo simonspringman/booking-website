@@ -1,9 +1,22 @@
-version: "3.9"
-
 services:
   web:
     build: .
     ports:
       - "8080:8080"
+    env_file:
+      - .env                  # provides GOOGLE_API_KEY
+    environment:
+      PORT: "8080"
+      FLASK_DEBUG: "false"
+      # GEMINI_MODEL is read from .env via env_file above.
+      # To override without editing .env: GEMINI_MODEL=gemini-2.0-flash docker compose up
+    volumes:
+      - ./data:/app/data      # persist bookings.json outside the container
     restart: unless-stopped
     container_name: rwandair-booking
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

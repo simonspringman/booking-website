@@ -1,0 +1,326 @@
+{
+  "airline": "RwandAir",
+  "iata_code": "WB",
+  "hub": "KGL",
+  "airports": {
+    "KGL": { "city": "Kigali", "name": "Kigali International Airport", "country": "Rwanda", "timezone": "Africa/Kigali" },
+    "NBO": { "city": "Nairobi", "name": "Jomo Kenyatta International Airport", "country": "Kenya", "timezone": "Africa/Nairobi" },
+    "LHR": { "city": "London", "name": "London Heathrow Airport", "country": "United Kingdom", "timezone": "Europe/London" },
+    "DXB": { "city": "Dubai", "name": "Dubai International Airport", "country": "UAE", "timezone": "Asia/Dubai" },
+    "LOS": { "city": "Lagos", "name": "Murtala Muhammed International Airport", "country": "Nigeria", "timezone": "Africa/Lagos" },
+    "JNB": { "city": "Johannesburg", "name": "O.R. Tambo International Airport", "country": "South Africa", "timezone": "Africa/Johannesburg" },
+    "EBB": { "city": "Entebbe", "name": "Entebbe International Airport", "country": "Uganda", "timezone": "Africa/Kampala" },
+    "DAR": { "city": "Dar es Salaam", "name": "Julius Nyerere International Airport", "country": "Tanzania", "timezone": "Africa/Dar_es_Salaam" },
+    "BRU": { "city": "Brussels", "name": "Brussels Airport", "country": "Belgium", "timezone": "Europe/Brussels" },
+    "CDG": { "city": "Paris", "name": "Charles de Gaulle Airport", "country": "France", "timezone": "Europe/Paris" },
+    "ACC": { "city": "Accra", "name": "Kotoka International Airport", "country": "Ghana", "timezone": "Africa/Accra" },
+    "ADD": { "city": "Addis Ababa", "name": "Bole International Airport", "country": "Ethiopia", "timezone": "Africa/Addis_Ababa" },
+    "BJM": { "city": "Bujumbura", "name": "Bujumbura International Airport", "country": "Burundi", "timezone": "Africa/Bujumbura" },
+    "FIH": { "city": "Kinshasa", "name": "N'djili International Airport", "country": "DR Congo", "timezone": "Africa/Kinshasa" },
+    "BOM": { "city": "Mumbai", "name": "Chhatrapati Shivaji Maharaj International Airport", "country": "India", "timezone": "Asia/Kolkata" }
+  },
+  "city_to_code": {
+    "kigali": "KGL", "nairobi": "NBO", "london": "LHR", "dubai": "DXB",
+    "lagos": "LOS", "johannesburg": "JNB", "joburg": "JNB", "jnb": "JNB",
+    "entebbe": "EBB", "kampala": "EBB", "dar es salaam": "DAR", "dar": "DAR",
+    "brussels": "BRU", "paris": "CDG", "accra": "ACC",
+    "addis ababa": "ADD", "addis": "ADD", "bujumbura": "BJM",
+    "kinshasa": "FIH", "mumbai": "BOM", "bombay": "BOM"
+  },
+  "routes": [
+    {
+      "route_id": "KGL-NBO",
+      "origin": "KGL",
+      "destination": "NBO",
+      "flights": [
+        {
+          "flight_number": "WB 400",
+          "departure_time": "06:30",
+          "arrival_time": "07:55",
+          "duration": "1h 25m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 90, "economy_classic": 180, "business": 450 },
+          "total_seats": { "economy_lite": 30, "economy_classic": 60, "business": 16 }
+        },
+        {
+          "flight_number": "WB 402",
+          "departure_time": "08:30",
+          "arrival_time": "09:55",
+          "duration": "1h 25m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Airbus A330",
+          "prices": { "economy_lite": 100, "economy_classic": 195, "business": 480 },
+          "total_seats": { "economy_lite": 40, "economy_classic": 80, "business": 20 }
+        },
+        {
+          "flight_number": "WB 404",
+          "departure_time": "14:00",
+          "arrival_time": "15:25",
+          "duration": "1h 25m",
+          "days_of_week": ["Monday","Wednesday","Friday","Saturday","Sunday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 85, "economy_classic": 165, "business": 420 },
+          "total_seats": { "economy_lite": 30, "economy_classic": 60, "business": 12 }
+        },
+        {
+          "flight_number": "WB 406",
+          "departure_time": "19:45",
+          "arrival_time": "21:10",
+          "duration": "1h 25m",
+          "days_of_week": ["Tuesday","Thursday","Saturday"],
+          "aircraft": "Boeing 737-700",
+          "prices": { "economy_lite": 80, "economy_classic": 155, "business": 400 },
+          "total_seats": { "economy_lite": 25, "economy_classic": 50, "business": 10 }
+        }
+      ]
+    },
+    {
+      "route_id": "NBO-KGL",
+      "origin": "NBO",
+      "destination": "KGL",
+      "flights": [
+        {
+          "flight_number": "WB 401",
+          "departure_time": "10:50",
+          "arrival_time": "12:15",
+          "duration": "1h 25m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 90, "economy_classic": 180, "business": 450 },
+          "total_seats": { "economy_lite": 30, "economy_classic": 60, "business": 16 }
+        },
+        {
+          "flight_number": "WB 403",
+          "departure_time": "14:15",
+          "arrival_time": "15:40",
+          "duration": "1h 25m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Airbus A330",
+          "prices": { "economy_lite": 100, "economy_classic": 195, "business": 480 },
+          "total_seats": { "economy_lite": 40, "economy_classic": 80, "business": 20 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-LHR",
+      "origin": "KGL",
+      "destination": "LHR",
+      "flights": [
+        {
+          "flight_number": "WB 100",
+          "departure_time": "23:59",
+          "arrival_time": "08:30+1",
+          "duration": "8h 31m",
+          "days_of_week": ["Monday","Wednesday","Friday","Sunday"],
+          "aircraft": "Boeing 787-9 Dreamliner",
+          "prices": { "economy_lite": 480, "economy_classic": 620, "business": 1950 },
+          "total_seats": { "economy_lite": 60, "economy_classic": 120, "business": 28 }
+        },
+        {
+          "flight_number": "WB 102",
+          "departure_time": "21:30",
+          "arrival_time": "06:15+1",
+          "duration": "8h 45m",
+          "days_of_week": ["Tuesday","Thursday","Saturday"],
+          "aircraft": "Airbus A330-900neo",
+          "prices": { "economy_lite": 460, "economy_classic": 595, "business": 1880 },
+          "total_seats": { "economy_lite": 55, "economy_classic": 110, "business": 24 }
+        }
+      ]
+    },
+    {
+      "route_id": "LHR-KGL",
+      "origin": "LHR",
+      "destination": "KGL",
+      "flights": [
+        {
+          "flight_number": "WB 101",
+          "departure_time": "10:30",
+          "arrival_time": "21:05",
+          "duration": "8h 35m",
+          "days_of_week": ["Tuesday","Thursday","Saturday","Monday"],
+          "aircraft": "Boeing 787-9 Dreamliner",
+          "prices": { "economy_lite": 480, "economy_classic": 620, "business": 1950 },
+          "total_seats": { "economy_lite": 60, "economy_classic": 120, "business": 28 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-DXB",
+      "origin": "KGL",
+      "destination": "DXB",
+      "flights": [
+        {
+          "flight_number": "WB 200",
+          "departure_time": "02:00",
+          "arrival_time": "09:30",
+          "duration": "5h 30m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Airbus A330",
+          "prices": { "economy_lite": 310, "economy_classic": 420, "business": 1200 },
+          "total_seats": { "economy_lite": 50, "economy_classic": 100, "business": 24 }
+        },
+        {
+          "flight_number": "WB 202",
+          "departure_time": "22:15",
+          "arrival_time": "05:45+1",
+          "duration": "5h 30m",
+          "days_of_week": ["Tuesday","Thursday","Saturday"],
+          "aircraft": "Boeing 787-9 Dreamliner",
+          "prices": { "economy_lite": 295, "economy_classic": 400, "business": 1150 },
+          "total_seats": { "economy_lite": 55, "economy_classic": 110, "business": 28 }
+        }
+      ]
+    },
+    {
+      "route_id": "DXB-KGL",
+      "origin": "DXB",
+      "destination": "KGL",
+      "flights": [
+        {
+          "flight_number": "WB 201",
+          "departure_time": "11:00",
+          "arrival_time": "15:30",
+          "duration": "5h 30m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Airbus A330",
+          "prices": { "economy_lite": 310, "economy_classic": 420, "business": 1200 },
+          "total_seats": { "economy_lite": 50, "economy_classic": 100, "business": 24 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-LOS",
+      "origin": "KGL",
+      "destination": "LOS",
+      "flights": [
+        {
+          "flight_number": "WB 300",
+          "departure_time": "07:00",
+          "arrival_time": "10:45",
+          "duration": "3h 45m",
+          "days_of_week": ["Monday","Wednesday","Friday","Sunday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 220, "economy_classic": 340, "business": 900 },
+          "total_seats": { "economy_lite": 35, "economy_classic": 70, "business": 16 }
+        },
+        {
+          "flight_number": "WB 302",
+          "departure_time": "13:30",
+          "arrival_time": "17:15",
+          "duration": "3h 45m",
+          "days_of_week": ["Tuesday","Thursday","Saturday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 210, "economy_classic": 325, "business": 870 },
+          "total_seats": { "economy_lite": 35, "economy_classic": 70, "business": 16 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-JNB",
+      "origin": "KGL",
+      "destination": "JNB",
+      "flights": [
+        {
+          "flight_number": "WB 500",
+          "departure_time": "08:00",
+          "arrival_time": "12:30",
+          "duration": "4h 30m",
+          "days_of_week": ["Monday","Wednesday","Friday","Saturday"],
+          "aircraft": "Airbus A330",
+          "prices": { "economy_lite": 270, "economy_classic": 380, "business": 1050 },
+          "total_seats": { "economy_lite": 45, "economy_classic": 90, "business": 20 }
+        },
+        {
+          "flight_number": "WB 502",
+          "departure_time": "16:00",
+          "arrival_time": "20:30",
+          "duration": "4h 30m",
+          "days_of_week": ["Tuesday","Thursday","Sunday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 255, "economy_classic": 360, "business": 1000 },
+          "total_seats": { "economy_lite": 35, "economy_classic": 70, "business": 14 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-EBB",
+      "origin": "KGL",
+      "destination": "EBB",
+      "flights": [
+        {
+          "flight_number": "WB 600",
+          "departure_time": "07:30",
+          "arrival_time": "08:45",
+          "duration": "1h 15m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Bombardier CRJ900",
+          "prices": { "economy_lite": 70, "economy_classic": 120, "business": 320 },
+          "total_seats": { "economy_lite": 20, "economy_classic": 40, "business": 8 }
+        },
+        {
+          "flight_number": "WB 602",
+          "departure_time": "14:00",
+          "arrival_time": "15:15",
+          "duration": "1h 15m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Bombardier CRJ900",
+          "prices": { "economy_lite": 65, "economy_classic": 110, "business": 300 },
+          "total_seats": { "economy_lite": 20, "economy_classic": 40, "business": 8 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-BJM",
+      "origin": "KGL",
+      "destination": "BJM",
+      "flights": [
+        {
+          "flight_number": "WB 700",
+          "departure_time": "09:00",
+          "arrival_time": "09:50",
+          "duration": "50m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Bombardier CRJ900",
+          "prices": { "economy_lite": 55, "economy_classic": 95, "business": 260 },
+          "total_seats": { "economy_lite": 20, "economy_classic": 40, "business": 8 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-BRU",
+      "origin": "KGL",
+      "destination": "BRU",
+      "flights": [
+        {
+          "flight_number": "WB 110",
+          "departure_time": "22:00",
+          "arrival_time": "07:30+1",
+          "duration": "7h 30m",
+          "days_of_week": ["Monday","Wednesday","Saturday"],
+          "aircraft": "Boeing 787-9 Dreamliner",
+          "prices": { "economy_lite": 510, "economy_classic": 660, "business": 2100 },
+          "total_seats": { "economy_lite": 55, "economy_classic": 110, "business": 24 }
+        }
+      ]
+    },
+    {
+      "route_id": "KGL-DAR",
+      "origin": "KGL",
+      "destination": "DAR",
+      "flights": [
+        {
+          "flight_number": "WB 800",
+          "departure_time": "10:00",
+          "arrival_time": "12:00",
+          "duration": "2h 00m",
+          "days_of_week": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+          "aircraft": "Boeing 737-800",
+          "prices": { "economy_lite": 120, "economy_classic": 210, "business": 580 },
+          "total_seats": { "economy_lite": 30, "economy_classic": 65, "business": 14 }
+        }
+      ]
+    }
+  ]
+}

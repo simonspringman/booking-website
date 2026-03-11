@@ -1378,39 +1378,270 @@
   </div>
 
   <div class="chat-window hidden" id="chatWindow">
+    <!-- Header -->
     <div class="chat-header">
       <div class="chat-header-info">
-        <strong>RwandAir Support</strong>
-        <span class="chat-online">Online now</span>
+        <div class="chat-avatar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.4-.1.9.3 1.1l6.2 3.6-3.5 3.5-2.2-.8c-.4-.1-.8 0-1.1.3-.1.2-.2.5-.1.7l1.5 3 3 1.5c.2.1.5.1.7-.1.3-.3.4-.7.3-1.1l-.8-2.2 3.5-3.5 3.6 6.2c.2.4.7.5 1.1.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+        </div>
+        <div>
+          <strong>RwandAir Assistant</strong>
+          <span class="chat-online">
+            <span class="chat-online-dot"></span>
+            AI-powered · Book flights instantly
+          </span>
+        </div>
       </div>
-      <button class="chat-close" onclick="toggleChat()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <div style="display:flex;gap:4px;align-items:center;">
+        <button class="chat-close" id="chatMaxBtn" onclick="toggleChatMaximize()" title="Maximize chat">
+          <svg id="chatMaxIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+        <button class="chat-close" onclick="toggleChat()" title="Close chat">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
     </div>
+
+    <!-- Messages body -->
     <div class="chat-body" id="chatBody">
       <div class="chat-msg bot">
         <div class="chat-bubble">
-          Hello! I'm your RwandAir assistant. How can I help you today?
+          👋 Hello! I'm your <strong>RwandAir AI assistant</strong>.<br><br>
+          I can help you <strong>search and book flights</strong> right here in this chat. Just tell me where you'd like to go!
         </div>
       </div>
       <div class="chat-quick-replies">
-        <button onclick="chatQuickReply('Check booking status')">Check booking status</button>
-        <button onclick="chatQuickReply('Baggage allowance')">Baggage allowance</button>
-        <button onclick="chatQuickReply('Refund request')">Refund request</button>
-        <button onclick="chatQuickReply('Check-in help')">Check-in help</button>
+        <button onclick="chatQuickReply('I want to fly from Kigali to London')">✈️ Book a flight</button>
+        <button onclick="chatQuickReply('What flights are available to Nairobi?')">🔍 Search flights</button>
+        <button onclick="chatQuickReply('Check my booking status')">📋 My booking</button>
+        <button onclick="chatQuickReply('What is the baggage allowance?')">🧳 Baggage info</button>
       </div>
     </div>
+
+    <!-- Input footer -->
     <div class="chat-footer">
-      <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()"/>
-      <button onclick="sendChat()" class="chat-send">
+      <input
+        type="text"
+        id="chatInput"
+        placeholder="Ask me anything or say where you want to fly..."
+        onkeypress="if(event.key==='Enter')sendChat()"
+        autocomplete="off"
+      />
+      <button onclick="sendChat()" class="chat-send" title="Send message">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
       </button>
     </div>
-    <div class="chat-channels">
-      <span>Also available on:</span>
-      <a href="#" class="channel-link whatsapp">WhatsApp</a>
+
+    <div class="chat-powered">
+      Powered by Google Gemini · RwandAir AI
     </div>
   </div>
+
+  <!-- ============ CHAT STYLES (injected) ============ -->
+  <style>
+    /* ── Typing dots ─────────────────────────────────────────────── */
+    .typing-dots { display:flex; gap:5px; align-items:center; padding:4px 2px; }
+    .typing-dots span {
+      width:8px; height:8px; border-radius:50%; background:#94a3b8;
+      animation:typingBounce 1.2s infinite ease-in-out;
+    }
+    .typing-dots span:nth-child(2) { animation-delay:.2s; }
+    .typing-dots span:nth-child(3) { animation-delay:.4s; }
+    @keyframes typingBounce {
+      0%,80%,100% { transform:translateY(0); }
+      40% { transform:translateY(-6px); }
+    }
+
+    /* ── Chat header avatar ──────────────────────────────────────── */
+    .chat-avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:rgba(255,255,255,.2);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .chat-online { display:flex; align-items:center; gap:5px; font-size:12px; opacity:.85; }
+    .chat-online-dot {
+      width:7px; height:7px; border-radius:50%;
+      background:#4ade80; display:inline-block;
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; } 50% { opacity:.5; }
+    }
+
+    /* ── Powered by footer ───────────────────────────────────────── */
+    .chat-powered {
+      text-align:center; font-size:11px; color:#94a3b8;
+      padding:6px 12px 8px; border-top:1px solid #f1f5f9;
+    }
+
+    /* ── Flight cards in chat ────────────────────────────────────── */
+    .chat-flight-cards {
+      display:flex; flex-direction:column; gap:10px;
+      padding:4px 12px 8px;
+    }
+    .chat-flight-card {
+      background:#fff; border:1.5px solid #e2e8f0;
+      border-radius:14px; padding:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+    .cfc-header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:8px;
+    }
+    .cfc-fn { font-weight:700; color:#00529b; font-size:15px; }
+    .cfc-aircraft { font-size:11px; color:#94a3b8; }
+    .cfc-route {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:10px;
+    }
+    .cfc-time { text-align:center; }
+    .cfc-time strong { display:block; font-size:18px; color:#0f172a; }
+    .cfc-time span { font-size:12px; color:#64748b; }
+    .cfc-middle {
+      flex:1; text-align:center; padding:0 8px;
+      display:flex; flex-direction:column; align-items:center; gap:2px;
+    }
+    .cfc-dur { font-size:11px; color:#64748b; }
+    .cfc-line { width:100%; border-top:1.5px dashed #cbd5e1; }
+    .cfc-direct { font-size:10px; color:#22c55e; font-weight:600; }
+    .cfc-prices {
+      display:flex; gap:6px; margin-bottom:10px;
+    }
+    .cfc-price-opt {
+      flex:1; text-align:center; padding:5px 4px;
+      background:#f8fafc; border-radius:8px;
+      border:1.5px solid #e2e8f0;
+    }
+    .cfc-price-opt.cfc-popular {
+      background:#eff6ff; border-color:#3b82f6;
+    }
+    .cfc-class { display:block; font-size:10px; color:#64748b; }
+    .cfc-amount { font-weight:700; color:#0f172a; font-size:13px; }
+    .cfc-low-seats { display:block; font-size:11px; color:#ef4444; font-weight:600; margin-bottom:6px; }
+    .cfc-select-btn {
+      width:100%; padding:8px; background:#00529b; color:#fff;
+      border:none; border-radius:10px; font-size:13px; font-weight:600;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
+      transition:background .2s;
+    }
+    .cfc-select-btn:hover { background:#1ea2dc; }
+
+    /* ── Payment card in chat ────────────────────────────────────── */
+    .chat-payment-card {
+      margin:4px 12px 10px;
+      background:#fff; border:1.5px solid #e2e8f0;
+      border-radius:14px; padding:14px;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+    .chat-payment-title {
+      font-weight:700; color:#0f172a; font-size:14px; margin-bottom:12px;
+    }
+    .chat-pay-group {
+      background:#f8fafc; border:1px solid #e2e8f0;
+      border-radius:10px; padding:10px 12px; margin-bottom:10px;
+    }
+    .chat-pay-group-label {
+      font-size:11px; font-weight:600; color:#64748b;
+      text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;
+    }
+    .chat-pay-logos {
+      display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:10px;
+    }
+    .pay-logo { height:20px; object-fit:contain; max-width:48px; }
+    .pay-logo-text {
+      font-size:11px; font-weight:700; padding:3px 7px;
+      border-radius:5px; background:#e2e8f0; color:#0f172a;
+    }
+    .pay-logo-text.mtn { background:#fee014; color:#0f172a; }
+    .pay-logo-text.airtel { background:#ef4444; color:#fff; }
+    .pay-logo-text.dpo { background:#00529b; color:#fff; }
+    .pay-logo-text.bk { background:#eff6ff; }
+    .chat-pay-btn {
+      width:100%; padding:9px; background:#00529b; color:#fff;
+      border:none; border-radius:9px; font-size:13px; font-weight:600;
+      cursor:pointer; transition:background .2s;
+    }
+    .chat-pay-btn:hover { background:#1ea2dc; }
+
+    /* ── Booking confirmation card ───────────────────────────────── */
+    .chat-confirm-card {
+      margin:4px 12px 10px;
+      background:#fff; border:2px solid #22c55e;
+      border-radius:14px; overflow:hidden;
+      box-shadow:0 2px 12px rgba(34,197,94,.15);
+    }
+    .chat-confirm-header {
+      background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+      padding:12px 14px; display:flex; align-items:center; gap:10px;
+      border-bottom:1px solid #bbf7d0;
+    }
+    .chat-confirm-header strong { display:block; color:#15803d; font-size:15px; }
+    .chat-confirm-header p { font-size:12px; color:#166534; margin:2px 0 0; }
+    .chat-confirm-body { padding:12px 14px; }
+    .chat-confirm-section-label {
+      font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;
+      letter-spacing:.6px; padding:4px 0 2px; margin-top:4px;
+    }
+    .chat-confirm-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:5px 0; border-bottom:1px solid #f1f5f9; font-size:13px;
+    }
+    .chat-confirm-row span { color:#64748b; }
+    .chat-confirm-row strong { color:#0f172a; text-align:right; max-width:60%; word-break:break-all; }
+    .chat-confirm-total {
+      border-top:2px solid #e2e8f0; border-bottom:none;
+      padding-top:8px; margin-top:4px;
+    }
+    .chat-confirm-total strong { color:#00529b; font-size:15px; }
+    .chat-confirm-miles {
+      background:#fffbeb; border:1px solid #fde68a;
+      border-radius:8px; padding:8px 10px; margin-top:10px;
+      font-size:12px; color:#92400e;
+    }
+    .chat-confirm-actions {
+      display:flex; gap:8px; padding:10px 14px 14px;
+      border-top:1px solid #f1f5f9; flex-wrap:wrap;
+    }
+    .cca-btn {
+      flex:1; min-width:80px; padding:8px; font-size:12px; font-weight:600;
+      border:1.5px solid #00529b; border-radius:8px;
+      background:#fff; color:#00529b; cursor:pointer;
+      transition:all .2s;
+    }
+    .cca-btn:hover { background:#00529b; color:#fff; }
+    .chat-status-badge {
+      display:inline-block; margin-left:6px; padding:1px 7px;
+      border-radius:20px; font-size:10px; font-weight:700; letter-spacing:.4px;
+      vertical-align:middle;
+    }
+    .badge-confirmed { background:#dcfce7; color:#15803d; }
+    .badge-pending { background:#fef9c3; color:#854d0e; }
+
+    /* ── Quick replies updated ───────────────────────────────────── */
+    .chat-quick-replies {
+      padding:4px 12px 8px;
+      display:flex; flex-wrap:wrap; gap:7px;
+    }
+    .chat-quick-replies button {
+      background:#fff; border:1.5px solid #00529b;
+      color:#00529b; border-radius:20px; padding:6px 13px;
+      font-size:12px; font-weight:600; cursor:pointer;
+      transition:all .2s; white-space:nowrap;
+    }
+    .chat-quick-replies button:hover {
+      background:#00529b; color:#fff;
+    }
+
+    /* ── Retry countdown pill ────────────────────────────────────── */
+    .chat-retry-countdown {
+      margin:4px 12px 8px;
+      background:#fff7ed; border:1.5px solid #fed7aa;
+      border-radius:10px; padding:9px 14px;
+      font-size:13px; color:#9a3412;
+    }
+    .chat-retry-countdown strong { color:#c2410c; }
+  </style>
 
   <script src="js/app.js"></script>
 </body>

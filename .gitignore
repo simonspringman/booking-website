@@ -1,0 +1,24 @@
+## Environment files
+.env
+.env.*
+
+## Virtual environments
+venv/
+ENV/
+.venv/
+
+## Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+## Tooling / memory
+CLAUDE.md
+memory/
+
+## OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
+
+

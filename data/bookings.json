@@ -1,0 +1,122 @@
+[
+  {
+    "booking_reference": "WB-2026-LHR-47471",
+    "status": "CONFIRMED",
+    "created_at": "2026-03-10T14:28:19.994732",
+    "flight": {
+      "flight_number": "WB 100",
+      "origin": "KGL",
+      "origin_city": "Kigali",
+      "destination": "LHR",
+      "destination_city": "London",
+      "travel_date": "2026-03-15",
+      "departure_time": "23:59",
+      "arrival_time": "08:30+1",
+      "duration": "8h 31m",
+      "aircraft": "Boeing 787-9 Dreamliner"
+    },
+    "passenger": {
+      "first_name": "Alexis",
+      "last_name": "Ngoga",
+      "full_name": "Alexis Ngoga",
+      "passport_number": "PC123456",
+      "email": "alexis.ngoga@rwandair.com",
+      "phone": "+250784720789"
+    },
+    "booking_details": {
+      "seat_class": "economy_classic",
+      "seat_class_display": "Economy Classic",
+      "assigned_seat": "14B",
+      "meal": "Standard Meal",
+      "baggage_allowance": "1 x 23 kg"
+    },
+    "payment": {
+      "method": "Visa Card",
+      "base_fare_usd": 620,
+      "taxes_usd": 93.0,
+      "total_usd": 713.0,
+      "currency": "USD"
+    },
+    "miles_earned": 2480
+  },
+  {
+    "booking_reference": "WB-2026-LHR-22764",
+    "status": "CONFIRMED",
+    "created_at": "2026-03-10T12:58:01.181623",
+    "flight": {
+      "flight_number": "WB 102",
+      "origin": "KGL",
+      "origin_city": "Kigali",
+      "destination": "LHR",
+      "destination_city": "London",
+      "travel_date": "2026-03-14",
+      "departure_time": "21:30",
+      "arrival_time": "06:15+1",
+      "duration": "8h 45m",
+      "aircraft": "Airbus A330-900neo"
+    },
+    "passenger": {
+      "first_name": "Alexis",
+      "last_name": "Ngoga",
+      "full_name": "Alexis Ngoga",
+      "passport_number": "PC100456",
+      "email": "r.alexisngoga20@gmail.com",
+      "phone": "+250784720789"
+    },
+    "booking_details": {
+      "seat_class": "economy_classic",
+      "seat_class_display": "Economy Classic",
+      "assigned_seat": "17C",
+      "meal": "Standard Meal",
+      "baggage_allowance": "1 x 23 kg"
+    },
+    "payment": {
+      "method": "MTN Mobile Money",
+      "base_fare_usd": 595,
+      "taxes_usd": 89.25,
+      "total_usd": 684.25,
+      "currency": "USD"
+    },
+    "miles_earned": 2380
+  },
+  {
+    "booking_reference": "WB-2026-LHR-62359",
+    "status": "CONFIRMED",
+    "created_at": "2026-03-10T12:58:44.085435",
+    "flight": {
+      "flight_number": "WB 102",
+      "origin": "KGL",
+      "origin_city": "Kigali",
+      "destination": "LHR",
+      "destination_city": "London",
+      "travel_date": "2026-03-14",
+      "departure_time": "21:30",
+      "arrival_time": "06:15+1",
+      "duration": "8h 45m",
+      "aircraft": "Airbus A330-900neo"
+    },
+    "passenger": {
+      "first_name": "Alexis",
+      "last_name": "Ngoga",
+      "full_name": "Alexis Ngoga",
+      "passport_number": "PC100456",
+      "email": "r.alexisngoga20@gmail.com",
+      "phone": "+250784720789"
+    },
+    "booking_details": {
+      "seat_class": "economy_classic",
+      "seat_class_display": "Economy Classic",
+      "assigned_seat": "14C",
+      "meal": "Standard Meal",
+      "baggage_allowance": "1 x 23 kg"
+    },
+    "payment": {
+      "method": "Visa Card",
+      "base_fare_usd": 595,
+      "taxes_usd": 89.25,
+      "total_usd": 684.25,
+      "currency": "USD"
+    },
+    "miles_earned": 2380
+  }
+]

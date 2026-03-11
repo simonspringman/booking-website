@@ -1105,6 +1105,20 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
   display: flex; flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.3s ease;
+  transition: width 0.25s ease, max-height 0.25s ease, bottom 0.25s ease, right 0.25s ease, border-radius 0.25s ease;
+}
+.chat-window.maximized {
+  width: min(860px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  bottom: 16px;
+  right: 16px;
+  border-radius: var(--radius-lg);
+}
+.chat-window.maximized .chat-body {
+  min-height: 0;
+}
+.chat-window.maximized .chat-bubble {
+  max-width: 60%;
 }
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
