@@ -212,8 +212,8 @@ function renderFlightResults(from, to) {
             <div class="price-class">Lite</div>
             <div class="price-amount">$${f.priceLite}</div>
           </div>
-          <div class="flight-price-opt selected-price" onclick="event.stopPropagation();selectFlightPrice(${i},'classic')">
-            <div class="price-class">Classic</div>
+          <div class="flight-price-opt selected-price" onclick="event.stopPropagation();selectFlightPrice(${i},'economy')">
+            <div class="price-class">Economy</div>
             <div class="price-amount">$${f.priceClassic}</div>
           </div>
           <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'business')">
@@ -252,7 +252,7 @@ function selectFlightPrice(flightIdx, fareClass) {
   const card = document.getElementById('flight-' + flightIdx);
   card.querySelectorAll('.flight-price-opt').forEach(p => p.classList.remove('selected-price'));
 
-  const classMap = { lite: 0, classic: 1, business: 2 };
+  const classMap = { lite: 0, economy: 1, classic: 1, business: 2 };
   const opts = card.querySelectorAll('.flight-price-opt');
   opts[classMap[fareClass]].classList.add('selected-price');
 
@@ -262,6 +262,11 @@ function selectFlightPrice(flightIdx, fareClass) {
 function continueToBooking() {
   navigateTo('booking');
   goToStep(1);
+}
+
+// Navigate to a completed step (back navigation via progress bar)
+function goToCompletedStep(step) {
+  if (step < currentStep) goToStep(step);
 }
 
 // ---- BOOKING FLOW ----
@@ -337,8 +342,8 @@ function selectSeat(btn, seatId, isExtra) {
   });
   btn.classList.add('selected-seat');
   const text = isExtra
-    ? 'Selected: Seat ' + seatId + ' (Extra Legroom +$15)'
-    : 'Selected: Seat ' + seatId;
+    ? 'Selected: Seat ' + seatId + ' (Extra Legroom — $15)'
+    : 'Selected: Seat ' + seatId + ' — $5';
   document.getElementById('seatSelectedText').textContent = text;
 }
 
@@ -561,13 +566,55 @@ function initNLF() {
     });
   });
 
-  // Passengers gap — click to cycle
+  // Passengers gap — type-ahead
   const paxGap = document.getElementById('nlfGapPax');
-  if (paxGap) paxGap.addEventListener('click', function() { cycleOption(this, NLF_PASSENGERS, 'searchPax'); });
+  if (paxGap) {
+    paxGap.addEventListener('focus', function() {
+      if (this.classList.contains('nlf-gap--empty')) { this.textContent = ''; }
+      else { this.dataset.prevValue = this.textContent; this.textContent = ''; }
+      showOptionSuggestions(this, '', NLF_PASSENGERS, 'searchPax');
+    });
+    paxGap.addEventListener('input', function() {
+      const q = this.textContent.trim();
+      showOptionSuggestions(this, q, NLF_PASSENGERS, 'searchPax');
+      updateOptionGhost(this, q, NLF_PASSENGERS);
+    });
+    paxGap.addEventListener('keydown', function(e) { handleOptionKeydown(e, this, NLF_PASSENGERS, 'searchPax'); });
+    paxGap.addEventListener('blur', function() {
+      setTimeout(() => {
+        hideSuggestions(this); hideGhost(this);
+        if (!this.textContent.trim() || this.classList.contains('nlf-gap--empty')) {
+          const prev = this.dataset.prevValue || '1 adult';
+          this.textContent = prev; this.classList.add('nlf-gap--filled'); this.classList.remove('nlf-gap--empty');
+        }
+      }, 200);
+    });
+  }
 
-  // Class gap — click to cycle
+  // Class gap — type-ahead
   const classGap = document.getElementById('nlfGapClass');
-  if (classGap) classGap.addEventListener('click', function() { cycleOption(this, NLF_CLASSES, 'searchClass'); });
+  if (classGap) {
+    classGap.addEventListener('focus', function() {
+      if (this.classList.contains('nlf-gap--empty')) { this.textContent = ''; }
+      else { this.dataset.prevValue = this.textContent; this.textContent = ''; }
+      showOptionSuggestions(this, '', NLF_CLASSES, 'searchClass');
+    });
+    classGap.addEventListener('input', function() {
+      const q = this.textContent.trim();
+      showOptionSuggestions(this, q, NLF_CLASSES, 'searchClass');
+      updateOptionGhost(this, q, NLF_CLASSES);
+    });
+    classGap.addEventListener('keydown', function(e) { handleOptionKeydown(e, this, NLF_CLASSES, 'searchClass'); });
+    classGap.addEventListener('blur', function() {
+      setTimeout(() => {
+        hideSuggestions(this); hideGhost(this);
+        if (!this.textContent.trim() || this.classList.contains('nlf-gap--empty')) {
+          const prev = this.dataset.prevValue || 'Economy';
+          this.textContent = prev; this.classList.add('nlf-gap--filled'); this.classList.remove('nlf-gap--empty');
+        }
+      }, 200);
+    });
+  }
 
   // Trip toggle
   document.querySelectorAll('.nlf-trip-btn').forEach(btn => {
@@ -798,14 +845,100 @@ function acceptDate(gap) {
   advanceNLF(gap.id);
 }
 
-// Cycle options (passengers, class)
-function cycleOption(gap, options, hiddenId) {
-  const current = gap.textContent.trim().toLowerCase();
-  let idx = options.findIndex(o => o.toLowerCase() === current);
-  idx = (idx + 1) % options.length;
-  gap.textContent = options[idx];
+// Option type-ahead suggestions (passengers, class)
+function showOptionSuggestions(gap, query, options, hiddenId) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  let box = wrapper.querySelector('.nlf-suggestions');
+  if (!box) { box = document.createElement('div'); box.className = 'nlf-suggestions'; wrapper.appendChild(box); }
+
+  const q = query.toLowerCase();
+  const matches = q ? options.filter(o => o.toLowerCase().includes(q)) : options;
+
+  if (matches.length === 0 || (matches.length === 1 && matches[0].toLowerCase() === q)) {
+    box.style.display = 'none'; return;
+  }
+
+  box.innerHTML = matches.map((o, i) =>
+    '<div class="nlf-suggestion-item' + (i === 0 ? ' nlf-suggestion-item--active' : '') + '" data-value="' + o + '">' +
+    '<span>' + o + '</span></div>'
+  ).join('');
+  box.style.display = 'block';
+
+  box.querySelectorAll('.nlf-suggestion-item').forEach(item => {
+    item.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      acceptOptionSuggestion(gap, this.dataset.value, hiddenId);
+    });
+  });
+}
+
+function updateOptionGhost(gap, query, options) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  let ghost = wrapper.querySelector('.nlf-ghost');
+  if (!ghost) { ghost = document.createElement('span'); ghost.className = 'nlf-ghost'; wrapper.appendChild(ghost); }
+
+  if (!query) { ghost.style.display = 'none'; return; }
+
+  const q = query.toLowerCase();
+  const match = options.find(o => o.toLowerCase().startsWith(q));
+  if (match) {
+    ghost.textContent = match.substring(query.length);
+    ghost.style.display = 'inline';
+  } else { ghost.style.display = 'none'; }
+}
+
+function acceptOptionSuggestion(gap, value, hiddenId) {
+  gap.textContent = value;
+  gap.classList.remove('nlf-gap--empty', 'nlf-gap--error');
   gap.classList.add('nlf-gap--filled');
-  document.getElementById(hiddenId).value = options[idx];
+  gap.dataset.prevValue = value;
+  hideSuggestions(gap);
+  hideGhost(gap);
+  document.getElementById(hiddenId).value = value;
+  advanceNLF(gap.id);
+}
+
+function handleOptionKeydown(e, gap, options, hiddenId) {
+  const wrapper = gap.closest('.nlf-gap-wrapper');
+  const box = wrapper.querySelector('.nlf-suggestions');
+
+  if (e.key === 'Tab' || e.key === 'ArrowRight') {
+    const ghost = wrapper.querySelector('.nlf-ghost');
+    if (ghost && ghost.style.display !== 'none' && ghost.textContent) {
+      e.preventDefault();
+      acceptOptionSuggestion(gap, gap.textContent + ghost.textContent, hiddenId);
+      return;
+    }
+  }
+
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (box && box.style.display !== 'none') {
+      const active = box.querySelector('.nlf-suggestion-item--active');
+      if (active) { acceptOptionSuggestion(gap, active.dataset.value, hiddenId); return; }
+    }
+    const val = gap.textContent.trim();
+    const match = options.find(o => o.toLowerCase() === val.toLowerCase());
+    if (match) acceptOptionSuggestion(gap, match, hiddenId);
+  }
+
+  if (e.key === 'ArrowDown' && box && box.style.display !== 'none') {
+    e.preventDefault();
+    const items = box.querySelectorAll('.nlf-suggestion-item');
+    let idx = [...items].findIndex(i => i.classList.contains('nlf-suggestion-item--active'));
+    items.forEach(i => i.classList.remove('nlf-suggestion-item--active'));
+    idx = Math.min(idx + 1, items.length - 1);
+    items[idx].classList.add('nlf-suggestion-item--active');
+  }
+  if (e.key === 'ArrowUp' && box && box.style.display !== 'none') {
+    e.preventDefault();
+    const items = box.querySelectorAll('.nlf-suggestion-item');
+    let idx = [...items].findIndex(i => i.classList.contains('nlf-suggestion-item--active'));
+    items.forEach(i => i.classList.remove('nlf-suggestion-item--active'));
+    idx = Math.max(idx - 1, 0);
+    items[idx].classList.add('nlf-suggestion-item--active');
+  }
+  if (e.key === 'Escape') { hideSuggestions(gap); hideGhost(gap); gap.blur(); }
 }
 
 // Auto-advance
