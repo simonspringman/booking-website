@@ -137,6 +137,11 @@ function searchFlights() {
     else showFieldError('searchDepart', 'Please select a departure date');
     return;
   }
+  if (isDateInPast(new Date(depart + 'T00:00:00'))) {
+    if (nlfVisible) showNLFGapError('nlfGapDepart');
+    else showFieldError('searchDepart', 'Departure date cannot be in the past');
+    return;
+  }
 
   // Update results page
   document.getElementById('resultFrom').textContent = from;
@@ -180,11 +185,170 @@ function showFieldError(fieldId, msg) {
 }
 
 // ---- FLIGHT RESULTS ----
+function generatePriceBand(departDate) {
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const baseDate = new Date(departDate + 'T00:00:00');
+  const band = [];
+  for (let offset = -3; offset <= 3; offset++) {
+    const d = new Date(baseDate);
+    d.setDate(d.getDate() + offset);
+    // Simulate prices: base ± random variation
+    const base = 145 + Math.abs(offset) * 12;
+    const variation = ((d.getDate() * 7 + d.getMonth() * 13) % 30) - 15;
+    const price = base + variation;
+    band.push({
+      date: d,
+      dayName: days[d.getDay()],
+      dateStr: d.getDate() + ' ' + months[d.getMonth()],
+      price: price,
+      isSelected: offset === 0,
+      isoDate: formatDate(d)
+    });
+  }
+  return band;
+}
+
+function renderPriceBand(departDate) {
+  const band = generatePriceBand(departDate);
+  const today = new Date(); today.setHours(0,0,0,0);
+  let html = '<div class="price-band-toggle" onclick="togglePriceBand()">' +
+    '<span>Compare nearby dates</span>' +
+    '<svg class="price-band-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>' +
+    '</div>';
+  html += '<div class="price-band" id="priceBand">';
+  html += '<button class="price-band-nav" onclick="shiftPriceBand(-7)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg></button>';
+  band.forEach(d => {
+    const isPast = d.date < today;
+    const cls = d.isSelected ? 'price-band-day selected' : (isPast ? 'price-band-day past' : 'price-band-day');
+    const onclick = isPast ? '' : `onclick="selectPriceBandDay('${d.isoDate}')"`;
+    html += `<div class="${cls}" ${onclick}>
+      <span class="pbd-name">${d.dayName}</span>
+      <span class="pbd-date">${d.dateStr}</span>
+      <span class="pbd-price">${isPast ? '—' : '$' + d.price}</span>
+    </div>`;
+  });
+  html += '<button class="price-band-nav" onclick="shiftPriceBand(7)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></button>';
+  html += '</div>';
+  return html;
+}
+
+function togglePriceBand() {
+  const band = document.getElementById('priceBand');
+  const toggle = document.querySelector('.price-band-toggle');
+  if (band) {
+    band.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+}
+
+function selectPriceBandDay(isoDate) {
+  document.getElementById('searchDepart').value = isoDate;
+  const from = document.getElementById('searchFrom').value;
+  const to = document.getElementById('searchTo').value;
+  // Update display
+  document.getElementById('resultDate').textContent = formatDateDisplay(isoDate) + ' \u00b7 1 Adult \u00b7 Round Trip';
+  const gapDepart = document.getElementById('nlfGapDepart');
+  if (gapDepart) { gapDepart.textContent = formatDateDisplay(isoDate); gapDepart.dataset.parsedDate = isoDate; gapDepart.dataset.prevValue = formatDateDisplay(isoDate); }
+  renderFlightResults(from, to);
+  // Re-open the band
+  setTimeout(() => { const b = document.getElementById('priceBand'); const t = document.querySelector('.price-band-toggle'); if (b) { b.classList.add('open'); t.classList.add('open'); } }, 50);
+}
+
+function shiftPriceBand(days) {
+  const currentDepart = document.getElementById('searchDepart').value;
+  const d = new Date(currentDepart + 'T00:00:00');
+  d.setDate(d.getDate() + days);
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (d < today) return;
+  selectPriceBandDay(formatDate(d));
+}
+
+function renderFlightFilters() {
+  return `<div class="flight-filters">
+    <div class="ff-group">
+      <span class="ff-label">Stops</span>
+      <button class="ff-pill active" data-filter="stops" data-value="all" onclick="applyFilter('stops','all',this)">All</button>
+      <button class="ff-pill" data-filter="stops" data-value="direct" onclick="applyFilter('stops','direct',this)">Direct</button>
+      <button class="ff-pill" data-filter="stops" data-value="1stop" onclick="applyFilter('stops','1stop',this)">1 Stop</button>
+    </div>
+    <div class="ff-group">
+      <span class="ff-label">Departure</span>
+      <button class="ff-pill active" data-filter="time" data-value="all" onclick="applyFilter('time','all',this)">All</button>
+      <button class="ff-pill" data-filter="time" data-value="morning" onclick="applyFilter('time','morning',this)">Morning</button>
+      <button class="ff-pill" data-filter="time" data-value="afternoon" onclick="applyFilter('time','afternoon',this)">Afternoon</button>
+      <button class="ff-pill" data-filter="time" data-value="evening" onclick="applyFilter('time','evening',this)">Evening</button>
+    </div>
+    <div class="ff-group">
+      <span class="ff-label">Sort</span>
+      <button class="ff-pill active" data-filter="sort" data-value="departure" onclick="applySort('departure',this)">Departure</button>
+      <button class="ff-pill" data-filter="sort" data-value="price" onclick="applySort('price',this)">Price</button>
+    </div>
+  </div>`;
+}
+
+const activeFilters = { stops: 'all', time: 'all' };
+
+function applyFilter(type, value, btn) {
+  activeFilters[type] = value;
+  // Update pill states
+  btn.closest('.ff-group').querySelectorAll('.ff-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  filterFlights();
+}
+
+function applySort(value, btn) {
+  btn.closest('.ff-group').querySelectorAll('.ff-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+
+  const container = document.getElementById('flightResults');
+  const cards = [...container.querySelectorAll('.flight-card')];
+  if (cards.length === 0) return;
+
+  cards.sort((a, b) => {
+    if (value === 'price') {
+      const priceA = parseInt(a.querySelector('.price-amount').textContent.replace('$',''));
+      const priceB = parseInt(b.querySelector('.price-amount').textContent.replace('$',''));
+      return priceA - priceB;
+    }
+    // departure (default) — sort by time text
+    const timeA = a.querySelector('.time').textContent;
+    const timeB = b.querySelector('.time').textContent;
+    return timeA.localeCompare(timeB);
+  });
+
+  // Re-insert sorted cards before the continue button
+  const continueBtn = container.querySelector('[style*="justify-content"]');
+  cards.forEach(c => container.insertBefore(c, continueBtn));
+}
+
+function filterFlights() {
+  document.querySelectorAll('.flight-card').forEach(card => {
+    const timeText = card.querySelector('.time').textContent;
+    const hour = parseInt(timeText.split(':')[0]);
+    const stopsText = card.querySelector('.stops').textContent.trim().toLowerCase();
+
+    let showStops = true;
+    if (activeFilters.stops === 'direct') showStops = stopsText === 'direct';
+    else if (activeFilters.stops === '1stop') showStops = stopsText !== 'direct';
+
+    let showTime = true;
+    if (activeFilters.time === 'morning') showTime = hour >= 0 && hour < 12;
+    else if (activeFilters.time === 'afternoon') showTime = hour >= 12 && hour < 18;
+    else if (activeFilters.time === 'evening') showTime = hour >= 18;
+
+    card.style.display = (showStops && showTime) ? '' : 'none';
+  });
+}
+
 function renderFlightResults(from, to) {
   const container = document.getElementById('flightResults');
   const flights = generateFlights();
+  const departDate = document.getElementById('searchDepart').value;
 
-  container.innerHTML = '<h3 style="margin-bottom:4px">Outbound Flights</h3>' +
+  container.innerHTML = renderPriceBand(departDate) +
+    renderFlightFilters() +
+    '<h3 style="margin-bottom:4px">Outbound Flights</h3>' +
     '<p style="font-size:14px;color:#64748b;margin-bottom:16px">Select your preferred departure flight</p>';
 
   flights.forEach((f, i) => {
@@ -216,14 +380,47 @@ function renderFlightResults(from, to) {
           <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'lite')">
             <div class="price-class">Lite</div>
             <div class="price-amount">$${f.priceLite}</div>
+            <div class="fare-tooltip">
+              <strong>Economy Lite</strong>
+              <ul>
+                <li class="included">Hand baggage (7 kg)</li>
+                <li class="excluded">Checked bag</li>
+                <li class="excluded">Seat selection</li>
+                <li class="excluded">Flexibility</li>
+                <li class="included">In-flight meal</li>
+              </ul>
+              <span class="fare-tooltip-note">Non-refundable</span>
+            </div>
           </div>
-          <div class="flight-price-opt selected-price" onclick="event.stopPropagation();selectFlightPrice(${i},'economy')">
+          <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'economy')">
             <div class="price-class">Economy</div>
             <div class="price-amount">$${f.priceClassic}</div>
+            <div class="fare-tooltip">
+              <strong>Economy</strong>
+              <ul>
+                <li class="included">Hand baggage (7 kg)</li>
+                <li class="included">Checked bag (23 kg)</li>
+                <li class="included">Seat selection</li>
+                <li class="partial">Change fee applies</li>
+                <li class="included">In-flight meal</li>
+              </ul>
+              <span class="fare-tooltip-note">Changeable with fee</span>
+            </div>
           </div>
           <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'business')">
             <div class="price-class">Business</div>
             <div class="price-amount">$${f.priceBusiness}</div>
+            <div class="fare-tooltip">
+              <strong>Business Class</strong>
+              <ul>
+                <li class="included">Hand baggage (7 kg)</li>
+                <li class="included">Checked bags (2 x 32 kg)</li>
+                <li class="included">Priority seat selection</li>
+                <li class="included">Full flexibility</li>
+                <li class="included">Premium dining</li>
+              </ul>
+              <span class="fare-tooltip-note">Fully refundable</span>
+            </div>
           </div>
         </div>
       </div>`;
@@ -254,9 +451,10 @@ function selectFlight(i) {
 }
 
 function selectFlightPrice(flightIdx, fareClass) {
-  const card = document.getElementById('flight-' + flightIdx);
-  card.querySelectorAll('.flight-price-opt').forEach(p => p.classList.remove('selected-price'));
+  // Clear all fare selections across all flights
+  document.querySelectorAll('.flight-price-opt').forEach(p => p.classList.remove('selected-price'));
 
+  const card = document.getElementById('flight-' + flightIdx);
   const classMap = { lite: 0, economy: 1, classic: 1, business: 2 };
   const opts = card.querySelectorAll('.flight-price-opt');
   opts[classMap[fareClass]].classList.add('selected-price');
@@ -541,6 +739,13 @@ function initNLF() {
   const gapReturn = document.getElementById('nlfGapReturn');
   if (gapDepart) { gapDepart.textContent = formatDateDisplay(formatDate(dep)); gapDepart.classList.add('nlf-gap--filled'); gapDepart.classList.remove('nlf-gap--empty'); }
   if (gapReturn) { gapReturn.textContent = formatDateDisplay(formatDate(ret)); gapReturn.classList.add('nlf-gap--filled'); gapReturn.classList.remove('nlf-gap--empty'); }
+
+  // Set min date on classic form date inputs to today
+  const todayStr = formatDate(today);
+  const advDepart = document.getElementById('advSearchDepart');
+  const advReturn = document.getElementById('advSearchReturn');
+  if (advDepart) advDepart.min = todayStr;
+  if (advReturn) advReturn.min = todayStr;
 
   // Helper: remove stray <br> nodes so CSS :empty works on contenteditable
   function cleanEmptyGap(gap) {
@@ -847,32 +1052,35 @@ function handleNLFKeydown(e, gap) {
   if (e.key === 'Escape') { hideSuggestions(gap); hideGhost(gap); gap.blur(); }
 }
 
-// Date parsing
+// Date parsing — returns date object (including past dates so we can show them greyed out)
 function parseNLFDate(str) {
   if (!str) return null;
   const s = str.trim().toLowerCase();
   const today = new Date();
 
-  // Try "24 Mar", "24 March", "Mar 24", "March 24"
+  // Try "24 Mar", "24 March", "Mar 24", "March 24", with optional year like "24 Mar 2027"
   for (let mi = 0; mi < 12; mi++) {
     const short = MONTH_NAMES[mi].toLowerCase();
     const full = MONTH_FULL[mi];
-    const regA = new RegExp('^(\\d{1,2})\\s*' + short);
-    const regB = new RegExp('^(\\d{1,2})\\s*' + full);
-    const regC = new RegExp('^' + short + '\\s*(\\d{1,2})');
-    const regD = new RegExp('^' + full + '\\s*(\\d{1,2})');
+    // Patterns: "24 Mar 2027", "24 March 2027", "Mar 24 2027", "March 24 2027" (year optional)
+    const regA = new RegExp('^(\\d{1,2})\\s*' + short + '(?:\\s+(\\d{4}))?');
+    const regB = new RegExp('^(\\d{1,2})\\s*' + full + '(?:\\s+(\\d{4}))?');
+    const regC = new RegExp('^' + short + '\\s*(\\d{1,2})(?:\\s+(\\d{4}))?');
+    const regD = new RegExp('^' + full + '\\s*(\\d{1,2})(?:\\s+(\\d{4}))?');
 
     let m;
     if ((m = s.match(regA)) || (m = s.match(regB)) || (m = s.match(regC)) || (m = s.match(regD))) {
       const day = parseInt(m[1]);
-      let year = today.getFullYear();
+      const explicitYear = m[2] ? parseInt(m[2]) : null;
+      let year = explicitYear || today.getFullYear();
       const candidate = new Date(year, mi, day);
-      if (candidate < today) candidate.setFullYear(year + 1);
+      // Only auto-bump to next year if no explicit year was given
+      if (!explicitYear && candidate < today) candidate.setFullYear(year + 1);
       if (day >= 1 && day <= 31) return candidate;
     }
   }
 
-  // Try "24/3", "24-3", "24.3"
+  // Try "24/3", "24-3", "24.3", "24/3/2027"
   const slashMatch = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})(?:[\/\-\.](\d{2,4}))?$/);
   if (slashMatch) {
     const day = parseInt(slashMatch[1]);
@@ -880,6 +1088,7 @@ function parseNLFDate(str) {
     let year = slashMatch[3] ? parseInt(slashMatch[3]) : today.getFullYear();
     if (year < 100) year += 2000;
     const candidate = new Date(year, month, day);
+    // Only auto-bump if no explicit year
     if (candidate < today && !slashMatch[3]) candidate.setFullYear(candidate.getFullYear() + 1);
     return candidate;
   }
@@ -898,6 +1107,12 @@ function parseNLFDate(str) {
   return null;
 }
 
+function isDateInPast(dateObj) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return dateObj < today;
+}
+
 function updateDateGhost(gap, query) {
   const wrapper = gap.closest('.nlf-gap-wrapper');
   let ghost = wrapper.querySelector('.nlf-ghost');
@@ -906,8 +1121,15 @@ function updateDateGhost(gap, query) {
   const parsed = parseNLFDate(query);
   if (parsed) {
     gap.dataset.parsedDate = formatDate(parsed);
-    ghost.textContent = ' → ' + formatDateDisplay(formatDate(parsed));
-    ghost.style.display = 'inline';
+    if (isDateInPast(parsed)) {
+      ghost.textContent = ' → ' + formatDateDisplay(formatDate(parsed)) + ' (past date)';
+      ghost.style.display = 'inline';
+      ghost.style.color = '#dc2626';
+    } else {
+      ghost.textContent = ' → ' + formatDateDisplay(formatDate(parsed));
+      ghost.style.display = 'inline';
+      ghost.style.color = '';
+    }
   } else {
     gap.dataset.parsedDate = '';
     ghost.style.display = 'none';
@@ -926,6 +1148,17 @@ function handleDateKeydown(e, gap) {
 
 function acceptDate(gap) {
   const dateStr = gap.dataset.parsedDate;
+  // Block past dates
+  const dateObj = new Date(dateStr + 'T00:00:00');
+  if (isDateInPast(dateObj)) {
+    showNLFGapError(gap.id);
+    hideGhost(gap);
+    // Restore previous value
+    const prev = gap.dataset.prevValue;
+    if (prev) { gap.textContent = prev; gap.classList.add('nlf-gap--filled'); }
+    else { gap.textContent = gap.dataset.placeholder; gap.classList.add('nlf-gap--empty'); gap.classList.remove('nlf-gap--filled'); }
+    return;
+  }
   gap.textContent = formatDateDisplay(dateStr);
   gap.classList.remove('nlf-gap--empty', 'nlf-gap--error');
   gap.classList.add('nlf-gap--filled');
@@ -1283,6 +1516,41 @@ function initNationalitySearch() {
     setTimeout(() => { dropdown.style.display = 'none'; }, 200);
   });
 }
+
+// ---- CURRENCY SELECTOR ----
+function toggleCurrencyDropdown(e) {
+  e.stopPropagation();
+  document.getElementById('currencyDropdown').classList.toggle('open');
+}
+function setCurrency(code, symbol, el) {
+  document.getElementById('currencyLabel').textContent = code + ' ' + symbol;
+  document.querySelectorAll('.currency-option').forEach(o => o.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('currencyDropdown').classList.remove('open');
+  // Sync mobile select
+  const mobileSel = document.getElementById('mobileCurrencySelect');
+  if (mobileSel) mobileSel.value = code + ' ' + symbol;
+}
+function setCurrencyMobile(select) {
+  const val = select.value;
+  document.getElementById('currencyLabel').textContent = val;
+  document.querySelectorAll('.currency-option').forEach(o => {
+    o.classList.toggle('active', o.textContent.trim() === val);
+  });
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.currency-selector')) {
+    document.getElementById('currencyDropdown').classList.remove('open');
+  }
+});
+
+// ---- LOGIN MODAL ----
+function toggleLoginModal() {
+  document.getElementById('loginModal').classList.toggle('open');
+}
+document.getElementById('loginModal').addEventListener('click', function(e) {
+  if (e.target === this) toggleLoginModal();
+});
 
 // ---- INIT ----
 initNLF();

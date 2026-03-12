@@ -26,6 +26,22 @@
       </div>
 
       <div class="topbar-actions">
+        <div class="currency-selector" id="currencySelector">
+          <button class="currency-btn" onclick="toggleCurrencyDropdown(event)">
+            <span id="currencyLabel">USD $</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg>
+          </button>
+          <div class="currency-dropdown" id="currencyDropdown">
+            <a href="#" class="currency-option active" onclick="setCurrency('USD','$',this);return false">USD $</a>
+            <a href="#" class="currency-option" onclick="setCurrency('EUR','€',this);return false">EUR €</a>
+            <a href="#" class="currency-option" onclick="setCurrency('GBP','£',this);return false">GBP £</a>
+            <a href="#" class="currency-option" onclick="setCurrency('RWF','FRw',this);return false">RWF FRw</a>
+          </div>
+        </div>
+        <button class="btn-login" onclick="toggleLoginModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Log in
+        </button>
         <button class="btn-outline-sm" onclick="navigateTo('manage')">Manage Booking</button>
         <button class="btn-outline-sm" onclick="navigateTo('checkin')">Check-in</button>
         <button class="btn-icon" id="menuToggle" onclick="toggleMobileMenu()">
@@ -45,6 +61,17 @@
       <a href="#" onclick="navigateTo('travelinfo');toggleMobileMenu()">Travel Info</a>
       <a href="#" onclick="navigateTo('loyalty');toggleMobileMenu()">Loyalty</a>
       <a href="#" onclick="navigateTo('help');toggleMobileMenu()">Help & Contact</a>
+      <hr/>
+      <a href="#" onclick="toggleLoginModal();toggleMobileMenu()">Log in / Sign up</a>
+      <div class="mobile-currency">
+        <span class="mobile-currency-label">Currency:</span>
+        <select id="mobileCurrencySelect" onchange="setCurrencyMobile(this)">
+          <option value="USD $" selected>USD $</option>
+          <option value="EUR €">EUR €</option>
+          <option value="GBP £">GBP £</option>
+          <option value="RWF FRw">RWF FRw</option>
+        </select>
+      </div>
     </div>
   </nav>
 
@@ -157,23 +184,23 @@
           </div>
           <span>Flight Status</span>
         </div>
-        <div class="quick-action" onclick="navigateTo('checkin')">
+        <div class="quick-action">
           <div class="qa-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
           </div>
-          <span>Online Check-in</span>
-        </div>
-        <div class="quick-action" onclick="navigateTo('manage')">
-          <div class="qa-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-          </div>
-          <span>Manage Booking</span>
+          <span>Claims</span>
         </div>
         <div class="quick-action">
           <div class="qa-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/><circle cx="12" cy="15" r="1"/></svg>
           </div>
-          <span>DreamMiles</span>
+          <span>Baggage Tracking</span>
+        </div>
+        <div class="quick-action">
+          <div class="qa-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <span>Cargo</span>
         </div>
       </div>
     </div>
@@ -274,140 +301,6 @@
       </div>
     </div>
 
-    <!-- About Us -->
-    <section class="about-us" id="aboutUs">
-      <div class="container">
-        <h2 class="section-title">About Us</h2>
-        <p class="section-subtitle">Heart of Africa. Gateway to the World.</p>
-
-        <div class="about-intro">
-          <p>We began operations on 1st December 2002 as the new national carrier under the name Rwandair Express for Rwanda. In March 2009, we registered a new trademark "RwandAir" which is our current operating name.</p>
-          <p>Operating from Kigali as our hub at the heart of Africa, RwandAir is one of the fastest growing airlines and operates one of the youngest fleets on the African continent. The airline reaches out to over twenty cities in Western, Central, Eastern and Southern Africa, the Middle East, Asia and Europe.</p>
-          <p>RwandAir is a member airline of IATA, and an EASA, IOSA and ISAGO certified operator.</p>
-        </div>
-
-        <div class="about-pillars">
-          <div class="about-pillar">
-            <div class="about-pillar-icon">&#127775;</div>
-            <h4>Purpose</h4>
-            <p>Positioning Rwanda as Africa's gateway to the world for people, trade and opportunity while showcasing the nation's resilience and hospitality.</p>
-          </div>
-          <div class="about-pillar">
-            <div class="about-pillar-icon">&#128065;</div>
-            <h4>Vision</h4>
-            <p>To be Africa's premier hub airline, powered by sustainable innovation and a culture that puts people first.</p>
-          </div>
-          <div class="about-pillar">
-            <div class="about-pillar-icon">&#127919;</div>
-            <h4>Mission</h4>
-            <p>To deliver safe, reliable and seamless movement of people and goods through agile operations and strategic partnerships, creating sustainable value for our customers and other stakeholders.</p>
-          </div>
-        </div>
-
-        <h3 class="about-values-title">Our Values</h3>
-        <div class="about-values-grid">
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#10084;</span>
-              <h4>People &amp; Empathy</h4>
-            </div>
-            <ul>
-              <li>Put yourself in the other person's shoes and situation.</li>
-              <li>Listen to understand, not just to respond.</li>
-              <li>Practice respect, trust, and openness to create a safe environment.</li>
-              <li>Speak and act with kindness in all interactions.</li>
-              <li>Offer help and support where you can.</li>
-              <li>Show appreciation and recognition for others' contributions.</li>
-            </ul>
-          </div>
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#129309;</span>
-              <h4>Integrity &amp; Accountability</h4>
-            </div>
-            <ul>
-              <li>Take full ownership of your actions, decisions, and outcomes.</li>
-              <li>Say what you mean, mean what you say, and deliver on your promises.</li>
-              <li>Act with integrity, always doing the right thing for the organization, even when it's difficult.</li>
-              <li>Show up consistently and see your commitments through to the end.</li>
-            </ul>
-          </div>
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#128269;</span>
-              <h4>Transparency</h4>
-            </div>
-            <ul>
-              <li>Build psychological safety where all opinions are valued and can be shared without fear of blame.</li>
-              <li>Communicate clearly, proactively, and on time.</li>
-              <li>Make processes and information accessible, encouraging knowledge transfer.</li>
-              <li>Give and receive productive feedback respectfully and constructively.</li>
-              <li>Be open about career paths, opportunities, and how performance is recognized.</li>
-            </ul>
-          </div>
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#129504;</span>
-              <h4>Teamwork</h4>
-            </div>
-            <ul>
-              <li>Align and work together towards a common goal.</li>
-              <li>Communicate clearly, proactively, and often.</li>
-              <li>Collaborate openly across all departments, breaking down silos.</li>
-            </ul>
-          </div>
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#128161;</span>
-              <h4>Sustainable Innovation</h4>
-            </div>
-            <ul>
-              <li>Be human-centric.</li>
-              <li>Stay curious and consistently ask "why" to find new ideas.</li>
-              <li>Create a safe environment to collaborate, test boundaries, and take educated risks.</li>
-              <li>Embrace technology and use data to find innovative, solution-focused answers.</li>
-              <li>Challenge the status quo with creative solutions and inspire others by being the change.</li>
-            </ul>
-          </div>
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#128640;</span>
-              <h4>Excellence</h4>
-            </div>
-            <ul>
-              <li>Live the company values with professionalism.</li>
-              <li>Be curious, learn fast, and improve faster.</li>
-              <li>Strive for continuous improvement, prioritizing progress over perfection.</li>
-              <li>Be resilient: embrace change, adapt well to it, and overcome setbacks.</li>
-              <li>Develop and promote talent based on merit and professional skills.</li>
-              <li>Drive motivation and inclusion at all levels.</li>
-              <li>Drive sustainable profitability and growth through our commitment to this excellence.</li>
-            </ul>
-          </div>
-
-          <div class="about-value-card">
-            <div class="about-value-header">
-              <span class="about-value-icon">&#128737;</span>
-              <h4>Safety &amp; Compliance</h4>
-            </div>
-            <ul>
-              <li>Make safety and security, compliance, and environmental protection a non-negotiable priority in all decisions.</li>
-              <li>Establish and follow strong, clear procedures and processes without fail.</li>
-              <li>Train all staff and communicate standards, risks, and responsibilities clearly and continuously.</li>
-              <li>Understand and manage the internal and external impact of our actions.</li>
-            </ul>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
       <div class="container">
@@ -435,7 +328,7 @@
           </div>
           <div>
             <h4>Company</h4>
-            <a href="#">About RwandAir</a>
+            <a href="#" onclick="navigateTo('about'); return false;">About RwandAir</a>
             <a href="#">Careers</a>
             <a href="#">News</a>
             <a href="#">Partners</a>
@@ -465,48 +358,6 @@
         <div class="route-summary">
           <h2><span id="resultFrom">Kigali (KGL)</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> <span id="resultTo">Nairobi (NBO)</span></h2>
           <p id="resultDate">Wed, 26 Mar 2025 &middot; 1 Adult &middot; Round Trip</p>
-        </div>
-      </div>
-
-      <!-- Fare Class Explanation -->
-      <div class="fare-explainer">
-        <h3>Compare Fares</h3>
-        <p>All fares include taxes and fees. Select your preferred fare on the flight cards below.</p>
-        <div class="fare-compare">
-          <div class="fare-col">
-            <div class="fare-header fare-lite">Economy Lite</div>
-            <ul class="fare-features">
-              <li class="included">Hand baggage (7 kg)</li>
-              <li class="excluded">Checked bag</li>
-              <li class="excluded">Seat selection</li>
-              <li class="excluded">Flexibility</li>
-              <li class="included">In-flight meal</li>
-            </ul>
-            <div class="fare-note">Non-refundable</div>
-          </div>
-          <div class="fare-col fare-col-popular">
-            <span class="popular-badge">Most Popular</span>
-            <div class="fare-header fare-classic">Economy</div>
-            <ul class="fare-features">
-              <li class="included">Hand baggage (7 kg)</li>
-              <li class="included">Checked bag (23 kg)</li>
-              <li class="included">Seat selection</li>
-              <li class="partial">Change fee applies</li>
-              <li class="included">In-flight meal</li>
-            </ul>
-            <div class="fare-note">Changeable with fee</div>
-          </div>
-          <div class="fare-col">
-            <div class="fare-header fare-business">Business Class</div>
-            <ul class="fare-features">
-              <li class="included">Hand baggage (7 kg)</li>
-              <li class="included">Checked bags (2 x 32 kg)</li>
-              <li class="included">Priority seat selection</li>
-              <li class="included">Full flexibility</li>
-              <li class="included">Premium dining</li>
-            </ul>
-            <div class="fare-note">Fully refundable</div>
-          </div>
         </div>
       </div>
 
@@ -1250,62 +1101,62 @@
         <h2>Africa</h2>
         <div class="dest-list-grid">
           <div class="dest-list-card" onclick="selectDestination('Nairobi')">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#006600,#bb0000)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/NBO.jpg') center/cover"></div>
             <div><strong>Nairobi</strong><span>Kenya &middot; NBO</span></div>
             <span class="dlc-freq">Daily</span>
           </div>
           <div class="dest-list-card" onclick="selectDestination('Johannesburg')">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#007749,#FFB81C)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/JNB.jpg') center/cover"></div>
             <div><strong>Johannesburg</strong><span>South Africa &middot; JNB</span></div>
             <span class="dlc-freq">5x weekly</span>
           </div>
           <div class="dest-list-card" onclick="selectDestination('Lagos')">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#008751,#fff)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/LOS.jpg') center/cover"></div>
             <div><strong>Lagos</strong><span>Nigeria &middot; LOS</span></div>
             <span class="dlc-freq">4x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#FCDD09,#DA121A)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/ACC.jpg') center/cover"></div>
             <div><strong>Accra</strong><span>Ghana &middot; ACC</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#000,#FCD116)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/EBB.jpg') center/cover"></div>
             <div><strong>Entebbe</strong><span>Uganda &middot; EBB</span></div>
             <span class="dlc-freq">Daily</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#1EB53A,#00A3DD)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DAR.jpg') center/cover"></div>
             <div><strong>Dar es Salaam</strong><span>Tanzania &middot; DAR</span></div>
             <span class="dlc-freq">Daily</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#009543,#CE1126)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/LUN.jpg') center/cover"></div>
             <div><strong>Lusaka</strong><span>Zambia &middot; LUN</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#007168,#CE1126)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/HRE.jpg') center/cover"></div>
             <div><strong>Harare</strong><span>Zimbabwe &middot; HRE</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#0051A5,#CE1126)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/FIH.jpg') center/cover"></div>
             <div><strong>Kinshasa</strong><span>DR Congo &middot; FIH</span></div>
             <span class="dlc-freq">4x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#00A1DE,#E8112D)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/BJM.jpg') center/cover"></div>
             <div><strong>Bujumbura</strong><span>Burundi &middot; BJM</span></div>
             <span class="dlc-freq">Daily</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#3E8E41,#FFF)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/ADD.jpg') center/cover"></div>
             <div><strong>Addis Ababa</strong><span>Ethiopia &middot; ADD</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#D21034,#FFC61E)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DLA.jpg') center/cover"></div>
             <div><strong>Douala</strong><span>Cameroon &middot; DLA</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
@@ -1317,7 +1168,7 @@
         <h2>Middle East</h2>
         <div class="dest-list-grid">
           <div class="dest-list-card" onclick="selectDestination('Dubai')">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#00732f,#CE1126)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DXB.jpg') center/cover"></div>
             <div><strong>Dubai</strong><span>UAE &middot; DXB</span></div>
             <span class="dlc-freq">Daily</span>
           </div>
@@ -1329,17 +1180,17 @@
         <h2>Europe</h2>
         <div class="dest-list-grid">
           <div class="dest-list-card" onclick="selectDestination('London')">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#00247D,#CF142B)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/LHR.jpg') center/cover"></div>
             <div><strong>London</strong><span>United Kingdom &middot; LHR</span></div>
             <span class="dlc-freq">4x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#002395,#ED2939)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/BRU.jpg') center/cover"></div>
             <div><strong>Brussels</strong><span>Belgium &middot; BRU</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#002395,#ED2939)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/CDG.jpg') center/cover"></div>
             <div><strong>Paris</strong><span>France &middot; CDG</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
@@ -1351,12 +1202,12 @@
         <h2>Asia</h2>
         <div class="dest-list-grid">
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#FF9933,#138808)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/BOM.jpg') center/cover"></div>
             <div><strong>Mumbai</strong><span>India &middot; BOM</span></div>
             <span class="dlc-freq">3x weekly</span>
           </div>
           <div class="dest-list-card">
-            <div class="dlc-flag" style="background:linear-gradient(135deg,#FF0000,#FFD700)"></div>
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/CAN.jpg') center/cover"></div>
             <div><strong>Guangzhou</strong><span>China &middot; CAN</span></div>
             <span class="dlc-freq">2x weekly</span>
           </div>
@@ -1676,6 +1527,143 @@
     </div>
   </section>
 
+  <!-- ============ PAGE: ABOUT US ============ -->
+  <section class="page" id="page-about">
+    <div class="about-us">
+      <div class="container">
+        <a href="#" class="about-back-link" onclick="navigateTo('home'); return false;">&larr; Back to Home</a>
+        <h2 class="section-title">About Us</h2>
+        <p class="section-subtitle">Heart of Africa. Gateway to the World.</p>
+
+        <div class="about-intro">
+          <p>We began operations on 1st December 2002 as the new national carrier under the name Rwandair Express for Rwanda. In March 2009, we registered a new trademark "RwandAir" which is our current operating name.</p>
+          <p>Operating from Kigali as our hub at the heart of Africa, RwandAir is one of the fastest growing airlines and operates one of the youngest fleets on the African continent. The airline reaches out to over twenty cities in Western, Central, Eastern and Southern Africa, the Middle East, Asia and Europe.</p>
+          <p>RwandAir is a member airline of IATA, and an EASA, IOSA and ISAGO certified operator.</p>
+        </div>
+
+        <div class="about-pillars">
+          <div class="about-pillar">
+            <div class="about-pillar-icon">&#127775;</div>
+            <h4>Purpose</h4>
+            <p>Positioning Rwanda as Africa's gateway to the world for people, trade and opportunity while showcasing the nation's resilience and hospitality.</p>
+          </div>
+          <div class="about-pillar">
+            <div class="about-pillar-icon">&#128065;</div>
+            <h4>Vision</h4>
+            <p>To be Africa's premier hub airline, powered by sustainable innovation and a culture that puts people first.</p>
+          </div>
+          <div class="about-pillar">
+            <div class="about-pillar-icon">&#127919;</div>
+            <h4>Mission</h4>
+            <p>To deliver safe, reliable and seamless movement of people and goods through agile operations and strategic partnerships, creating sustainable value for our customers and other stakeholders.</p>
+          </div>
+        </div>
+
+        <h3 class="about-values-title">Our Values</h3>
+        <div class="about-values-grid">
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#10084;</span>
+              <h4>People &amp; Empathy</h4>
+            </div>
+            <ul>
+              <li>Put yourself in the other person's shoes and situation.</li>
+              <li>Listen to understand, not just to respond.</li>
+              <li>Practice respect, trust, and openness to create a safe environment.</li>
+              <li>Speak and act with kindness in all interactions.</li>
+              <li>Offer help and support where you can.</li>
+              <li>Show appreciation and recognition for others' contributions.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#129309;</span>
+              <h4>Integrity &amp; Accountability</h4>
+            </div>
+            <ul>
+              <li>Take full ownership of your actions, decisions, and outcomes.</li>
+              <li>Say what you mean, mean what you say, and deliver on your promises.</li>
+              <li>Act with integrity, always doing the right thing for the organization, even when it's difficult.</li>
+              <li>Show up consistently and see your commitments through to the end.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128269;</span>
+              <h4>Transparency</h4>
+            </div>
+            <ul>
+              <li>Build psychological safety where all opinions are valued and can be shared without fear of blame.</li>
+              <li>Communicate clearly, proactively, and on time.</li>
+              <li>Make processes and information accessible, encouraging knowledge transfer.</li>
+              <li>Give and receive productive feedback respectfully and constructively.</li>
+              <li>Be open about career paths, opportunities, and how performance is recognized.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#129504;</span>
+              <h4>Teamwork</h4>
+            </div>
+            <ul>
+              <li>Align and work together towards a common goal.</li>
+              <li>Communicate clearly, proactively, and often.</li>
+              <li>Collaborate openly across all departments, breaking down silos.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128161;</span>
+              <h4>Sustainable Innovation</h4>
+            </div>
+            <ul>
+              <li>Be human-centric.</li>
+              <li>Stay curious and consistently ask "why" to find new ideas.</li>
+              <li>Create a safe environment to collaborate, test boundaries, and take educated risks.</li>
+              <li>Embrace technology and use data to find innovative, solution-focused answers.</li>
+              <li>Challenge the status quo with creative solutions and inspire others by being the change.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128640;</span>
+              <h4>Excellence</h4>
+            </div>
+            <ul>
+              <li>Live the company values with professionalism.</li>
+              <li>Be curious, learn fast, and improve faster.</li>
+              <li>Strive for continuous improvement, prioritizing progress over perfection.</li>
+              <li>Be resilient: embrace change, adapt well to it, and overcome setbacks.</li>
+              <li>Develop and promote talent based on merit and professional skills.</li>
+              <li>Drive motivation and inclusion at all levels.</li>
+              <li>Drive sustainable profitability and growth through our commitment to this excellence.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128737;</span>
+              <h4>Safety &amp; Compliance</h4>
+            </div>
+            <ul>
+              <li>Make safety and security, compliance, and environmental protection a non-negotiable priority in all decisions.</li>
+              <li>Establish and follow strong, clear procedures and processes without fail.</li>
+              <li>Train all staff and communicate standards, risks, and responsibilities clearly and continuously.</li>
+              <li>Understand and manage the internal and external impact of our actions.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CHAT WIDGET ============ -->
   <div class="chat-fab" id="chatFab" onclick="toggleChat()">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -1714,6 +1702,37 @@
     <div class="chat-channels">
       <span>Also available on:</span>
       <a href="#" class="channel-link whatsapp">WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="login-modal-overlay" id="loginModal">
+    <div class="login-modal">
+      <button class="login-modal-close" onclick="toggleLoginModal()">&times;</button>
+      <div class="login-modal-header">
+        <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" class="login-modal-logo"/>
+        <h2>Welcome back</h2>
+        <p>Log in to your RwandAir account</p>
+      </div>
+      <form class="login-modal-form" onsubmit="return false">
+        <div class="login-field">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com"/>
+        </div>
+        <div class="login-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password"/>
+        </div>
+        <a href="#" class="login-forgot">Forgot password?</a>
+        <button type="submit" class="btn-primary login-submit">Log in</button>
+      </form>
+      <div class="login-modal-footer">
+        <p>Don't have an account? <a href="#">Create account</a></p>
+        <div class="login-dreammiles">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Join <strong>DreamMiles</strong> for exclusive rewards and benefits
+        </div>
+      </div>
     </div>
   </div>
 
