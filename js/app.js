@@ -23,6 +23,7 @@ const NLF_DESTINATIONS = [
   { city: 'Bujumbura', code: 'BJM', country: 'Burundi' },
   { city: 'Addis Ababa', code: 'ADD', country: 'Ethiopia' },
   { city: 'Douala', code: 'DLA', country: 'Cameroon' },
+  { city: 'Doha', code: 'DOH', country: 'Qatar' },
   { city: 'Dubai', code: 'DXB', country: 'UAE' },
   { city: 'London', code: 'LHR', country: 'United Kingdom' },
   { city: 'Brussels', code: 'BRU', country: 'Belgium' },
