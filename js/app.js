@@ -3,6 +3,100 @@
    Navigation, Search, Booking Flow, Chat, etc.
    ============================================ */
 
+// ---- ABANDONED BOOKINGS CART ----
+let abandonedBookings = JSON.parse(localStorage.getItem('abandonedBookings') || '[]');
+
+function toggleCartDropdown(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('cartDropdown');
+  dd.classList.toggle('open');
+}
+
+function renderCart() {
+  const body = document.getElementById('cartDropdownBody');
+  const badge = document.getElementById('cartBadge');
+  const count = abandonedBookings.length;
+
+  badge.textContent = count;
+  badge.classList.toggle('hidden', count === 0);
+
+  if (count === 0) {
+    body.innerHTML = '<p class="cart-empty-msg">No saved bookings yet.</p>';
+    return;
+  }
+
+  body.innerHTML = abandonedBookings.map((b, i) => `
+    <div class="cart-item">
+      <div class="cart-item-route">${b.from} &rarr; ${b.to}</div>
+      <div class="cart-item-details">
+        <span>${b.date}</span>
+        <span>${b.passengers} passenger${b.passengers > 1 ? 's' : ''}</span>
+        <span>${b.class}</span>
+      </div>
+      <div class="cart-item-actions">
+        <button class="cart-resume-btn" onclick="resumeBooking(${i})">Resume</button>
+        <button class="cart-remove-btn" onclick="removeFromCart(${i})">Remove</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(booking) {
+  abandonedBookings.push(booking);
+  localStorage.setItem('abandonedBookings', JSON.stringify(abandonedBookings));
+  renderCart();
+}
+
+function removeFromCart(index) {
+  abandonedBookings.splice(index, 1);
+  localStorage.setItem('abandonedBookings', JSON.stringify(abandonedBookings));
+  renderCart();
+}
+
+function resumeBooking(index) {
+  const b = abandonedBookings[index];
+  document.getElementById('cartDropdown').classList.remove('open');
+  navigateTo('home');
+  // Pre-fill search fields if possible
+  const destInput = document.getElementById('nlf-destination');
+  if (destInput && b.to) destInput.value = b.to;
+}
+
+function saveCurrentBookingToCart() {
+  const destInput = document.getElementById('nlf-destination');
+  const depDate = document.getElementById('nlf-depart');
+  const retDate = document.getElementById('nlf-return');
+  const paxEl = document.getElementById('nlf-pax');
+
+  const to = destInput ? destInput.value.trim() : '';
+  if (!to) return; // nothing to save
+
+  const booking = {
+    from: 'Kigali (KGL)',
+    to: to,
+    date: depDate ? depDate.value : '',
+    returnDate: retDate ? retDate.value : '',
+    passengers: paxEl ? parseInt(paxEl.value) || 1 : 1,
+    class: 'Economy',
+    savedAt: new Date().toISOString()
+  };
+  addToCart(booking);
+}
+
+// Close cart dropdown on outside click
+document.addEventListener('click', function(e) {
+  const wrapper = document.getElementById('cartWrapper');
+  const dd = document.getElementById('cartDropdown');
+  if (wrapper && dd && !wrapper.contains(e.target)) {
+    dd.classList.remove('open');
+  }
+});
+
+// Initialize cart on page load
+document.addEventListener('DOMContentLoaded', function() {
+  renderCart();
+});
+
 // ---- DREAMMILES CONFIG ----
 const DREAMMILES_BALANCE = 45000;
 const MILES_PER_DOLLAR = 100;
@@ -42,6 +136,28 @@ const NAV_MAP = {
 };
 
 function navigateTo(pageId) {
+  // Auto-save abandoned booking when leaving results/booking pages
+  const currentPage = document.querySelector('.page.active');
+  if (currentPage) {
+    const currentId = currentPage.id.replace('page-', '');
+    if ((currentId === 'results' || currentId === 'booking') && pageId !== 'results' && pageId !== 'booking') {
+      const from = document.getElementById('resultFrom');
+      const to = document.getElementById('resultTo');
+      if (from && to && to.textContent.trim()) {
+        const dateEl = document.getElementById('resultDate');
+        const booking = {
+          from: from.textContent.trim(),
+          to: to.textContent.trim(),
+          date: dateEl ? dateEl.textContent.split('·')[0].trim() : '',
+          passengers: 1,
+          class: 'Economy',
+          savedAt: new Date().toISOString()
+        };
+        addToCart(booking);
+      }
+    }
+  }
+
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById('page-' + pageId);
   if (target) {
@@ -462,6 +578,58 @@ function selectFlightPrice(flightIdx, fareClass) {
   selectFlight(flightIdx);
 }
 
+function holdFare(flightIdx) {
+  var flights = generateFlights();
+  var f = flights[flightIdx];
+  selectFlight(flightIdx);
+
+  // Show hold confirmation modal
+  var modal = document.getElementById('holdFareModal');
+  if (modal) {
+    document.getElementById('holdFlightInfo').textContent = f.flightNum + ' (' + f.depTime + ' - ' + f.arrTime + ')';
+    document.getElementById('holdPriceLite').textContent = '$' + f.priceLite;
+    document.getElementById('holdPriceClassic').textContent = '$' + f.priceClassic;
+    document.getElementById('holdPriceBusiness').textContent = '$' + f.priceBusiness;
+    modal.classList.remove('hidden');
+  }
+}
+
+function confirmHoldFare() {
+  var modal = document.getElementById('holdFareModal');
+  if (modal) modal.classList.add('hidden');
+
+  // Show success notification
+  var notif = document.createElement('div');
+  notif.className = 'hold-success-notif';
+  notif.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>'
+    + '<div><strong>Fare held for 48 hours!</strong><br>We\'ll send a reminder before it expires.</div>';
+  document.body.appendChild(notif);
+  setTimeout(function() { notif.classList.add('show'); }, 10);
+  setTimeout(function() { notif.classList.remove('show'); setTimeout(function() { notif.remove(); }, 400); }, 4000);
+}
+
+function cancelHoldFare() {
+  var modal = document.getElementById('holdFareModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function holdCurrentFare() {
+  var modal = document.getElementById('holdFareModal');
+  if (!modal) return;
+
+  var flights = generateFlights();
+  // Find selected flight from DOM
+  var selected = document.querySelector('.flight-card.selected');
+  var idx = selected ? parseInt(selected.id.replace('flight-', '')) : 0;
+  var f = flights[idx] || flights[0];
+
+  document.getElementById('holdFlightInfo').textContent = f.flightNum + ' (' + f.depTime + ' - ' + f.arrTime + ')';
+  document.getElementById('holdPriceLite').textContent = '$' + f.priceLite;
+  document.getElementById('holdPriceClassic').textContent = '$' + f.priceClassic;
+  document.getElementById('holdPriceBusiness').textContent = '$' + f.priceBusiness;
+  modal.classList.remove('hidden');
+}
+
 function continueToBooking() {
   navigateTo('booking');
   goToStep(1);
@@ -647,73 +815,712 @@ function processPayment() {
 }
 
 // ---- CHAT WIDGET ----
+
+// -- Conversation State Machine --
+const chatState = {
+  phase: 'idle',
+  data: {
+    from: 'Kigali (KGL)', to: null, departDate: null, returnDate: null,
+    passengers: null, travelClass: null, selectedFlight: null, selectedFare: null,
+    paxTitle: null, paxFirst: null, paxLast: null, paxDob: null,
+    paxNat: null, paxPassport: null, paxEmail: null, paxPhone: null,
+    seatChoice: null, baggageChoice: null, mealChoice: null, paymentMethod: null
+  },
+  history: []
+};
+
+function setChatPhase(p) { chatState.history.push(chatState.phase); chatState.phase = p; }
+function resetChatState() {
+  chatState.phase = 'idle';
+  chatState.data = {
+    from: 'Kigali (KGL)', to: null, departDate: null, returnDate: null,
+    passengers: null, travelClass: null, selectedFlight: null, selectedFare: null,
+    paxTitle: null, paxFirst: null, paxLast: null, paxDob: null,
+    paxNat: null, paxPassport: null, paxEmail: null, paxPhone: null,
+    seatChoice: null, baggageChoice: null, mealChoice: null, paymentMethod: null
+  };
+  chatState.history = [];
+}
+
+// -- Core Chat UI --
 function toggleChat() {
   const win = document.getElementById('chatWindow');
   const fab = document.getElementById('chatFab');
   win.classList.toggle('hidden');
-  // Hide badge when opened
   if (!win.classList.contains('hidden')) {
-    const badge = fab.querySelector('.chat-badge');
+    var badge = fab.querySelector('.chat-badge');
     if (badge) badge.style.display = 'none';
   }
 }
+function openChat() { document.getElementById('chatWindow').classList.remove('hidden'); }
 
-function openChat() {
-  const win = document.getElementById('chatWindow');
-  win.classList.remove('hidden');
-}
-
-function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-
-  addChatMessage(msg, 'user');
-  input.value = '';
-
-  // Remove quick replies after first message
-  const qr = document.querySelector('.chat-quick-replies');
-  if (qr) qr.remove();
-
-  // Simulate bot response
-  setTimeout(() => {
-    const responses = {
-      default: "Thank you for your message. A member of our team will assist you shortly. In the meantime, you can check our FAQ section for quick answers.",
-      booking: "To check your booking status, please provide your booking reference (e.g., WB-2025-NBO-78421) and I'll look it up for you.",
-      baggage: "Economy Lite includes 7 kg hand baggage. Economy Classic includes 7 kg hand baggage plus 1 x 23 kg checked bag. Business Class includes 2 x 32 kg checked bags. Would you like to add extra baggage?",
-      refund: "I can help with your refund request. Refund eligibility depends on your fare type. Economy Classic and Business fares may be eligible. Please share your booking reference and I'll check your options.",
-      checkin: "Online check-in opens 24 hours before departure and closes 3 hours before. You'll need your booking reference and passport. Would you like me to guide you through it?"
-    };
-
-    let response = responses.default;
-    const lower = msg.toLowerCase();
-    if (lower.includes('booking') || lower.includes('status')) response = responses.booking;
-    if (lower.includes('bag') || lower.includes('luggage')) response = responses.baggage;
-    if (lower.includes('refund') || lower.includes('cancel')) response = responses.refund;
-    if (lower.includes('check') && lower.includes('in')) response = responses.checkin;
-
-    addChatMessage(response, 'bot');
-  }, 1000);
-}
-
-function chatQuickReply(text) {
-  document.getElementById('chatInput').value = text;
-  sendChat();
+function escapeHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 function addChatMessage(text, sender) {
-  const body = document.getElementById('chatBody');
-  const div = document.createElement('div');
+  removeTypingIndicator();
+  var body = document.getElementById('chatBody');
+  var div = document.createElement('div');
   div.className = 'chat-msg ' + sender;
   div.innerHTML = '<div class="chat-bubble">' + escapeHtml(text) + '</div>';
   body.appendChild(div);
   body.scrollTop = body.scrollHeight;
 }
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+function addChatHtml(html, sender) {
+  removeTypingIndicator();
+  var body = document.getElementById('chatBody');
+  var div = document.createElement('div');
+  div.className = 'chat-msg ' + sender;
+  var bubble = document.createElement('div');
+  bubble.className = 'chat-bubble chat-bubble--rich';
+  bubble.innerHTML = html;
+  div.appendChild(bubble);
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTypingIndicator() {
+  removeTypingIndicator();
+  var body = document.getElementById('chatBody');
+  var div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.id = 'chatTyping';
+  div.innerHTML = '<div class="chat-bubble"><div class="chat-typing"><span></span><span></span><span></span></div></div>';
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+function removeTypingIndicator() {
+  var el = document.getElementById('chatTyping');
+  if (el) el.remove();
+}
+
+// -- Dynamic Quick Replies --
+function showQuickReplies(options) {
+  removeQuickReplies();
+  var body = document.getElementById('chatBody');
+  var container = document.createElement('div');
+  container.className = 'chat-quick-replies';
+  container.id = 'chatQuickReplies';
+  options.forEach(function(text) {
+    var btn = document.createElement('button');
+    btn.textContent = text;
+    btn.onclick = function() { chatQuickReply(text); };
+    container.appendChild(btn);
+  });
+  body.appendChild(container);
+  body.scrollTop = body.scrollHeight;
+}
+function removeQuickReplies() {
+  var els = document.querySelectorAll('.chat-quick-replies');
+  els.forEach(function(el) { el.remove(); });
+}
+
+// -- Parsing Helpers --
+function matchDestination(input) {
+  var q = input.toLowerCase().trim();
+  var match = NLF_DESTINATIONS.find(function(d) { return d.city.toLowerCase() === q; });
+  if (match) return match;
+  match = NLF_DESTINATIONS.find(function(d) { return d.code.toLowerCase() === q; });
+  if (match) return match;
+  match = NLF_DESTINATIONS.find(function(d) { return d.city.toLowerCase().startsWith(q); });
+  if (match) return match;
+  match = NLF_DESTINATIONS.find(function(d) { return d.country.toLowerCase().includes(q); });
+  if (match) return match;
+  return null;
+}
+
+function parseChatDate(input) {
+  var lower = input.toLowerCase().trim();
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (lower === 'today') return new Date(today);
+  if (lower === 'tomorrow') { var d = new Date(today); d.setDate(d.getDate() + 1); return d; }
+  if (lower === 'next week' || lower === 'in 1 week' || lower === 'in a week') { var d2 = new Date(today); d2.setDate(d2.getDate() + 7); return d2; }
+  if (lower === 'in 2 weeks' || lower === 'in two weeks') { var d3 = new Date(today); d3.setDate(d3.getDate() + 14); return d3; }
+  var dayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  var nextMatch = lower.match(/next\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/);
+  if (nextMatch) {
+    var targetDay = dayNames.indexOf(nextMatch[1]);
+    var nd = new Date(today);
+    var diff = (targetDay + 7 - nd.getDay()) % 7 || 7;
+    nd.setDate(nd.getDate() + diff);
+    return nd;
+  }
+  // Fallback to existing parseNLFDate
+  if (typeof parseNLFDate === 'function') return parseNLFDate(input);
+  return null;
+}
+
+function parseFlightSelection(lower) {
+  var flights = generateFlights();
+  for (var i = 0; i < flights.length; i++) {
+    if (lower.includes(flights[i].flightNum.toLowerCase())) return i;
+  }
+  if (lower.includes('1') || lower.includes('first') || lower.includes('cheapest')) return 0;
+  if (lower.includes('2') || lower.includes('second')) return 1;
+  if (lower.includes('3') || lower.includes('third')) return 2;
+  if (lower.includes('4') || lower.includes('fourth') || lower.includes('last') || lower.includes('evening')) return 3;
+  return null;
+}
+
+// -- Intent Detection --
+function detectBookingIntent(msg) {
+  var lower = msg.toLowerCase();
+  var bookingWords = ['book', 'flight', 'fly', 'travel', 'trip', 'ticket', 'affordable', 'cheap'];
+  var isBooking = bookingWords.some(function(w) { return lower.includes(w); });
+
+  // Try to extract destination from phrases like "fly to Nairobi" or "book a flight to Lagos"
+  var extracted = {};
+  var toMatch = lower.match(/(?:to|for)\s+([a-z\s]+?)(?:\s+on|\s+from|\s+in|\s*$)/);
+  if (toMatch) {
+    var dest = matchDestination(toMatch[1].trim());
+    if (dest) { extracted.to = dest; isBooking = true; }
+  }
+  // Also check if the whole message is a city name
+  if (!extracted.to) {
+    var directDest = matchDestination(lower.replace(/^(i want to |i'd like to |book |fly |go )/, '').trim());
+    if (directDest && isBooking) extracted.to = directDest;
+  }
+  return { isBooking: isBooking, extractedData: extracted };
+}
+
+function handleGeneralQuery(msg) {
+  var lower = msg.toLowerCase();
+  if (lower.includes('bag') || lower.includes('luggage')) {
+    addChatMessage("Economy Lite includes 7 kg hand baggage. Economy Classic adds 1 x 23 kg checked bag. Business Class includes 2 x 32 kg checked bags.", 'bot');
+    showQuickReplies(['Book a flight', 'More help']);
+  } else if (lower.includes('refund') || lower.includes('cancel')) {
+    addChatMessage("Refund eligibility depends on your fare type. Economy Classic and Business fares may be eligible. Please share your booking reference and I'll check.", 'bot');
+    showQuickReplies(['Book a flight', 'More help']);
+  } else if (lower.includes('check') && lower.includes('in')) {
+    addChatMessage("Online check-in opens 24 hours before departure and closes 3 hours before. You'll need your booking reference and passport.", 'bot');
+    showQuickReplies(['Book a flight', 'More help']);
+  } else if (lower.includes('booking') || lower.includes('status') || lower.includes('reference')) {
+    addChatMessage("To check your booking status, please provide your booking reference (e.g., WB-2025-NBO-78421).", 'bot');
+    showQuickReplies(['Book a flight', 'More help']);
+  } else if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+    addChatMessage("Hello! I can help you search and book affordable flights. Want to get started?", 'bot');
+    showQuickReplies(['Book a flight', 'Check booking status', 'Baggage info']);
+  } else {
+    addChatMessage("I can help you book flights, check booking status, baggage info, and more. What would you like to do?", 'bot');
+    showQuickReplies(['Book a flight', 'Check booking status', 'Baggage info', 'Check-in help']);
+  }
+}
+
+// -- Start Booking Flow --
+function startBookingFlow(extracted) {
+  if (extracted.to) {
+    chatState.data.to = extracted.to.city + ' (' + extracted.to.code + ')';
+    addChatMessage(extracted.to.city + ', ' + extracted.to.country + ' — great choice! When would you like to depart?', 'bot');
+    setChatPhase('ask_depart_date');
+    showQuickReplies(['Tomorrow', 'Next week', 'In 2 weeks']);
+  } else {
+    addChatMessage("Let's find you a great flight! Where would you like to fly to?", 'bot');
+    setChatPhase('ask_destination');
+    showQuickReplies(['Nairobi', 'Lagos', 'Dubai', 'London', 'Johannesburg']);
+  }
+}
+
+// -- Flight Cards in Chat --
+function addChatFlightCards(flights) {
+  var html = '<div class="chat-flights">';
+  flights.forEach(function(f, i) {
+    var cheapest = Math.min(f.priceLite, f.priceClassic, f.priceBusiness);
+    html += '<div class="chat-flight-card" onclick="chatSelectFlight(' + i + ')">'
+      + '<div class="chat-flight-top">'
+      + '<span class="chat-flight-time">' + f.depTime + ' - ' + f.arrTime + '</span>'
+      + '<span class="chat-flight-price">from $' + cheapest + '</span>'
+      + '</div>'
+      + '<div class="chat-flight-detail">'
+      + f.flightNum + ' &middot; ' + f.duration + ' &middot; ' + f.stops
+      + (f.seatsLeft <= 5 ? ' &middot; <span class="chat-seats-warn">' + f.seatsLeft + ' seats left</span>' : '')
+      + '</div></div>';
+  });
+  html += '</div>';
+  addChatHtml(html, 'bot');
+}
+
+function chatSelectFlight(index) {
+  var flights = generateFlights();
+  var f = flights[index];
+  chatState.data.selectedFlight = index;
+  addChatMessage('Selected ' + f.flightNum + ' (' + f.depTime + ' - ' + f.arrTime + ')', 'user');
+
+  var html = '<div class="chat-fares"><p style="margin:0 0 8px;font-weight:600">Choose your fare:</p>';
+  html += '<div class="chat-fare-option" onclick="chatSelectFare(' + index + ',\'lite\')">'
+    + '<strong>Lite</strong> — $' + f.priceLite + '<br><small>Hand bag only, non-refundable</small></div>';
+  html += '<div class="chat-fare-option" onclick="chatSelectFare(' + index + ',\'economy\')">'
+    + '<strong>Economy</strong> — $' + f.priceClassic + '<br><small>23 kg bag + seat selection</small></div>';
+  html += '<div class="chat-fare-option" onclick="chatSelectFare(' + index + ',\'business\')">'
+    + '<strong>Business</strong> — $' + f.priceBusiness + '<br><small>2 bags + lounge + full flexibility</small></div>';
+  html += '</div>';
+  addChatHtml(html, 'bot');
+  setChatPhase('ask_fare');
+}
+
+function chatSelectFare(flightIdx, fare) {
+  var flights = generateFlights();
+  var f = flights[flightIdx];
+  var prices = { lite: f.priceLite, economy: f.priceClassic, business: f.priceBusiness };
+  chatState.data.selectedFare = fare;
+  addChatMessage('Selected ' + fare.charAt(0).toUpperCase() + fare.slice(1) + ' — $' + prices[fare], 'user');
+
+  // Show confirmation summary
+  var d = chatState.data;
+  var html = '<div class="chat-summary">'
+    + '<strong>Booking Summary</strong><br>'
+    + d.from + ' &rarr; ' + d.to + '<br>'
+    + 'Flight: ' + f.flightNum + ' (' + f.depTime + ' - ' + f.arrTime + ')<br>'
+    + 'Date: ' + formatDateDisplay(d.departDate) + '<br>'
+    + 'Fare: ' + fare.charAt(0).toUpperCase() + fare.slice(1) + ' — $' + prices[fare] + '<br>'
+    + 'Passengers: ' + (d.passengers || '1 adult')
+    + '</div>';
+  addChatHtml(html, 'bot');
+  addChatMessage('Looks good? Confirm to continue with passenger details.', 'bot');
+  setChatPhase('confirm_flight');
+  showQuickReplies(['Confirm', 'Choose different flight', 'Cancel']);
+}
+
+// -- Search Summary --
+function showSearchSummary() {
+  var d = chatState.data;
+  var html = '<div class="chat-summary">'
+    + '<strong>Search Summary</strong><br>'
+    + 'From: ' + (d.from || 'Kigali (KGL)') + '<br>'
+    + 'To: ' + d.to + '<br>'
+    + 'Depart: ' + formatDateDisplay(d.departDate) + '<br>'
+    + (d.returnDate ? 'Return: ' + formatDateDisplay(d.returnDate) + '<br>' : 'One-way<br>')
+    + 'Passengers: ' + (d.passengers || '1 adult') + '<br>'
+    + 'Class: ' + (d.travelClass || 'Economy')
+    + '</div>';
+  addChatHtml(html, 'bot');
+  addChatMessage('Ready to search? Or would you like to change anything?', 'bot');
+}
+
+// -- Booking Summary --
+function showBookingSummary() {
+  var d = chatState.data;
+  var flights = generateFlights();
+  var f = flights[d.selectedFlight] || flights[0];
+  var prices = { lite: f.priceLite, economy: f.priceClassic, business: f.priceBusiness };
+  var fare = d.selectedFare || 'economy';
+
+  var html = '<div class="chat-summary">'
+    + '<strong>Final Booking Summary</strong><br>'
+    + d.from + ' &rarr; ' + d.to + '<br>'
+    + 'Flight: ' + f.flightNum + ' on ' + formatDateDisplay(d.departDate) + '<br>'
+    + 'Passenger: ' + (d.paxTitle || '') + ' ' + (d.paxFirst || '') + ' ' + (d.paxLast || '') + '<br>'
+    + 'Extras: ' + (d.baggageChoice === '30' ? '+1 bag' : d.baggageChoice === '55' ? '+2 bags' : 'No extra bags') + '<br>'
+    + 'Meal: ' + (d.mealChoice || 'Standard') + '<br>'
+    + 'Payment: ' + (d.paymentMethod || 'Mobile Money') + '<br>'
+    + '<strong>Total: $' + prices[fare] + '</strong>'
+    + '</div>';
+  addChatHtml(html, 'bot');
+}
+
+// -- Form Bridge Functions --
+function executeChatSearch() {
+  document.getElementById('searchFrom').value = chatState.data.from || 'Kigali (KGL)';
+  document.getElementById('searchTo').value = chatState.data.to;
+  document.getElementById('searchDepart').value = chatState.data.departDate;
+  if (chatState.data.returnDate) document.getElementById('searchReturn').value = chatState.data.returnDate;
+  document.getElementById('searchPax').value = chatState.data.passengers || '1 adult';
+  document.getElementById('searchClass').value = chatState.data.travelClass || 'Economy';
+
+  var flights = generateFlights();
+  addChatMessage('I found ' + flights.length + ' flights for you. Here are your options, sorted by price:', 'bot');
+
+  // Sort by cheapest
+  var sorted = flights.map(function(f, i) { f._idx = i; return f; })
+    .sort(function(a, b) { return a.priceLite - b.priceLite; });
+  addChatFlightCards(sorted);
+  setChatPhase('show_results');
+}
+
+function executeChatFlightSelection() {
+  var from = chatState.data.from || 'Kigali (KGL)';
+  var to = chatState.data.to;
+  document.getElementById('resultFrom').textContent = from;
+  document.getElementById('resultTo').textContent = to;
+  document.getElementById('resultDate').textContent =
+    formatDateDisplay(chatState.data.departDate) + ' \u00b7 1 Adult \u00b7 Round Trip';
+  renderFlightResults(from, to);
+  selectFlightPrice(chatState.data.selectedFlight, chatState.data.selectedFare);
+}
+
+function fillPassengerForm() {
+  var d = chatState.data;
+  var el;
+  el = document.getElementById('paxTitle'); if (el && d.paxTitle) el.value = d.paxTitle;
+  el = document.getElementById('paxFirst'); if (el && d.paxFirst) el.value = d.paxFirst;
+  el = document.getElementById('paxLast'); if (el && d.paxLast) el.value = d.paxLast;
+  el = document.getElementById('paxDob'); if (el && d.paxDob) el.value = d.paxDob;
+  el = document.getElementById('paxNat'); if (el && d.paxNat) el.value = d.paxNat;
+  el = document.getElementById('paxPassport'); if (el && d.paxPassport) el.value = d.paxPassport;
+  el = document.getElementById('paxEmail'); if (el && d.paxEmail) el.value = d.paxEmail;
+  el = document.getElementById('paxPhone'); if (el && d.paxPhone) el.value = d.paxPhone;
+}
+
+function fillExtrasAndPayment() {
+  var d = chatState.data;
+  var bagVal = d.baggageChoice || '0';
+  var bagRadio = document.querySelector('input[name="baggage"][value="' + bagVal + '"]');
+  if (bagRadio) bagRadio.checked = true;
+
+  var payVal = d.paymentMethod || 'mobile';
+  var payRadio = document.querySelector('input[name="payment"][value="' + payVal + '"]');
+  if (payRadio) {
+    payRadio.checked = true;
+    payRadio.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  document.getElementById('termsCheck').checked = true;
+}
+
+function executeFullBooking() {
+  addChatMessage("Setting up your booking... one moment!", 'bot');
+  showTypingIndicator();
+
+  // 1. Sync search & results
+  executeChatFlightSelection();
+  continueToBooking();
+
+  setTimeout(function() {
+    // 2. Fill passenger form
+    fillPassengerForm();
+    goToStep(2);
+
+    setTimeout(function() {
+      // 3. Fill extras & go to payment
+      goToStep(3);
+      setTimeout(function() {
+        fillExtrasAndPayment();
+        removeTypingIndicator();
+        addChatMessage("Everything is ready! Review the payment details on the page and click 'Complete Booking' when you're set.", 'bot');
+        setChatPhase('complete');
+        showQuickReplies(['Book another flight', 'Help']);
+      }, 300);
+    }, 300);
+  }, 400);
+}
+
+// -- Main Conversational Engine --
+function handleBookingInput(msg) {
+  var lower = msg.toLowerCase().trim();
+
+  // Universal commands
+  if (lower === 'cancel' || lower === 'start over' || lower === 'quit') {
+    resetChatState();
+    addChatMessage("No problem! Booking cancelled. How else can I help?", 'bot');
+    showQuickReplies(['Book a flight', 'Check booking status', 'Baggage info', 'Help']);
+    return;
+  }
+  if (lower === 'back' || lower === 'go back') {
+    if (chatState.history.length > 0) {
+      var prev = chatState.history.pop();
+      chatState.phase = prev;
+      addChatMessage("Going back. Let me ask that again.", 'bot');
+      promptForPhase(prev);
+    } else {
+      addChatMessage("You're at the start. Type 'book a flight' to begin.", 'bot');
+    }
+    return;
+  }
+
+  switch (chatState.phase) {
+
+    case 'ask_destination':
+      var destInput = lower.replace(/^(i want to |i'd like to |fly to |go to |travel to |heading to )/, '');
+      var dest = matchDestination(destInput);
+      if (!dest) {
+        addChatMessage("I couldn't find that in our network. We fly to " + NLF_DESTINATIONS.length + " destinations. Try a city like Nairobi, Lagos, or Dubai.", 'bot');
+        showQuickReplies(['Nairobi', 'Lagos', 'Dubai', 'London', 'Johannesburg', 'Addis Ababa']);
+        return;
+      }
+      chatState.data.to = dest.city + ' (' + dest.code + ')';
+      addChatMessage(dest.city + ', ' + dest.country + ' — great choice! When would you like to depart?', 'bot');
+      setChatPhase('ask_depart_date');
+      showQuickReplies(['Tomorrow', 'Next week', 'In 2 weeks']);
+      break;
+
+    case 'ask_depart_date':
+      var depDate = parseChatDate(lower);
+      if (!depDate) {
+        addChatMessage("I couldn't understand that date. Try 'next Friday', '24 Mar', or 'in 2 weeks'.", 'bot');
+        return;
+      }
+      var now = new Date(); now.setHours(0,0,0,0);
+      if (depDate < now) {
+        addChatMessage("That date is in the past. Please choose a future date.", 'bot');
+        return;
+      }
+      chatState.data.departDate = formatDate(depDate);
+      addChatMessage('Departing on ' + formatDateDisplay(chatState.data.departDate) + '. Would you like a return flight?', 'bot');
+      setChatPhase('ask_return_date');
+      showQuickReplies(['In 1 week', 'In 2 weeks', 'One-way only']);
+      break;
+
+    case 'ask_return_date':
+      if (lower.includes('one-way') || lower.includes('one way') || lower === 'no' || lower === 'skip') {
+        chatState.data.returnDate = null;
+        addChatMessage("One-way trip. How many passengers?", 'bot');
+      } else {
+        var retDate = parseChatDate(lower);
+        if (!retDate) {
+          addChatMessage("Couldn't parse that date. Try 'in 1 week' or type 'one-way'.", 'bot');
+          return;
+        }
+        chatState.data.returnDate = formatDate(retDate);
+        addChatMessage('Returning on ' + formatDateDisplay(chatState.data.returnDate) + '. How many passengers?', 'bot');
+      }
+      setChatPhase('ask_passengers');
+      showQuickReplies(['1 adult', '2 adults', '2 adults, 1 child', '1 adult, 1 child']);
+      break;
+
+    case 'ask_passengers':
+      var paxMatch = NLF_PASSENGERS.find(function(p) { return lower.includes(p.toLowerCase()); });
+      chatState.data.passengers = paxMatch || msg;
+      addChatMessage(chatState.data.passengers + '. Economy or Business class?', 'bot');
+      setChatPhase('ask_class');
+      showQuickReplies(['Economy', 'Business']);
+      break;
+
+    case 'ask_class':
+      chatState.data.travelClass = lower.includes('business') ? 'Business' : 'Economy';
+      showSearchSummary();
+      setChatPhase('confirm_search');
+      showQuickReplies(['Search flights', 'Change destination', 'Change date', 'Cancel']);
+      break;
+
+    case 'confirm_search':
+      if (lower.includes('search') || lower.includes('yes') || lower.includes('find') || lower.includes('go')) {
+        executeChatSearch();
+      } else if (lower.includes('destination') || lower.includes('city') || lower.includes('where')) {
+        chatState.phase = 'ask_destination';
+        addChatMessage("Where would you like to fly to?", 'bot');
+        showQuickReplies(['Nairobi', 'Lagos', 'Dubai', 'London', 'Johannesburg']);
+      } else if (lower.includes('date') || lower.includes('when')) {
+        chatState.phase = 'ask_depart_date';
+        addChatMessage("When would you like to depart?", 'bot');
+        showQuickReplies(['Tomorrow', 'Next week', 'In 2 weeks']);
+      } else {
+        addChatMessage("Say 'search' to find flights, or tell me what you'd like to change.", 'bot');
+      }
+      break;
+
+    case 'show_results':
+      var flightNum = parseFlightSelection(lower);
+      if (flightNum !== null) {
+        chatSelectFlight(flightNum);
+      } else {
+        addChatMessage("Tap a flight above to select it, or type the flight number (e.g., 'WB 400').", 'bot');
+      }
+      break;
+
+    case 'ask_fare':
+      if (lower.includes('lite') || lower.includes('cheapest')) chatSelectFare(chatState.data.selectedFlight, 'lite');
+      else if (lower.includes('business')) chatSelectFare(chatState.data.selectedFlight, 'business');
+      else if (lower.includes('economy') || lower.includes('classic') || lower.includes('standard')) chatSelectFare(chatState.data.selectedFlight, 'economy');
+      else addChatMessage("Please choose: Lite, Economy, or Business.", 'bot');
+      break;
+
+    case 'confirm_flight':
+      if (lower.includes('confirm') || lower.includes('yes') || lower.includes('continue') || lower.includes('ok')) {
+        addChatMessage("Let's get your passenger details. What is your title?", 'bot');
+        setChatPhase('ask_pax_title');
+        showQuickReplies(['Mr', 'Mrs', 'Ms', 'Dr']);
+      } else if (lower.includes('change') || lower.includes('different') || lower.includes('back')) {
+        setChatPhase('show_results');
+        addChatMessage("Here are the flights again:", 'bot');
+        addChatFlightCards(generateFlights());
+      } else {
+        addChatMessage("Say 'confirm' to proceed or 'change' to pick a different flight.", 'bot');
+      }
+      break;
+
+    // -- Passenger Details --
+    case 'ask_pax_title':
+      var titles = ['mr', 'mrs', 'ms', 'dr'];
+      var titleMatch = titles.find(function(t) { return lower.includes(t); });
+      chatState.data.paxTitle = titleMatch ? titleMatch.charAt(0).toUpperCase() + titleMatch.slice(1) : msg;
+      addChatMessage("First name? (as on passport)", 'bot');
+      setChatPhase('ask_pax_first');
+      break;
+
+    case 'ask_pax_first':
+      if (msg.length < 2) { addChatMessage("Name must be at least 2 characters.", 'bot'); return; }
+      chatState.data.paxFirst = msg;
+      addChatMessage("Last name?", 'bot');
+      setChatPhase('ask_pax_last');
+      break;
+
+    case 'ask_pax_last':
+      if (msg.length < 2) { addChatMessage("Name must be at least 2 characters.", 'bot'); return; }
+      chatState.data.paxLast = msg;
+      addChatMessage("Date of birth? (e.g., 15 Jan 1990)", 'bot');
+      setChatPhase('ask_pax_dob');
+      break;
+
+    case 'ask_pax_dob':
+      var dob = parseChatDate(lower);
+      if (!dob) { addChatMessage("Couldn't parse that. Try '15 Jan 1990' or '1990-01-15'.", 'bot'); return; }
+      chatState.data.paxDob = formatDate(dob);
+      addChatMessage("Nationality?", 'bot');
+      setChatPhase('ask_pax_nationality');
+      showQuickReplies(['Rwanda', 'Kenya', 'Uganda', 'Nigeria', 'South Africa']);
+      break;
+
+    case 'ask_pax_nationality':
+      chatState.data.paxNat = msg;
+      addChatMessage("Passport number? (e.g., AB1234567)", 'bot');
+      setChatPhase('ask_pax_passport');
+      break;
+
+    case 'ask_pax_passport':
+      if (msg.length < 5) { addChatMessage("That doesn't look valid. Please try again.", 'bot'); return; }
+      chatState.data.paxPassport = msg;
+      addChatMessage("Email address?", 'bot');
+      setChatPhase('ask_pax_email');
+      break;
+
+    case 'ask_pax_email':
+      if (!msg.includes('@')) { addChatMessage("Please enter a valid email address.", 'bot'); return; }
+      chatState.data.paxEmail = msg;
+      addChatMessage("Phone number? (e.g., +250 7XX XXX XXX)", 'bot');
+      setChatPhase('ask_pax_phone');
+      break;
+
+    case 'ask_pax_phone':
+      chatState.data.paxPhone = msg;
+      addChatMessage("Would you like extra baggage? Your fare includes hand baggage.", 'bot');
+      setChatPhase('ask_baggage');
+      showQuickReplies(['No extra', '+1 bag ($30)', '+2 bags ($55)']);
+      break;
+
+    // -- Extras --
+    case 'ask_baggage':
+      if (lower.includes('no') || lower.includes('skip') || lower.includes('none')) chatState.data.baggageChoice = '0';
+      else if (lower.includes('2') || lower.includes('55')) chatState.data.baggageChoice = '55';
+      else if (lower.includes('1') || lower.includes('30')) chatState.data.baggageChoice = '30';
+      else chatState.data.baggageChoice = '0';
+      addChatMessage("Meal preference?", 'bot');
+      setChatPhase('ask_meal');
+      showQuickReplies(['Standard', 'Vegetarian', 'Halal', 'Vegan']);
+      break;
+
+    case 'ask_meal':
+      if (lower.includes('veg')) chatState.data.mealChoice = 'vegetarian';
+      else if (lower.includes('halal')) chatState.data.mealChoice = 'halal';
+      else if (lower.includes('vegan')) chatState.data.mealChoice = 'vegan';
+      else chatState.data.mealChoice = 'standard';
+      addChatMessage("How would you like to pay?", 'bot');
+      setChatPhase('ask_payment');
+      showQuickReplies(['Mobile Money', 'Credit Card', 'Bank Transfer']);
+      break;
+
+    case 'ask_payment':
+      if (lower.includes('mobile') || lower.includes('mtn') || lower.includes('airtel') || lower.includes('momo')) chatState.data.paymentMethod = 'mobile';
+      else if (lower.includes('card') || lower.includes('visa') || lower.includes('credit') || lower.includes('debit')) chatState.data.paymentMethod = 'card';
+      else if (lower.includes('bank') || lower.includes('transfer')) chatState.data.paymentMethod = 'bank';
+      else if (lower.includes('mile')) chatState.data.paymentMethod = 'miles';
+      else chatState.data.paymentMethod = 'mobile';
+      showBookingSummary();
+      addChatMessage("Ready to complete your booking?", 'bot');
+      setChatPhase('confirm_booking');
+      showQuickReplies(['Confirm and pay', 'Review details', 'Cancel']);
+      break;
+
+    case 'confirm_booking':
+      if (lower.includes('confirm') || lower.includes('pay') || lower.includes('yes') || lower.includes('complete')) {
+        executeFullBooking();
+      } else if (lower.includes('review')) {
+        showBookingSummary();
+      } else {
+        addChatMessage("Say 'confirm' to proceed to payment, or 'cancel' to start over.", 'bot');
+      }
+      break;
+
+    case 'complete':
+      if (lower.includes('book') || lower.includes('another') || lower.includes('new')) {
+        resetChatState();
+        startBookingFlow({});
+      } else {
+        handleGeneralQuery(msg);
+        resetChatState();
+      }
+      break;
+
+    default:
+      handleGeneralQuery(msg);
+      break;
+  }
+}
+
+// -- Phase Re-prompt (for back navigation) --
+function promptForPhase(phase) {
+  switch (phase) {
+    case 'idle':
+      showQuickReplies(['Book a flight', 'Check booking status', 'Baggage info', 'Help']);
+      break;
+    case 'ask_destination':
+      addChatMessage("Where would you like to fly to?", 'bot');
+      showQuickReplies(['Nairobi', 'Lagos', 'Dubai', 'London', 'Johannesburg']);
+      break;
+    case 'ask_depart_date':
+      addChatMessage("When would you like to depart?", 'bot');
+      showQuickReplies(['Tomorrow', 'Next week', 'In 2 weeks']);
+      break;
+    case 'ask_return_date':
+      addChatMessage("Would you like a return flight? When?", 'bot');
+      showQuickReplies(['In 1 week', 'In 2 weeks', 'One-way only']);
+      break;
+    case 'ask_passengers':
+      addChatMessage("How many passengers?", 'bot');
+      showQuickReplies(['1 adult', '2 adults', '2 adults, 1 child']);
+      break;
+    case 'ask_class':
+      addChatMessage("Economy or Business?", 'bot');
+      showQuickReplies(['Economy', 'Business']);
+      break;
+    default:
+      addChatMessage("Let's continue. What would you like to do?", 'bot');
+      showQuickReplies(['Book a flight', 'Cancel']);
+      break;
+  }
+}
+
+// -- Main Send Function (Intent Router) --
+function sendChat() {
+  var input = document.getElementById('chatInput');
+  var msg = input.value.trim();
+  if (!msg) return;
+
+  addChatMessage(msg, 'user');
+  input.value = '';
+  removeQuickReplies();
+
+  showTypingIndicator();
+  setTimeout(function() {
+    removeTypingIndicator();
+    if (chatState.phase !== 'idle') {
+      handleBookingInput(msg);
+    } else {
+      var intent = detectBookingIntent(msg);
+      if (intent.isBooking) {
+        startBookingFlow(intent.extractedData);
+      } else {
+        handleGeneralQuery(msg);
+      }
+    }
+  }, 700);
+}
+
+function chatQuickReply(text) {
+  document.getElementById('chatInput').value = text;
+  sendChat();
 }
 
 // ---- STICKY TOPBAR SHADOW ----
