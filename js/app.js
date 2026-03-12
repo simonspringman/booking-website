@@ -38,7 +38,7 @@ const MONTH_FULL = ['january','february','march','april','may','june','july','au
 // ---- PAGE NAVIGATION ----
 const NAV_MAP = {
   home: 'Book', destinations: 'Destinations',
-  travelinfo: 'Travel Info', loyalty: 'Loyalty', help: 'Help'
+  holidays: 'Holidays', loyalty: 'Loyalty', help: 'Help'
 };
 
 function navigateTo(pageId) {
@@ -144,10 +144,15 @@ function searchFlights() {
   }
 
   // Update results page
+  const returnVal = document.getElementById('searchReturn').value;
+  const tripType = returnVal ? 'Round Trip' : 'One Way';
+  const dateStr = returnVal
+    ? formatDateDisplay(depart) + ' \u2013 ' + formatDateDisplay(returnVal)
+    : formatDateDisplay(depart);
   document.getElementById('resultFrom').textContent = from;
   document.getElementById('resultTo').textContent = to || 'Nairobi (NBO)';
   document.getElementById('resultDate').textContent =
-    formatDateDisplay(depart) + ' \u00b7 1 Adult \u00b7 Round Trip';
+    dateStr + ' \u00b7 1 Adult \u00b7 ' + tripType;
 
   renderFlightResults(from, to);
   navigateTo('results');
@@ -341,99 +346,148 @@ function filterFlights() {
   });
 }
 
+function renderLegHtml(f) {
+  return `
+    <div class="flight-bundle-leg">
+      <div class="flight-time">
+        <div class="time">${f.depTime}</div>
+        <div class="code">${f.depCode}</div>
+      </div>
+      <div class="flight-route-line">
+        <div class="duration">${f.duration}</div>
+        <div class="line"></div>
+        <div class="stops">${f.stops}</div>
+      </div>
+      <div class="flight-time">
+        <div class="time">${f.arrTime}</div>
+        <div class="code">${f.arrCode}</div>
+      </div>
+      <div class="flight-meta">
+        <span class="flight-num">${f.flightNum}</span>
+        <span>${f.aircraft}</span>
+      </div>
+    </div>`;
+}
+
 function renderFlightResults(from, to) {
   const container = document.getElementById('flightResults');
-  const flights = generateFlights();
   const departDate = document.getElementById('searchDepart').value;
+  const returnDate = document.getElementById('searchReturn').value;
+  const isRoundTrip = !!returnDate;
 
-  container.innerHTML = renderPriceBand(departDate) +
-    renderFlightFilters() +
-    '<h3 style="margin-bottom:4px">Outbound Flights</h3>' +
-    '<p style="font-size:14px;color:#64748b;margin-bottom:16px">Select your preferred departure flight</p>';
+  container.innerHTML = renderPriceBand(departDate) + renderFlightFilters();
 
-  flights.forEach((f, i) => {
-    const seatsHtml = f.seatsLeft <= 5
-      ? '<span class="flight-seats-left">' + f.seatsLeft + ' seats left at this price</span>'
-      : '';
+  if (isRoundTrip) {
+    // ---- BUNDLED ROUND-TRIP CARDS ----
+    const bundles = generateBundles();
+    const departLabel = formatDateDisplay(departDate);
+    const returnLabel = formatDateDisplay(returnDate);
+
+    container.innerHTML += '<h3 style="margin-bottom:4px">Round-Trip Flights</h3>' +
+      '<p style="font-size:14px;color:#64748b;margin-bottom:16px">Each option includes your outbound and return flights</p>';
+
+    bundles.forEach((b, i) => {
+      const seatsHtml = b.seatsLeft <= 5
+        ? `<span class="flight-seats-left">${b.seatsLeft} seats left at this price</span>`
+        : '';
+
+      container.innerHTML += `
+        <div class="flight-bundle" id="bundle-${i}" onclick="selectBundle(${i})">
+          <div class="flight-bundle-legs">
+            <div class="flight-bundle-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              Outbound &middot; ${departLabel}
+            </div>
+            ${renderLegHtml(b.outbound)}
+            <div class="flight-bundle-divider"></div>
+            <div class="flight-bundle-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Return &middot; ${returnLabel}
+            </div>
+            ${renderLegHtml(b.inbound)}
+          </div>
+          <div class="flight-bundle-footer">
+            <div class="flight-bundle-prices">
+              <div class="flight-price-opt" onclick="event.stopPropagation();selectBundlePrice(${i},'lite')">
+                <div class="price-class">Lite</div>
+                <div class="price-amount">$${b.priceLite}</div>
+                <div class="price-note">round trip</div>
+              </div>
+              <div class="flight-price-opt" onclick="event.stopPropagation();selectBundlePrice(${i},'economy')">
+                <div class="price-class">Economy</div>
+                <div class="price-amount">$${b.priceClassic}</div>
+                <div class="price-note">round trip</div>
+              </div>
+              <div class="flight-price-opt" onclick="event.stopPropagation();selectBundlePrice(${i},'business')">
+                <div class="price-class">Business</div>
+                <div class="price-amount">$${b.priceBusiness}</div>
+                <div class="price-note">round trip</div>
+              </div>
+            </div>
+            ${seatsHtml}
+            <button class="btn-primary flight-bundle-select" onclick="event.stopPropagation();selectBundle(${i});continueToBooking()">
+              Select <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>`;
+    });
+
+  } else {
+    // ---- ONE-WAY CARDS (existing behaviour) ----
+    const flights = generateFlights();
+    container.innerHTML += '<h3 style="margin-bottom:4px">Outbound Flights</h3>' +
+      '<p style="font-size:14px;color:#64748b;margin-bottom:16px">Select your preferred departure flight</p>';
+
+    flights.forEach((f, i) => {
+      const seatsHtml = f.seatsLeft <= 5
+        ? '<span class="flight-seats-left">' + f.seatsLeft + ' seats left at this price</span>'
+        : '';
+
+      container.innerHTML += `
+        <div class="flight-card" id="flight-${i}" onclick="selectFlight(${i})">
+          <div class="flight-time">
+            <div class="time">${f.depTime}</div>
+            <div class="code">${f.depCode}</div>
+          </div>
+          <div class="flight-route-line">
+            <div class="duration">${f.duration}</div>
+            <div class="line"></div>
+            <div class="stops">${f.stops}</div>
+          </div>
+          <div class="flight-time">
+            <div class="time">${f.arrTime}</div>
+            <div class="code">${f.arrCode}</div>
+          </div>
+          <div class="flight-meta">
+            <span class="flight-num">${f.flightNum}</span>
+            <span>${f.aircraft}</span>
+            ${seatsHtml}
+          </div>
+          <div class="flight-prices">
+            <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'lite')">
+              <div class="price-class">Lite</div>
+              <div class="price-amount">$${f.priceLite}</div>
+            </div>
+            <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'economy')">
+              <div class="price-class">Economy</div>
+              <div class="price-amount">$${f.priceClassic}</div>
+            </div>
+            <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'business')">
+              <div class="price-class">Business</div>
+              <div class="price-amount">$${f.priceBusiness}</div>
+            </div>
+          </div>
+        </div>`;
+    });
 
     container.innerHTML += `
-      <div class="flight-card" id="flight-${i}" onclick="selectFlight(${i})">
-        <div class="flight-time">
-          <div class="time">${f.depTime}</div>
-          <div class="code">${f.depCode}</div>
-        </div>
-        <div class="flight-route-line">
-          <div class="duration">${f.duration}</div>
-          <div class="line"></div>
-          <div class="stops">${f.stops}</div>
-        </div>
-        <div class="flight-time">
-          <div class="time">${f.arrTime}</div>
-          <div class="code">${f.arrCode}</div>
-        </div>
-        <div class="flight-meta">
-          <span class="flight-num">${f.flightNum}</span>
-          <span>${f.aircraft}</span>
-          ${seatsHtml}
-        </div>
-        <div class="flight-prices">
-          <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'lite')">
-            <div class="price-class">Lite</div>
-            <div class="price-amount">$${f.priceLite}</div>
-            <div class="fare-tooltip">
-              <strong>Economy Lite</strong>
-              <ul>
-                <li class="included">Hand baggage (7 kg)</li>
-                <li class="excluded">Checked bag</li>
-                <li class="excluded">Seat selection</li>
-                <li class="excluded">Flexibility</li>
-                <li class="included">In-flight meal</li>
-              </ul>
-              <span class="fare-tooltip-note">Non-refundable</span>
-            </div>
-          </div>
-          <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'economy')">
-            <div class="price-class">Economy</div>
-            <div class="price-amount">$${f.priceClassic}</div>
-            <div class="fare-tooltip">
-              <strong>Economy</strong>
-              <ul>
-                <li class="included">Hand baggage (7 kg)</li>
-                <li class="included">Checked bag (23 kg)</li>
-                <li class="included">Seat selection</li>
-                <li class="partial">Change fee applies</li>
-                <li class="included">In-flight meal</li>
-              </ul>
-              <span class="fare-tooltip-note">Changeable with fee</span>
-            </div>
-          </div>
-          <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'business')">
-            <div class="price-class">Business</div>
-            <div class="price-amount">$${f.priceBusiness}</div>
-            <div class="fare-tooltip">
-              <strong>Business Class</strong>
-              <ul>
-                <li class="included">Hand baggage (7 kg)</li>
-                <li class="included">Checked bags (2 x 32 kg)</li>
-                <li class="included">Priority seat selection</li>
-                <li class="included">Full flexibility</li>
-                <li class="included">Premium dining</li>
-              </ul>
-              <span class="fare-tooltip-note">Fully refundable</span>
-            </div>
-          </div>
-        </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:16px">
+        <button class="btn-primary btn-lg" onclick="continueToBooking()">
+          Continue with Selected Flight
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
       </div>`;
-  });
-
-  // Add "Continue" button
-  container.innerHTML += `
-    <div style="display:flex;justify-content:flex-end;margin-top:16px">
-      <button class="btn-primary btn-lg" onclick="continueToBooking()">
-        Continue with Selected Flight
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-    </div>`;
+  }
 }
 
 function generateFlights() {
@@ -445,21 +499,60 @@ function generateFlights() {
   ];
 }
 
+function generateReturnFlights() {
+  return [
+    { depTime: '09:00', arrTime: '10:25', depCode: 'NBO', arrCode: 'KGL', duration: '1h 25m', stops: 'Direct', flightNum: 'WB 401', aircraft: 'Boeing 737-800', priceLite: 150, priceClassic: 205, priceBusiness: 570, seatsLeft: 9 },
+    { depTime: '13:30', arrTime: '14:55', depCode: 'NBO', arrCode: 'KGL', duration: '1h 25m', stops: 'Direct', flightNum: 'WB 403', aircraft: 'Airbus A330', priceLite: 165, priceClassic: 220, priceBusiness: 610, seatsLeft: 6 },
+    { depTime: '17:15', arrTime: '18:40', depCode: 'NBO', arrCode: 'KGL', duration: '1h 25m', stops: 'Direct', flightNum: 'WB 405', aircraft: 'Boeing 737-800', priceLite: 140, priceClassic: 190, priceBusiness: 540, seatsLeft: 14 },
+    { depTime: '21:00', arrTime: '22:25', depCode: 'NBO', arrCode: 'KGL', duration: '1h 25m', stops: 'Direct', flightNum: 'WB 407', aircraft: 'Boeing 737-700', priceLite: 130, priceClassic: 175, priceBusiness: 510, seatsLeft: 18 },
+  ];
+}
+
+function generateBundles() {
+  const outbound = generateFlights();
+  const inbound = generateReturnFlights();
+  const bundles = [];
+  // Create 6 curated pairings
+  const pairs = [[0,2],[1,0],[2,1],[0,3],[3,0],[2,3]];
+  pairs.forEach(([oi, ii]) => {
+    const o = outbound[oi], r = inbound[ii];
+    bundles.push({
+      outbound: o, inbound: r,
+      priceLite: o.priceLite + r.priceLite,
+      priceClassic: o.priceClassic + r.priceClassic,
+      priceBusiness: o.priceBusiness + r.priceBusiness,
+      seatsLeft: Math.min(o.seatsLeft, r.seatsLeft)
+    });
+  });
+  return bundles;
+}
+
 function selectFlight(i) {
   document.querySelectorAll('.flight-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('flight-' + i).classList.add('selected');
 }
 
 function selectFlightPrice(flightIdx, fareClass) {
-  // Clear all fare selections across all flights
   document.querySelectorAll('.flight-price-opt').forEach(p => p.classList.remove('selected-price'));
-
   const card = document.getElementById('flight-' + flightIdx);
   const classMap = { lite: 0, economy: 1, classic: 1, business: 2 };
   const opts = card.querySelectorAll('.flight-price-opt');
   opts[classMap[fareClass]].classList.add('selected-price');
-
   selectFlight(flightIdx);
+}
+
+function selectBundle(i) {
+  document.querySelectorAll('.flight-bundle').forEach(c => c.classList.remove('selected'));
+  document.getElementById('bundle-' + i).classList.add('selected');
+}
+
+function selectBundlePrice(bundleIdx, fareClass) {
+  document.querySelectorAll('.flight-bundle .flight-price-opt').forEach(p => p.classList.remove('selected-price'));
+  const card = document.getElementById('bundle-' + bundleIdx);
+  const classMap = { lite: 0, economy: 1, classic: 1, business: 2 };
+  const opts = card.querySelectorAll('.flight-price-opt');
+  opts[classMap[fareClass]].classList.add('selected-price');
+  selectBundle(bundleIdx);
 }
 
 function continueToBooking() {

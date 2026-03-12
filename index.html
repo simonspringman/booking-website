@@ -20,7 +20,7 @@
       <div class="topbar-nav" id="topbar-nav">
         <a href="#" class="nav-link active" onclick="navigateTo('home')">Book</a>
         <a href="#" class="nav-link" onclick="navigateTo('destinations')">Destinations</a>
-        <a href="#" class="nav-link" onclick="navigateTo('travelinfo')">Travel Info</a>
+        <a href="#" class="nav-link" onclick="navigateTo('holidays')">Holidays</a>
         <a href="#" class="nav-link" onclick="navigateTo('loyalty')">Loyalty</a>
         <a href="#" class="nav-link" onclick="navigateTo('help')">Help</a>
       </div>
@@ -58,7 +58,7 @@
       <a href="#" onclick="navigateTo('status');toggleMobileMenu()">Flight Status</a>
       <hr/>
       <a href="#" onclick="navigateTo('destinations');toggleMobileMenu()">Destinations</a>
-      <a href="#" onclick="navigateTo('travelinfo');toggleMobileMenu()">Travel Info</a>
+      <a href="#" onclick="navigateTo('holidays');toggleMobileMenu()">Holidays</a>
       <a href="#" onclick="navigateTo('loyalty');toggleMobileMenu()">Loyalty</a>
       <a href="#" onclick="navigateTo('help');toggleMobileMenu()">Help & Contact</a>
       <hr/>
@@ -205,6 +205,52 @@
       </div>
     </div>
 
+    <!-- Stopover Kigali -->
+    <div class="stopover-banner">
+      <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/stopover-home.jpg" alt="Stopover Kigali" class="stopover-img">
+      <div class="stopover-overlay">
+        <div class="container">
+          <h2>Stopover Kigali</h2>
+          <p>Turn your layover into a mini-adventure with our Stopover Program, crafted to make your journey even more memorable. Whether you're traveling far or just passing through, take a moment to explore Kigali without changing your travel plans.</p>
+          <a href="#" class="btn-primary" onclick="return false">Learn More <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Services -->
+    <div class="container section">
+      <div class="section-header">
+        <h2>Additional Services</h2>
+        <p class="section-sub">Enhance your journey with our travel partners</p>
+      </div>
+      <div class="addl-services-grid">
+        <a href="#" class="addl-service" onclick="return false">
+          <svg class="addl-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01" stroke-width="2.5" stroke-linecap="round"/><path d="M9 6h6M9 9h6"/></svg>
+          <span>e-Sim</span>
+        </a>
+        <a href="#" class="addl-service" onclick="return false">
+          <svg class="addl-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><rect x="9" y="13" width="6" height="8"/><rect x="10" y="9" width="4" height="3"/></svg>
+          <span>Hotels</span>
+        </a>
+        <a href="#" class="addl-service" onclick="return false">
+          <svg class="addl-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M5 17h14M6 17l-1 2h14l-1-2"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/><path d="M5 13l1.5-5h11L19 13"/><path d="M5 13h14v4H5z"/></svg>
+          <span>Car Rentals</span>
+        </a>
+        <a href="#" class="addl-service" onclick="return false">
+          <svg class="addl-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><circle cx="12" cy="10" r="8"/><path d="M12 2v2M12 18v2M22 12h-2M4 12H2"/><path d="M12 7v3l2 2"/></svg>
+          <span>Tours</span>
+        </a>
+        <a href="#" class="addl-service" onclick="return false">
+          <svg class="addl-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M20 12V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h6"/><path d="M2 7h20"/><path d="M16 16l2 2 4-4"/></svg>
+          <span>Duty Free</span>
+        </a>
+        <a href="#" class="addl-service" onclick="return false">
+          <svg class="addl-icon" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M12 2l3 6h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z"/></svg>
+          <span>Dream Upgrade</span>
+        </a>
+      </div>
+    </div>
+
     <!-- Popular Destinations -->
     <div class="container section">
       <div class="section-header">
@@ -252,6 +298,16 @@
             <p class="dest-route">KGL → LHR</p>
             <p class="dest-price">From <strong>$620</strong> return</p>
             <p class="dest-meta">1,500+ passengers last month</p>
+          </div>
+        </div>
+        <div class="dest-card" onclick="selectDestination('Doha')">
+          <div class="dest-img" style="background: url('https://images.unsplash.com/photo-1518684079-3c830dcef090?w=400&h=250&fit=crop') center/cover no-repeat;">
+          </div>
+          <div class="dest-info">
+            <h3>Doha</h3>
+            <p class="dest-route">KGL → DOH</p>
+            <p class="dest-price">From <strong>$480</strong> return</p>
+            <p class="dest-meta">1,200+ passengers last month</p>
           </div>
         </div>
       </div>
@@ -306,25 +362,12 @@
       <div class="container">
         <div class="footer-grid">
           <div>
-            <h4>Fly With Us</h4>
-            <a href="#">Book a Flight</a>
-            <a href="#">Destinations</a>
-            <a href="#">Flight Schedule</a>
-            <a href="#">Fleet</a>
-          </div>
-          <div>
-            <h4>Travel Info</h4>
-            <a href="#">Baggage</a>
-            <a href="#">Special Assistance</a>
-            <a href="#">Travel Documents</a>
-            <a href="#">Airport Info</a>
-          </div>
-          <div>
-            <h4>Support</h4>
-            <a href="#">Contact Us</a>
-            <a href="#">FAQs</a>
-            <a href="#">Feedback</a>
-            <a href="#">Refunds</a>
+            <h4>Travel Information</h4>
+            <a href="#" onclick="navigateTo('travelinfo'); return false;">Baggage Allowance</a>
+            <a href="#" onclick="navigateTo('travelinfo'); return false;">Travel Documents &amp; Visas</a>
+            <a href="#" onclick="navigateTo('travelinfo'); return false;">Check-in &amp; Boarding</a>
+            <a href="#" onclick="navigateTo('travelinfo'); return false;">Special Assistance</a>
+            <a href="#" onclick="navigateTo('travelinfo'); return false;">Health Requirements</a>
           </div>
           <div>
             <h4>Company</h4>
@@ -332,6 +375,13 @@
             <a href="#">Careers</a>
             <a href="#">News</a>
             <a href="#">Partners</a>
+            <a href="#">Fleet</a>
+          </div>
+          <div>
+            <h4>External Links</h4>
+            <a href="https://www.migration.gov.rw/" target="_blank">Immigration and Emigration</a>
+            <a href="https://rdb.rw/" target="_blank">Rwanda Development Board</a>
+            <a href="https://www.visitrwanda.com/" target="_blank">Visit Rwanda</a>
           </div>
         </div>
         <div class="footer-bottom">
@@ -1172,6 +1222,11 @@
             <div><strong>Dubai</strong><span>UAE &middot; DXB</span></div>
             <span class="dlc-freq">Daily</span>
           </div>
+          <div class="dest-list-card" onclick="selectDestination('Doha')">
+            <div class="dlc-flag" style="background:url('https://images.unsplash.com/photo-1518684079-3c830dcef090?w=400&h=250&fit=crop') center/cover"></div>
+            <div><strong>Doha</strong><span>Qatar &middot; DOH</span></div>
+            <span class="dlc-freq">4x weekly</span>
+          </div>
         </div>
       </div>
 
@@ -1309,133 +1364,327 @@
     </div>
   </section>
 
-  <!-- ============ PAGE: LOYALTY ============ -->
-  <section class="page" id="page-loyalty">
-    <div class="page-hero page-hero-gold">
-      <div class="container">
-        <h1>DreamMiles Loyalty Program</h1>
-        <p>Earn miles every time you fly. Redeem them for flights, upgrades, and more.</p>
+  <!-- ============ PAGE: HOLIDAYS ============ -->
+  <section class="page" id="page-holidays">
+    <!-- Hero with Fast Track Booking -->
+    <div class="hero hol-hero">
+      <div class="hero-bg" style="background: url('img/holidays-hero.jpg') center 40% / cover no-repeat, linear-gradient(135deg, #00529b 0%, #003d75 100%);">
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-tagline">RwandAir Holidays</p>
+        <h1 class="hero-title">Book your dream holiday</h1>
+        <div class="nlf-card">
+          <div class="nlf-label">Fast Track Booking</div>
+          <div class="nlf-trip-toggle">
+            <button class="nlf-trip-btn active" data-trip="roundtrip">Round Trip</button>
+            <button class="nlf-trip-btn" data-trip="oneway">One Way</button>
+          </div>
+          <p class="nlf-sentence">I'd like to fly from
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" contenteditable="true" data-placeholder="type city">Kigali (KGL)</span></span>
+            to
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" contenteditable="true" data-placeholder="type destination">type destination</span></span>
+            on
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" contenteditable="true" data-placeholder="type date">type date</span></span>, returning
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" contenteditable="true" data-placeholder="type date">type date</span></span>, for
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" contenteditable="true" data-placeholder="type passengers">1 adult</span></span>
+            in
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" contenteditable="true" data-placeholder="type class">Economy</span></span>.
+          </p>
+          <div class="nlf-actions">
+            <a href="#" class="nlf-advanced-link" onclick="return false">+ Add Hotel</a>
+            <button class="btn-primary btn-lg" onclick="return false">
+              Search Holidays
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Why book with RwandAir Holidays -->
     <div class="container section">
-      <!-- Tiers -->
-      <div class="section-header">
-        <h2>Membership Tiers</h2>
-        <p class="section-sub">Fly more, earn more. Every tier unlocks new benefits.</p>
+      <h2 class="hol-section-title">Why book with RwandAir Holidays</h2>
+      <div class="hol-why-grid">
+        <div class="hol-why-item">
+          <svg class="hol-why-icon" viewBox="0 0 48 48" fill="none" stroke="var(--blue)" stroke-width="1.5"><rect x="10" y="14" width="28" height="22" rx="3"/><path d="M18 14V10a6 6 0 0112 0v4"/><path d="M20 26h8M20 30h4"/><circle cx="36" cy="16" r="6"/><path d="M34 16l2 2 4-3"/></svg>
+          <h4>Save up to 30%</h4>
+          <p>Unlock savings of up to 30% on your next purchase! Don't miss out on this incredible opportunity to save big.</p>
+        </div>
+        <div class="hol-why-item">
+          <svg class="hol-why-icon" viewBox="0 0 48 48" fill="none" stroke="var(--blue)" stroke-width="1.5"><circle cx="24" cy="24" r="16"/><ellipse cx="24" cy="24" rx="8" ry="16"/><line x1="8" y1="24" x2="40" y2="24"/><path d="M10 16h28M10 32h28"/></svg>
+          <h4>Worldwide coverage</h4>
+          <p>Enjoy worldwide coverage with our unbeatable savings offer! Wherever your destination, our discounts have you covered.</p>
+        </div>
+        <div class="hol-why-item">
+          <svg class="hol-why-icon" viewBox="0 0 48 48" fill="none" stroke="var(--blue)" stroke-width="1.5"><rect x="6" y="14" width="36" height="24" rx="3"/><path d="M6 22h36"/><path d="M14 30h8M14 34h4"/><circle cx="36" cy="32" r="4"/><path d="M34 32l2 2 3-3"/></svg>
+          <h4>Collect &amp; Spend miles</h4>
+          <p>Collect and spend miles with ease! Our offer lets you earn and utilise miles for your dream holiday.</p>
+        </div>
+        <div class="hol-why-item">
+          <svg class="hol-why-icon" viewBox="0 0 48 48" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M24 6l-4 12H8l10 8-4 12 10-7 10 7-4-12 10-8H28z"/><circle cx="38" cy="12" r="5"/><path d="M36 12l2 2 3-3"/></svg>
+          <h4>World's Safest Airline</h4>
+          <p>Choose the world's safest airline for peace of mind during your travels. Safety is our top priority.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amazing holiday packages - 3 destination cards -->
+    <div class="container section">
+      <h2 class="hol-section-title">Always offering amazing holiday packages</h2>
+      <div class="hol-dest-grid">
+        <a href="#" class="hol-dest-card" onclick="return false">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Maldives">
+          <div class="hol-dest-info"><span class="hol-dest-name">Maldive Holidays</span><span class="hol-dest-arrow">&#8599;</span><span class="hol-dest-price">From <strong>$1,199</strong></span></div>
+        </a>
+        <a href="#" class="hol-dest-card" onclick="return false">
+          <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&h=400&fit=crop" alt="Rwanda">
+          <div class="hol-dest-info"><span class="hol-dest-name">Rwanda Holidays</span><span class="hol-dest-arrow">&#8599;</span><span class="hol-dest-price">From <strong>$1,199</strong></span></div>
+        </a>
+        <a href="#" class="hol-dest-card" onclick="return false">
+          <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/LHR.jpg" alt="London">
+          <div class="hol-dest-info"><span class="hol-dest-name">London Holidays</span><span class="hol-dest-arrow">&#8599;</span><span class="hol-dest-price">From <strong>$1,199</strong></span></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Featured resort banner -->
+    <div class="container section">
+      <div class="hol-featured">
+        <div class="hol-featured-img">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop" alt="Mantis Hotel and Resort">
+        </div>
+        <div class="hol-featured-body">
+          <h2>Inclusive Collection, part of Mantis Hotel and Resort</h2>
+          <p>Looking to plan a trip and create lasting memories with loved ones? Well it couldn't be better timing. Book your package with us and save on Mantis Hotel holidays when you fly with RwandAir.</p>
+          <a href="#" class="btn-primary" onclick="return false">Browse Package</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular package deals - 6 cards -->
+    <div class="container section">
+      <h2 class="hol-section-title">Popular package deals</h2>
+      <div class="hol-pkg-grid">
+        <div class="hol-pkg-card">
+          <div class="hol-pkg-img" style="background:url('https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=500&h=300&fit=crop') center/cover"></div>
+          <div class="hol-pkg-body">
+            <h3>Kamembe exclusive offer</h3>
+            <div class="hol-pkg-meta"><span>&#9789; 3 nights</span><span>&#127976; Bed and Breakfast</span><span>&#9992; Return fare all-inclusive</span></div>
+            <div class="hol-pkg-price">From <strong>$1,199</strong> <small>total per person</small></div>
+            <button class="btn-primary hol-pkg-btn" onclick="return false">Book package</button>
+          </div>
+        </div>
+        <div class="hol-pkg-card">
+          <div class="hol-pkg-img" style="background:url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500&h=300&fit=crop') center/cover"></div>
+          <div class="hol-pkg-body">
+            <h3>San Francisco exclusive offer</h3>
+            <div class="hol-pkg-meta"><span>&#9789; 3 nights</span><span>&#127976; Bed and Breakfast</span><span>&#9992; Return fare all-inclusive</span></div>
+            <div class="hol-pkg-price">From <strong>$1,199</strong> <small>total per person</small></div>
+            <button class="btn-primary hol-pkg-btn" onclick="return false">Book package</button>
+          </div>
+        </div>
+        <div class="hol-pkg-card">
+          <div class="hol-pkg-img" style="background:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop') center/cover"></div>
+          <div class="hol-pkg-body">
+            <h3>Abu Dhabi exclusive offer</h3>
+            <div class="hol-pkg-meta"><span>&#9789; 3 nights</span><span>&#127976; Bed and Breakfast</span><span>&#9992; Return fare all-inclusive</span></div>
+            <div class="hol-pkg-price">From <strong>$1,199</strong> <small>total per person</small></div>
+            <button class="btn-primary hol-pkg-btn" onclick="return false">Book package</button>
+          </div>
+        </div>
+        <div class="hol-pkg-card">
+          <div class="hol-pkg-img" style="background:url('https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=500&h=300&fit=crop') center/cover"></div>
+          <div class="hol-pkg-body">
+            <h3>South Coast exclusive offer</h3>
+            <div class="hol-pkg-meta"><span>&#9789; 3 nights</span><span>&#127976; Bed and Breakfast</span><span>&#9992; Return fare all-inclusive</span></div>
+            <div class="hol-pkg-price">From <strong>$1,199</strong> <small>total per person</small></div>
+            <button class="btn-primary hol-pkg-btn" onclick="return false">Book package</button>
+          </div>
+        </div>
+        <div class="hol-pkg-card">
+          <div class="hol-pkg-img" style="background:url('https://images.unsplash.com/photo-1540541338287-41700207dee6?w=500&h=300&fit=crop') center/cover"></div>
+          <div class="hol-pkg-body">
+            <h3>Sheraton exclusive offer</h3>
+            <div class="hol-pkg-meta"><span>&#9789; 3 nights</span><span>&#127976; Bed and Breakfast</span><span>&#9992; Return fare all-inclusive</span></div>
+            <div class="hol-pkg-price">From <strong>$1,199</strong> <small>total per person</small></div>
+            <button class="btn-primary hol-pkg-btn" onclick="return false">Book package</button>
+          </div>
+        </div>
+        <div class="hol-pkg-card">
+          <div class="hol-pkg-img" style="background:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=500&h=300&fit=crop') center/cover"></div>
+          <div class="hol-pkg-body">
+            <h3>Paradisus exclusive offer</h3>
+            <div class="hol-pkg-meta"><span>&#9789; 3 nights</span><span>&#127976; Bed and Breakfast</span><span>&#9992; Return fare all-inclusive</span></div>
+            <div class="hol-pkg-price">From <strong>$1,199</strong> <small>total per person</small></div>
+            <button class="btn-primary hol-pkg-btn" onclick="return false">Book package</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom banners -->
+    <div class="container section">
+      <div class="hol-bottom-grid">
+        <a href="#" class="hol-bottom-card" onclick="return false">
+          <img src="https://images.unsplash.com/photo-1609198092458-38a293c7ac4b?w=700&h=350&fit=crop" alt="Kigali at night">
+          <div class="hol-bottom-label"><span>Explore &amp; discover Rwanda</span><span class="hol-bottom-arrow">&#8599;</span></div>
+        </a>
+        <a href="#" class="hol-bottom-card" onclick="navigateTo('destinations'); return false">
+          <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=700&h=350&fit=crop" alt="World travel">
+          <div class="hol-bottom-label"><span>All Destinations</span><span class="hol-bottom-arrow">&#8599;</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: LOYALTY ============ -->
+  <section class="page" id="page-loyalty">
+    <!-- Hero banner with real DreamMiles photo -->
+    <div class="dm-hero">
+      <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/dreammiles-banner2.jpg" alt="DreamMiles" class="dm-hero-img">
+      <div class="dm-hero-overlay">
+        <div class="container">
+          <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/dreammiles-logo.png" alt="DreamMiles logo" class="dm-logo">
+          <h1>Welcome to DreamMiles</h1>
+          <p>Where exclusive privileges await. We reward travellers exclusively for flying with us.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container section">
+      <!-- Discover DreamMiles intro -->
+      <div class="dm-intro">
+        <div class="dm-intro-text">
+          <h2>Discover DreamMiles</h2>
+          <p>DreamMiles is the RwandAir loyalty program that rewards you for every flight. Join for free, earn miles on all RwandAir flights, and redeem them for award flights, cabin upgrades, extra baggage, and more.</p>
+          <p>Membership is available as an Individual account (17+), Junior account (ages 2-17), Family account for pooling miles, or Corporate account for employee travel.</p>
+        </div>
+        <div class="dm-intro-photo">
+          <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/dreammiles-intro.jpg" alt="DreamMiles experience" onerror="this.parentElement.style.display='none'">
+        </div>
+      </div>
+
+      <!-- Membership Tiers -->
+      <div class="section-header" style="text-align:left">
+        <h2>Membership Tiers &amp; Benefits</h2>
+        <p class="section-sub">Progress through tiers by earning tier miles or flying qualifying sectors each year.</p>
       </div>
       <div class="tier-grid">
         <div class="tier-card">
-          <div class="tier-badge tier-blue">Blue</div>
+          <div class="tier-badge tier-emerald">Emerald</div>
           <div class="tier-body">
-            <h3>Blue Member</h3>
-            <p class="tier-req">Join for free</p>
+            <h3>Emerald</h3>
+            <p class="tier-req">Entry level &mdash; join for free</p>
             <ul class="tier-perks">
-              <li>Earn 1 mile per $1 spent</li>
-              <li>Redeem miles for flights</li>
-              <li>Exclusive member offers</li>
-              <li>Birthday bonus miles</li>
+              <li>Award flights using miles</li>
+              <li>Cabin upgrades with miles</li>
+              <li>Priority wait-list</li>
+              <li>Buy, transfer &amp; extend miles</li>
             </ul>
           </div>
         </div>
         <div class="tier-card">
           <div class="tier-badge tier-silver">Silver</div>
           <div class="tier-body">
-            <h3>Silver Member</h3>
-            <p class="tier-req">5,000 miles / year</p>
+            <h3>Silver</h3>
+            <p class="tier-req">25,000 tier miles or 20 sectors</p>
             <ul class="tier-perks">
-              <li>All Blue benefits</li>
-              <li>25% bonus miles</li>
-              <li>Priority check-in</li>
-              <li>1 extra bag (23 kg)</li>
-              <li>Preferred seating</li>
+              <li>All Emerald benefits</li>
+              <li>25% bonus miles on flights</li>
+              <li>10 kg free extra baggage</li>
+              <li>Priority wait-list &amp; reservation</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-badge tier-gold">Gold</div>
+          <div class="tier-body">
+            <h3>Gold</h3>
+            <p class="tier-req">50,000 tier miles or 40 sectors</p>
+            <ul class="tier-perks">
+              <li>All Silver benefits</li>
+              <li>50% bonus miles on flights</li>
+              <li>23 kg free extra baggage</li>
+              <li>Priority check-in &amp; boarding</li>
+              <li>Lounge access</li>
             </ul>
           </div>
         </div>
         <div class="tier-card tier-card-featured">
-          <div class="tier-badge tier-gold">Gold</div>
+          <div class="tier-badge tier-diamond">Diamond</div>
           <div class="tier-body">
-            <h3>Gold Member</h3>
-            <p class="tier-req">15,000 miles / year</p>
+            <h3>Diamond</h3>
+            <p class="tier-req">100,000 tier miles or 60 sectors</p>
             <ul class="tier-perks">
-              <li>All Silver benefits</li>
-              <li>50% bonus miles</li>
-              <li>Lounge access worldwide</li>
-              <li>Priority boarding</li>
-              <li>2 extra bags</li>
-              <li>Complimentary upgrades (subject to availability)</li>
+              <li>All Gold benefits</li>
+              <li>100% bonus miles on flights</li>
+              <li>32 kg free extra baggage</li>
+              <li>Lounge access + 1 guest</li>
+              <li>Priority check-in, boarding &amp; baggage</li>
+              <li>Guaranteed Economy reservation</li>
             </ul>
           </div>
         </div>
       </div>
 
       <!-- Earn & Redeem -->
+      <div class="section-header" style="text-align:left">
+        <h2>Earn &amp; Redeem</h2>
+        <p class="section-sub">Miles are earned on every RwandAir flight and through our partners. Redeem for flights, upgrades, and more.</p>
+      </div>
       <div class="earn-redeem-grid">
         <div class="er-card">
-          <h3>How to Earn Miles</h3>
+          <h3>Earn Miles</h3>
           <div class="er-items">
             <div class="er-item">
-              <div class="er-icon">&#9992;</div>
-              <div>
-                <strong>Fly with RwandAir</strong>
-                <span>Earn miles on every flight based on distance and fare class</span>
-              </div>
+              <div><strong>Fly with RwandAir</strong><span>Earn miles on every flight based on distance and fare class</span></div>
             </div>
             <div class="er-item">
-              <div class="er-icon">&#128179;</div>
-              <div>
-                <strong>Partner Airlines</strong>
-                <span>Earn miles when flying with our partner airline network</span>
-              </div>
+              <div><strong>Partner Airlines</strong><span>Earn miles flying with partner airlines including Qatar Airways</span></div>
             </div>
             <div class="er-item">
-              <div class="er-icon">&#127980;</div>
-              <div>
-                <strong>Hotel & Car Partners</strong>
-                <span>Book hotels and rental cars through our partners to earn miles</span>
-              </div>
+              <div><strong>Hotels &amp; Car Rentals</strong><span>Earn miles through our hotel and car rental partners</span></div>
             </div>
             <div class="er-item">
-              <div class="er-icon">&#128179;</div>
-              <div>
-                <strong>Credit Card Partners</strong>
-                <span>Use DreamMiles co-branded credit cards for everyday purchases</span>
-              </div>
+              <div><strong>Banks &amp; Credit Cards</strong><span>Use partner credit cards to earn miles on everyday purchases</span></div>
             </div>
           </div>
         </div>
         <div class="er-card">
-          <h3>How to Redeem Miles</h3>
+          <h3>Redeem Miles</h3>
           <div class="er-items">
             <div class="er-item">
-              <div class="er-icon">&#127906;</div>
-              <div>
-                <strong>Award Flights</strong>
-                <span>Book free flights using your miles on any RwandAir route</span>
-              </div>
+              <div><strong>Award Flights</strong><span>Book free flights on any RwandAir route using your miles</span></div>
             </div>
             <div class="er-item">
-              <div class="er-icon">&#128186;</div>
-              <div>
-                <strong>Cabin Upgrades</strong>
-                <span>Upgrade from Economy to Business Class with miles</span>
-              </div>
+              <div><strong>Cabin Upgrades</strong><span>Upgrade from Economy to Business Class with miles</span></div>
             </div>
             <div class="er-item">
-              <div class="er-icon">&#127891;</div>
-              <div>
-                <strong>Extra Baggage</strong>
-                <span>Purchase additional baggage allowance with miles</span>
-              </div>
+              <div><strong>Extra Baggage</strong><span>Purchase additional baggage allowance with miles</span></div>
             </div>
             <div class="er-item">
-              <div class="er-icon">&#128176;</div>
-              <div>
-                <strong>Miles + Cash</strong>
-                <span>Combine miles with cash for maximum flexibility</span>
-              </div>
+              <div><strong>Buy, Transfer &amp; Extend</strong><span>Buy additional miles, transfer to others, or extend expiry. Miles expire after 2 years on a FIFO basis.</span></div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Partners -->
+      <div class="dm-partners">
+        <h3>Our Partners</h3>
+        <div class="dm-partner-tags">
+          <span class="dm-tag">Qatar Airways</span>
+          <span class="dm-tag">Hotels</span>
+          <span class="dm-tag">Car Rentals</span>
+          <span class="dm-tag">Banks &amp; Credit Cards</span>
+          <span class="dm-tag">Tours</span>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="dm-contact">
+        <p>Questions about DreamMiles? Contact us at <a href="mailto:dreammiles@rwandair.com">dreammiles@rwandair.com</a> or call <strong>+250 788 177 000</strong></p>
       </div>
 
       <div class="dest-cta">
@@ -1529,11 +1778,19 @@
 
   <!-- ============ PAGE: ABOUT US ============ -->
   <section class="page" id="page-about">
+    <!-- About Hero -->
+    <div class="about-hero">
+      <img src="img/crew-skytrax.jpg" alt="RwandAir crew — Best Regional Airline in Africa 2025" class="about-hero-img"/>
+      <div class="about-hero-overlay">
+        <div class="container">
+          <h1>Heart of Africa.<br/>Gateway to the World.</h1>
+        </div>
+      </div>
+    </div>
+
     <div class="about-us">
       <div class="container">
         <a href="#" class="about-back-link" onclick="navigateTo('home'); return false;">&larr; Back to Home</a>
-        <h2 class="section-title">About Us</h2>
-        <p class="section-subtitle">Heart of Africa. Gateway to the World.</p>
 
         <div class="about-intro">
           <p>We began operations on 1st December 2002 as the new national carrier under the name Rwandair Express for Rwanda. In March 2009, we registered a new trademark "RwandAir" which is our current operating name.</p>
@@ -1543,28 +1800,25 @@
 
         <div class="about-pillars">
           <div class="about-pillar">
-            <div class="about-pillar-icon">&#127775;</div>
             <h4>Purpose</h4>
             <p>Positioning Rwanda as Africa's gateway to the world for people, trade and opportunity while showcasing the nation's resilience and hospitality.</p>
           </div>
           <div class="about-pillar">
-            <div class="about-pillar-icon">&#128065;</div>
             <h4>Vision</h4>
             <p>To be Africa's premier hub airline, powered by sustainable innovation and a culture that puts people first.</p>
           </div>
           <div class="about-pillar">
-            <div class="about-pillar-icon">&#127919;</div>
             <h4>Mission</h4>
             <p>To deliver safe, reliable and seamless movement of people and goods through agile operations and strategic partnerships, creating sustainable value for our customers and other stakeholders.</p>
           </div>
         </div>
 
-        <h3 class="about-values-title">Our Values</h3>
+        <h3 class="about-values-title" style="text-align:left">Our Values</h3>
         <div class="about-values-grid">
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#10084;</span>
+
               <h4>People &amp; Empathy</h4>
             </div>
             <ul>
@@ -1579,7 +1833,7 @@
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#129309;</span>
+
               <h4>Integrity &amp; Accountability</h4>
             </div>
             <ul>
@@ -1592,7 +1846,7 @@
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#128269;</span>
+
               <h4>Transparency</h4>
             </div>
             <ul>
@@ -1606,7 +1860,7 @@
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#129504;</span>
+
               <h4>Teamwork</h4>
             </div>
             <ul>
@@ -1618,7 +1872,7 @@
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#128161;</span>
+
               <h4>Sustainable Innovation</h4>
             </div>
             <ul>
@@ -1632,7 +1886,7 @@
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#128640;</span>
+
               <h4>Excellence</h4>
             </div>
             <ul>
@@ -1648,7 +1902,7 @@
 
           <div class="about-value-card">
             <div class="about-value-header">
-              <span class="about-value-icon">&#128737;</span>
+
               <h4>Safety &amp; Compliance</h4>
             </div>
             <ul>
