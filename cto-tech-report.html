@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RwandAir Digital Platform — CTO Technical Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rw-blue: #00529b;
+    --rw-sky: #1ea2dc;
+    --rw-yellow: #fee014;
+    --rw-green: #94c943;
+    --dark: #0f172a;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+  }
+
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .logo-bar {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .logo-bar .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--rw-blue); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; }
+
+  /* Cover */
+  .slide.cover {
+    background: linear-gradient(135deg, var(--rw-blue) 0%, #003366 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .cover h1 { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -1px; }
+  .cover .subtitle { font-size: 22px; font-weight: 300; opacity: 0.85; margin-bottom: 40px; }
+  .cover .meta { font-size: 15px; opacity: 0.6; }
+  .cover .meta span { margin: 0 16px; }
+  .cover .badge { display: inline-block; background: var(--rw-yellow); color: var(--dark); font-weight: 700; padding: 8px 24px; border-radius: 8px; font-size: 14px; margin-bottom: 40px; }
+
+  /* Section headers */
+  h2 { font-size: 36px; font-weight: 800; color: var(--rw-blue); margin-bottom: 8px; letter-spacing: -0.5px; }
+  h3 { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--gray); margin-bottom: 32px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { text-align: left; padding: 12px 16px; background: var(--rw-blue); color: #fff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+  tr:hover td { background: #f1f5f9; }
+  .risk-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .risk-high { background: #fee2e2; color: #dc2626; }
+  .risk-med { background: #fef3c7; color: #92400e; }
+  .risk-low { background: #dcfce7; color: #16a34a; }
+
+  /* Effort tags */
+  .effort { display: inline-block; background: #dbeafe; color: var(--rw-blue); font-weight: 700; padding: 3px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
+  .effort.high { background: #fee2e2; color: #dc2626; }
+  .effort.med { background: #fef3c7; color: #92400e; }
+  .effort.low { background: #dcfce7; color: #16a34a; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .info-card {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .info-card p { font-size: 13px; color: var(--gray); }
+  .info-card .number { font-size: 32px; font-weight: 900; color: var(--rw-blue); }
+
+  /* Summary boxes */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .summary-box { background: var(--light); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+  .summary-box .num { font-size: 36px; font-weight: 900; color: var(--rw-blue); }
+  .summary-box .label { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+  /* Bullet list */
+  .bullet-list { list-style: none; padding: 0; }
+  .bullet-list li { padding: 10px 0 10px 28px; border-bottom: 1px solid var(--border); font-size: 14px; position: relative; }
+  .bullet-list li::before { content: ''; position: absolute; left: 0; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--rw-blue); }
+  .bullet-list li:last-child { border-bottom: none; }
+  .bullet-list li strong { color: var(--dark); }
+
+  /* Two columns */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 20px 0; }
+
+  /* KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .kpi-card { background: var(--light); border-radius: 12px; padding: 24px; text-align: center; border: 1px solid var(--border); }
+  .kpi-value { font-size: 40px; font-weight: 900; color: var(--rw-blue); line-height: 1.1; }
+  .kpi-label { font-size: 13px; color: var(--gray); margin-top: 6px; }
+  .kpi-trend { font-size: 12px; font-weight: 700; margin-top: 8px; }
+  .kpi-trend.up { color: #16a34a; }
+  .kpi-trend.down { color: #dc2626; }
+  .kpi-trend.neutral { color: var(--gray); }
+
+  /* Progress rings */
+  .progress-rings { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin: 24px 0; }
+  .progress-ring-item { text-align: center; }
+  .progress-ring { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+  .progress-ring-inner { width: 88px; height: 88px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 22px; color: var(--rw-blue); }
+  .progress-ring-label { font-size: 13px; font-weight: 600; color: var(--dark); }
+  .progress-ring-sub { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  /* RAG status */
+  .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
+  .status-green { background: #22c55e; }
+  .status-amber { background: #f59e0b; }
+  .status-red { background: #ef4444; }
+
+  /* Callout boxes */
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout.info { background: #eff6ff; border-left: 4px solid var(--rw-blue); }
+  .callout.warning { background: #fefce8; border-left: 4px solid #f59e0b; }
+  .callout.success { background: #ecfdf5; border-left: 4px solid #22c55e; }
+
+  /* Timeline */
+  .timeline { display: flex; gap: 0; margin: 30px 0; }
+  .timeline-phase {
+    flex: 1;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 0 6px;
+    position: relative;
+  }
+  .timeline-phase.p1 { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid #93c5fd; }
+  .timeline-phase.p2 { background: linear-gradient(135deg, #fefce8, #fef3c7); border: 2px solid #fcd34d; }
+  .timeline-phase.p3 { background: linear-gradient(135deg, #fdf2f8, #fce7f3); border: 2px solid #f9a8d4; }
+  .timeline-phase.p4 { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 2px solid #6ee7b7; }
+  .timeline-phase.p5 { background: linear-gradient(135deg, #f5f3ff, #ede9fe); border: 2px solid #c4b5fd; }
+  .timeline-phase h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .timeline-phase .weeks { font-size: 24px; font-weight: 900; color: var(--rw-blue); }
+  .timeline-phase .desc { font-size: 12px; color: var(--gray); margin-top: 6px; }
+  .timeline-phase ul { margin-top: 8px; padding-left: 16px; font-size: 12px; color: #475569; }
+  .timeline-phase li { margin: 3px 0; }
+
+  /* Architecture */
+  .arch-diagram {
+    background: var(--light);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 2;
+    text-align: center;
+  }
+  .arch-box {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    margin: 4px;
+  }
+  .arch-browser { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
+  .arch-middleware { background: var(--rw-blue); color: #fff; }
+  .arch-amadeus { background: #1e293b; color: #fff; }
+  .arch-internal { background: #dcfce7; color: #166534; border: 2px solid #86efac; }
+  .arch-arrow { font-size: 20px; color: var(--gray); margin: 0 8px; vertical-align: middle; }
+
+  /* Check / X list */
+  .check-list { list-style: none; padding: 0; }
+  .check-list li { padding: 8px 0 8px 28px; font-size: 14px; position: relative; border-bottom: 1px solid var(--border); }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li.green::before { content: '\2713'; position: absolute; left: 0; top: 8px; font-size: 16px; font-weight: 900; color: #16a34a; }
+  .check-list li.red::before { content: '\2717'; position: absolute; left: 0; top: 8px; font-size: 16px; font-weight: 900; color: #dc2626; }
+
+  /* Large progress ring */
+  .large-ring { width: 180px; height: 180px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .large-ring-inner { width: 140px; height: 140px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  .large-ring-inner .pct { font-size: 48px; font-weight: 900; color: var(--rw-blue); line-height: 1; }
+  .large-ring-inner .pct-label { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+  /* Print */
+  @media print {
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+    body { font-size: 12px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .slide { padding: 30px 20px; }
+    .cover h1 { font-size: 28px; }
+    .timeline { flex-direction: column; }
+    .card-grid, .summary-grid, .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    td, th { padding: 8px; }
+    .progress-rings { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<div class="slide cover">
+  <div>
+    <div class="badge">CONFIDENTIAL &mdash; CTO BRIEFING</div>
+    <h1>RwandAir Digital Platform<br/>CTO Technical Status Report</h1>
+    <p class="subtitle">Architecture, Migration Progress &amp; Technical Roadmap</p>
+    <p class="meta">
+      <span>Q1 2026</span>
+      <span>|</span>
+      <span>March 2026</span>
+      <span>|</span>
+      <span>Technology Division</span>
+    </p>
+  </div>
+  <div class="slide-number" style="color:rgba(255,255,255,0.4)">1 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 2: ARCHITECTURE OVERVIEW ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Architecture Overview</h2>
+  <p class="section-sub">The middleware at wb-api.rwandair.com owns all Amadeus communication. The frontend barely changes.</p>
+
+  <div class="arch-diagram">
+    <div style="margin-bottom: 20px;">
+      <span class="arch-box arch-browser">Browser SPA<br/>(index.html + app.js)</span>
+      <span class="arch-arrow">&rarr;</span>
+      <span class="arch-box arch-middleware">wb-api.rwandair.com<br/>(Middleware / BFF)</span>
+      <span class="arch-arrow">&rarr;</span>
+      <span class="arch-box arch-amadeus">Amadeus Digital APIs<br/>(GDS / NDC)</span>
+    </div>
+    <div style="margin-top: 16px;">
+      <span class="arch-box arch-middleware">wb-api.rwandair.com</span>
+      <span class="arch-arrow">&rarr;</span>
+      <span class="arch-box arch-internal">Wallet Service</span>
+      &nbsp;&nbsp;
+      <span class="arch-box arch-internal">DreamMiles API</span>
+      &nbsp;&nbsp;
+      <span class="arch-box arch-internal">Payment Gateway</span>
+      &nbsp;&nbsp;
+      <span class="arch-box arch-internal">CMS / Admin DB</span>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="info-card">
+      <h4>Frontend (Minimal Changes)</h4>
+      <p>Swap <code>fetch('/api/...')</code> base URL to <code>wb-api.rwandair.com</code>. Keep same request/response shapes. Add auth token headers.</p>
+    </div>
+    <div class="info-card">
+      <h4>Middleware (Heavy Lift)</h4>
+      <p>Transform Amadeus EDIFACT/JSON responses into our UI contract. Handle session management, caching, error translation, rate limits.</p>
+    </div>
+    <div class="info-card">
+      <h4>Internal Services (Keep As-Is)</h4>
+      <p>Wallet, DreamMiles, CMS, Admin dashboard, chat assistant &mdash; these stay on your own infrastructure, no Amadeus dependency.</p>
+    </div>
+  </div>
+  <div class="slide-number">2 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 3: PLATFORM CAPABILITIES INVENTORY ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Platform Capabilities Inventory</h2>
+  <p class="section-sub">Everything built in the current prototype &mdash; ready for production migration.</p>
+
+  <div class="card-grid">
+    <div class="info-card" style="border-top:4px solid var(--rw-blue)">
+      <div class="number">22</div>
+      <h4>API Endpoints</h4>
+      <p>Search, booking, check-in, manage, payments, admin</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid var(--rw-sky)">
+      <div class="number">19</div>
+      <h4>Destination Pages</h4>
+      <p>SEO-optimized with AI content, attractions, tips</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid var(--rw-green)">
+      <div class="number">9</div>
+      <h4>Admin Dashboard</h4>
+      <p>Chatbot, funnel, T2T, channels, offices, passengers, payments, ancillaries, holds</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #f59e0b">
+      <div class="number">9</div>
+      <h4>CMS System</h4>
+      <p>Banners, FAQs, careers, offices, promos, policies, alerts, pages, media</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #a78bfa">
+      <div class="number">3</div>
+      <h4>AI Chat Assistant</h4>
+      <p>3-language support, context-aware, 80% resolution rate</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <div class="number">&infin;</div>
+      <h4>Wallet System</h4>
+      <p>Credit/debit, transaction history, refund-to-wallet</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #ec4899">
+      <div class="number">3</div>
+      <h4>T2T Fare Holds</h4>
+      <p>24h/48h/72h hold durations with tiered fees</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #0891b2">
+      <div class="number">24</div>
+      <h4>Retargeting Engine</h4>
+      <p>24-hour smart retargeting with abandonment detection</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #dc2626">
+      <div class="number">3</div>
+      <h4>Booking Management</h4>
+      <p>3 demo bookings with full PNR lifecycle (confirm, cancel, refund)</p>
+    </div>
+  </div>
+  <div class="slide-number">3 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 4: TECH STACK ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Tech Stack &mdash; Current vs Production</h2>
+  <p class="section-sub">Layer-by-layer comparison of prototype stack and production target.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Current Prototype Stack</h3>
+      <table>
+        <tr><th>Layer</th><th>Technology</th><th>Status</th></tr>
+        <tr><td><strong>Frontend</strong></td><td>Vanilla JS SPA + CSS</td><td><span class="status-dot status-green"></span> Green</td></tr>
+        <tr><td><strong>Backend</strong></td><td>Node.js Express (server.js)</td><td><span class="status-dot status-green"></span> Green</td></tr>
+        <tr><td><strong>Data Store</strong></td><td>In-Memory Maps</td><td><span class="status-dot status-amber"></span> Amber</td></tr>
+        <tr><td><strong>Auth</strong></td><td>JWT Mock (in-memory sessions)</td><td><span class="status-dot status-amber"></span> Amber</td></tr>
+        <tr><td><strong>Payments</strong></td><td>Mock Gateway (simulated)</td><td><span class="status-dot status-amber"></span> Amber</td></tr>
+        <tr><td><strong>Search</strong></td><td>Mock ROUTES object (19 routes)</td><td><span class="status-dot status-amber"></span> Amber</td></tr>
+        <tr><td><strong>AI Chat</strong></td><td>Rule-based intent detection</td><td><span class="status-dot status-green"></span> Green</td></tr>
+        <tr><td><strong>Admin</strong></td><td>Full admin back office</td><td><span class="status-dot status-green"></span> Green</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Production Target Stack</h3>
+      <table>
+        <tr><th>Layer</th><th>Technology</th><th>Effort</th></tr>
+        <tr><td><strong>Frontend</strong></td><td>Same SPA (60% reuse)</td><td><span class="effort low">Low</span></td></tr>
+        <tr><td><strong>Backend</strong></td><td>wb-api.rwandair.com middleware</td><td><span class="effort high">High</span></td></tr>
+        <tr><td><strong>Data Store</strong></td><td>PostgreSQL / Redis cache</td><td><span class="effort med">Medium</span></td></tr>
+        <tr><td><strong>Auth</strong></td><td>Amadeus OAuth2 + JWT</td><td><span class="effort med">Medium</span></td></tr>
+        <tr><td><strong>Payments</strong></td><td>MTN MoMo + Card + Wallet</td><td><span class="effort high">High</span></td></tr>
+        <tr><td><strong>Search</strong></td><td>Amadeus Flight Offers API</td><td><span class="effort high">High</span></td></tr>
+        <tr><td><strong>AI Chat</strong></td><td>Same + Amadeus data enrichment</td><td><span class="effort low">Low</span></td></tr>
+        <tr><td><strong>Admin</strong></td><td>Same + real data feeds</td><td><span class="effort low">Low</span></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="slide-number">4 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 5: API MIGRATION STATUS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>API Migration Status</h2>
+  <p class="section-sub">Endpoint-by-endpoint RAG status for Amadeus migration.</p>
+
+  <table style="font-size:13px">
+    <tr>
+      <th>Endpoint Group</th>
+      <th>Mock Endpoints</th>
+      <th>Amadeus Target</th>
+      <th>Status</th>
+      <th>Effort</th>
+      <th>Priority</th>
+    </tr>
+    <!-- Search & Booking -->
+    <tr><td colspan="6" style="background:#eff6ff;font-weight:800;color:var(--rw-blue);font-size:12px;text-transform:uppercase;letter-spacing:0.5px;padding:8px 16px">Search &amp; Booking</td></tr>
+    <tr>
+      <td><strong>Flight Search</strong></td>
+      <td><code>/api/search</code></td>
+      <td>Flight Offers Search</td>
+      <td><span class="status-dot status-amber"></span> Amber</td>
+      <td><span class="effort med">2-3 weeks</span></td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <tr>
+      <td><strong>Fare Pricing</strong></td>
+      <td>(in search)</td>
+      <td>Flight Offers Price</td>
+      <td><span class="status-dot status-amber"></span> Amber</td>
+      <td><span class="effort med">1 week</span></td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <tr>
+      <td><strong>PNR Creation</strong></td>
+      <td><code>/api/bookings/hold</code></td>
+      <td>Flight Orders POST</td>
+      <td><span class="status-dot status-amber"></span> Amber</td>
+      <td><span class="effort med">1-2 weeks</span></td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <tr>
+      <td><strong>Ticketing</strong></td>
+      <td><code>/api/bookings/confirm</code></td>
+      <td>Flight Order Mgmt</td>
+      <td><span class="status-dot status-red"></span> Red</td>
+      <td><span class="effort med">1-2 weeks</span></td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <!-- Post-Booking -->
+    <tr><td colspan="6" style="background:#fefce8;font-weight:800;color:#92400e;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;padding:8px 16px">Post-Booking</td></tr>
+    <tr>
+      <td><strong>Retrieve Booking</strong></td>
+      <td><code>/api/manage</code></td>
+      <td>Flight Order GET</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not Started</td>
+      <td><span class="effort med">1-2 weeks</span></td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Cancel/Refund</strong></td>
+      <td><code>/api/bookings/cancel</code></td>
+      <td>Flight Order DELETE</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not Started</td>
+      <td><span class="effort high">2-3 weeks</span></td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Check-in</strong></td>
+      <td><code>/api/checkin/lookup</code></td>
+      <td>DCS Integration</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not Started</td>
+      <td><span class="effort med">2 weeks</span></td>
+      <td><span class="risk-tag risk-low">P2</span></td>
+    </tr>
+    <tr>
+      <td><strong>Flight Status</strong></td>
+      <td><code>/api/flightstatus</code></td>
+      <td>Schedule API</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not Started</td>
+      <td><span class="effort low">3-5 days</span></td>
+      <td><span class="risk-tag risk-low">P2</span></td>
+    </tr>
+    <!-- Payments -->
+    <tr><td colspan="6" style="background:#fdf2f8;font-weight:800;color:#9d174d;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;padding:8px 16px">Payments</td></tr>
+    <tr>
+      <td><strong>Card Payment</strong></td>
+      <td><code>/api/payment/process</code></td>
+      <td>Card Processor</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not Started</td>
+      <td><span class="effort med">1-2 weeks</span></td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Mobile Money</strong></td>
+      <td><code>/api/payment/momo</code></td>
+      <td>MTN MoMo API</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not Started</td>
+      <td><span class="effort med">2 weeks</span></td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Wallet</strong></td>
+      <td><code>/api/wallet/*</code></td>
+      <td>Internal (keep)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td><span class="effort low">0</span></td>
+      <td><span class="risk-tag risk-low">P2</span></td>
+    </tr>
+    <tr>
+      <td><strong>DreamMiles</strong></td>
+      <td><code>/api/miles/*</code></td>
+      <td>Internal (keep)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td><span class="effort low">0</span></td>
+      <td><span class="risk-tag risk-low">P2</span></td>
+    </tr>
+    <!-- Internal -->
+    <tr><td colspan="6" style="background:#ecfdf5;font-weight:800;color:#166534;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;padding:8px 16px">Internal (No Migration)</td></tr>
+    <tr>
+      <td><strong>Admin Dashboard</strong></td>
+      <td><code>/api/admin/*</code></td>
+      <td>Internal</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td><span class="effort low">0</span></td>
+      <td style="color:var(--gray)">P3</td>
+    </tr>
+    <tr>
+      <td><strong>CMS</strong></td>
+      <td><code>/api/cms/*</code></td>
+      <td>Internal</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td><span class="effort low">0</span></td>
+      <td style="color:var(--gray)">P3</td>
+    </tr>
+    <tr>
+      <td><strong>Chatbot</strong></td>
+      <td><code>/api/chat</code></td>
+      <td>Internal</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td><span class="effort low">0</span></td>
+      <td style="color:var(--gray)">P3</td>
+    </tr>
+  </table>
+  <div class="slide-number">5 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 6: MIGRATION TIMELINE ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Migration Timeline</h2>
+  <p class="section-sub">14&ndash;18 weeks total with a team of 4 engineers. Phases overlap where possible.</p>
+
+  <div class="timeline">
+    <div class="timeline-phase p1">
+      <h4>Phase 1</h4>
+      <div class="weeks">6 wks</div>
+      <div class="desc">Core Booking</div>
+      <ul>
+        <li>Flight search</li>
+        <li>Fare pricing</li>
+        <li>PNR creation</li>
+        <li>Ticketing</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p2">
+      <h4>Phase 2</h4>
+      <div class="weeks">5 wks</div>
+      <div class="desc">Post-Booking</div>
+      <ul>
+        <li>Manage booking</li>
+        <li>Cancel &amp; refund</li>
+        <li>Rebook</li>
+        <li>Check-in</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p3">
+      <h4>Phase 3</h4>
+      <div class="weeks">4 wks</div>
+      <div class="desc">Ancillaries &amp; Pay</div>
+      <ul>
+        <li>Seats &amp; baggage</li>
+        <li>MTN MoMo</li>
+        <li>Card payments</li>
+        <li>Wallet / Miles</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p4">
+      <h4>Phase 4</h4>
+      <div class="weeks">4 wks</div>
+      <div class="desc">Harden &amp; QA</div>
+      <ul>
+        <li>Error handling</li>
+        <li>Security audit</li>
+        <li>Load testing</li>
+        <li>UAT</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p5">
+      <h4>Phase 5</h4>
+      <div class="weeks">2 wks</div>
+      <div class="desc">Deploy &amp; Go-Live</div>
+      <ul>
+        <li>Soft launch</li>
+        <li>Canary 10%</li>
+        <li>Full rollout</li>
+        <li>Monitoring</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Note:</strong> Phases 2 and 3 can overlap with Phase 1 once the search/booking foundation is stable. With 4 engineers, the backend developer starts Phase 2 while the frontend developer completes Phase 1 integration.
+  </div>
+  <div class="slide-number">6 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 7: CODE REUSE ANALYSIS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Code Reuse Analysis</h2>
+  <p class="section-sub">60% of the codebase carries directly into production with no changes.</p>
+
+  <div style="text-align:center;margin-bottom:24px">
+    <div class="large-ring" style="background: conic-gradient(#16a34a 0% 60%, #dc2626 60% 100%);">
+      <div class="large-ring-inner">
+        <div class="pct">60%</div>
+        <div class="pct-label">Code Reuse</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3 style="color:#16a34a">Stays Unchanged (60%)</h3>
+      <ul class="check-list">
+        <li class="green"><strong>All CSS &amp; design system</strong> (3,000+ lines)</li>
+        <li class="green"><strong>19 destination pages</strong> with AI content</li>
+        <li class="green"><strong>Admin back office</strong> (9 panels)</li>
+        <li class="green"><strong>CMS</strong> with 9 content types</li>
+        <li class="green"><strong>AI chat assistant</strong> (3 languages)</li>
+        <li class="green"><strong>Wallet &amp; transaction system</strong></li>
+        <li class="green"><strong>T2T fare holds UI</strong></li>
+        <li class="green"><strong>Retargeting engine</strong></li>
+        <li class="green"><strong>UI components</strong> (stepper, seat map, forms)</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:#dc2626">Requires Migration (40%)</h3>
+      <ul class="check-list">
+        <li class="red"><strong>API base URL swap</strong> (fetch calls)</li>
+        <li class="red"><strong>Amadeus response data mapping</strong></li>
+        <li class="red"><strong>Payment gateway integration</strong></li>
+        <li class="red"><strong>Real PNR lifecycle handling</strong></li>
+        <li class="red"><strong>Auth token management</strong> (OAuth2)</li>
+        <li class="red"><strong>Error handling &amp; retry logic</strong></li>
+        <li class="red"><strong>Session management</strong></li>
+        <li class="red"><strong>Currency conversion</strong> (USD/EUR &rarr; RWF)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-number">7 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 8: SECURITY & COMPLIANCE ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Security &amp; Compliance</h2>
+  <p class="section-sub">Current posture vs production requirements across key compliance domains.</p>
+
+  <table style="font-size:13px">
+    <tr>
+      <th>Domain</th>
+      <th>Requirement</th>
+      <th>Current Status</th>
+      <th>Production Target</th>
+      <th>Priority</th>
+    </tr>
+    <tr>
+      <td><strong>OWASP Top 10</strong></td>
+      <td>Web security</td>
+      <td><span class="status-dot status-amber"></span> Partial (basic)</td>
+      <td>Full compliance</td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <tr>
+      <td><strong>PCI-DSS</strong></td>
+      <td>Payment data</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not applicable (mock)</td>
+      <td>Level 3 SAQ-A</td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <tr>
+      <td><strong>GDPR</strong></td>
+      <td>Personal data</td>
+      <td><span class="status-dot status-amber"></span> Basic (in-memory)</td>
+      <td>Full compliance + DPO</td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Amadeus OAuth2</strong></td>
+      <td>API authentication</td>
+      <td><span class="status-dot" style="background:#94a3b8"></span> Not started</td>
+      <td>Token refresh + rotation</td>
+      <td><span class="risk-tag risk-high">P0</span></td>
+    </tr>
+    <tr>
+      <td><strong>Rate Limiting</strong></td>
+      <td>API protection</td>
+      <td><span class="status-dot status-amber"></span> Basic (Express)</td>
+      <td>Advanced (per-user/route)</td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Encryption</strong></td>
+      <td>Data in transit/rest</td>
+      <td><span class="status-dot status-amber"></span> HTTPS only</td>
+      <td>HTTPS + AES-256 at rest</td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Input Validation</strong></td>
+      <td>XSS/SQLI prevention</td>
+      <td><span class="status-dot status-amber"></span> Basic sanitization</td>
+      <td>Comprehensive WAF</td>
+      <td><span class="risk-tag risk-med">P1</span></td>
+    </tr>
+    <tr>
+      <td><strong>Audit Logging</strong></td>
+      <td>Compliance trail</td>
+      <td><span class="status-dot status-green"></span> Admin audit log</td>
+      <td>Full audit + SIEM</td>
+      <td><span class="risk-tag risk-low">P2</span></td>
+    </tr>
+  </table>
+
+  <div class="callout warning">
+    <strong>&#9888; PCI-DSS compliance is mandatory before processing real card payments.</strong> Recommend engaging a PCI QSA assessor by May 2026 to ensure readiness before payment gateway go-live in Phase 3.
+  </div>
+  <div class="slide-number">8 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 9: TECHNICAL DEBT & RISKS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Technical Debt &amp; Risks</h2>
+  <p class="section-sub">Known issues in the prototype that must be resolved before production.</p>
+
+  <table style="font-size:13px">
+    <tr>
+      <th style="width:4%">#</th>
+      <th style="width:24%">Issue</th>
+      <th style="width:10%">Severity</th>
+      <th style="width:24%">Impact</th>
+      <th style="width:38%">Mitigation</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong>In-memory data store</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td>Data lost on restart</td>
+      <td>Migrate to PostgreSQL + Redis</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>No automated tests</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td>Regression risk during migration</td>
+      <td>Add Jest + Cypress in Phase 4</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Mock payment gateways</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td>Cannot process real payments</td>
+      <td>Real gateway integration in Phase 3</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Single-server deployment</strong></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>No high availability</td>
+      <td>K8s/ECS cluster deployment</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>No CI/CD pipeline</strong></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>Manual deployment risk</td>
+      <td>GitHub Actions + automated testing</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><strong>Hardcoded configurations</strong></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>Environment-specific issues</td>
+      <td>Config management (dotenv + secrets)</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><strong>No monitoring/alerting</strong></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>Blind to production issues</td>
+      <td>Datadog/CloudWatch + PagerDuty</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><strong>No API versioning</strong></td>
+      <td><span class="risk-tag risk-low">LOW</span></td>
+      <td>Breaking changes risk</td>
+      <td>Versioned API routes (/v1/*)</td>
+    </tr>
+  </table>
+  <div class="slide-number">9 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 10: PERFORMANCE METRICS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Performance Metrics</h2>
+  <p class="section-sub">Current prototype measurements vs production targets.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:32px">&lt; 3s</div>
+      <div class="kpi-label">Search Response Target</div>
+      <div class="kpi-trend neutral">Current: 150ms (mock)</div>
+      <p style="font-size:11px;color:var(--gray);margin-top:6px">Amadeus adds 1-2s latency</p>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:32px">&lt; 5s</div>
+      <div class="kpi-label">Booking Completion Target</div>
+      <div class="kpi-trend neutral">Current: 200ms (mock)</div>
+      <p style="font-size:11px;color:var(--gray);margin-top:6px">Payment adds 3-5s</p>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:32px">500+</div>
+      <div class="kpi-label">Concurrent Users Target</div>
+      <div class="kpi-trend neutral">Current: ~50 (dev)</div>
+      <p style="font-size:11px;color:var(--gray);margin-top:6px">Load testing in Phase 4</p>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:32px">99.9%</div>
+      <div class="kpi-label">Platform Uptime Target</div>
+      <div class="kpi-trend neutral">Current: N/A (prototype)</div>
+      <p style="font-size:11px;color:var(--gray);margin-top:6px">HA deployment required</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px">Performance Requirements</h3>
+  <table>
+    <tr><th>Metric</th><th>Target</th><th>Priority</th></tr>
+    <tr><td><strong>Homepage load</strong></td><td>&lt; 2s</td><td><span class="risk-tag risk-med">P1</span></td></tr>
+    <tr><td><strong>Flight search results</strong></td><td>&lt; 3s</td><td><span class="risk-tag risk-high">P0</span></td></tr>
+    <tr><td><strong>Booking confirmation</strong></td><td>&lt; 5s</td><td><span class="risk-tag risk-high">P0</span></td></tr>
+    <tr><td><strong>Seat map display</strong></td><td>&lt; 2s</td><td><span class="risk-tag risk-med">P1</span></td></tr>
+    <tr><td><strong>Payment processing</strong></td><td>&lt; 10s</td><td><span class="risk-tag risk-high">P0</span></td></tr>
+    <tr><td><strong>Check-in flow</strong></td><td>&lt; 3s</td><td><span class="risk-tag risk-med">P1</span></td></tr>
+    <tr><td><strong>API availability</strong></td><td>99.9%</td><td><span class="risk-tag risk-high">P0</span></td></tr>
+  </table>
+
+  <div class="callout info">
+    <strong>Note:</strong> Performance targets assume Amadeus API latency of 1-2 seconds for search and 2-3 seconds for booking. Caching strategy will be critical for search results (5-min TTL on popular routes).
+  </div>
+  <div class="slide-number">10 / 11</div>
+</div>
+
+<!-- ==================== SLIDE 11: TECHNICAL RECOMMENDATIONS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CTO Technical Report</div>
+  <h2>Technical Recommendations</h2>
+  <p class="section-sub">Prioritized action plan for the next 90 days.</p>
+
+  <div class="card-grid">
+    <div class="info-card" style="border-left:4px solid #3b82f6">
+      <h4 style="color:#3b82f6">Immediate (Next 30 Days)</h4>
+      <ul class="bullet-list" style="margin-top:12px">
+        <li><strong>Hire Amadeus specialist</strong> &mdash; senior backend engineer with GDS experience</li>
+        <li><strong>Set up CI/CD pipeline</strong> &mdash; GitHub Actions with automated testing</li>
+        <li><strong>Provision Amadeus sandbox</strong> &mdash; obtain API keys and test credentials</li>
+        <li><strong>Establish API contract layer</strong> &mdash; interface definitions between frontend and middleware</li>
+      </ul>
+    </div>
+    <div class="info-card" style="border-left:4px solid #f59e0b">
+      <h4 style="color:#f59e0b">Short-term (30&ndash;60 Days)</h4>
+      <ul class="bullet-list" style="margin-top:12px">
+        <li><strong>Begin Phase 1 integration</strong> &mdash; flight search via Amadeus Flight Offers API</li>
+        <li><strong>Set up PostgreSQL + Redis</strong> &mdash; replace in-memory data stores</li>
+        <li><strong>Implement error handling</strong> &mdash; comprehensive framework with retry logic</li>
+        <li><strong>Security audit engagement</strong> &mdash; OWASP assessment and PCI-DSS preparation</li>
+      </ul>
+    </div>
+    <div class="info-card" style="border-left:4px solid #22c55e">
+      <h4 style="color:#22c55e">Medium-term (60&ndash;90 Days)</h4>
+      <ul class="bullet-list" style="margin-top:12px">
+        <li><strong>Complete Phase 2-3</strong> &mdash; post-booking services and payment integrations</li>
+        <li><strong>Load testing</strong> &mdash; realistic traffic patterns with 500+ concurrent users</li>
+        <li><strong>UAT with operations</strong> &mdash; real routes and booking scenarios with ops team</li>
+        <li><strong>Go-live readiness review</strong> &mdash; sign-off checklist for production deployment</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="summary-grid" style="margin-top:32px">
+    <div class="summary-box">
+      <div class="num">4</div>
+      <div class="label">Engineers Required</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">14&ndash;18</div>
+      <div class="label">Weeks Timeline</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">Jul 2026</div>
+      <div class="label">Target Go-Live</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">60%</div>
+      <div class="label">Code Reuse</div>
+    </div>
+  </div>
+  <div class="slide-number">11 / 11</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RwandAir Digital Platform — CFO Revenue & ROI Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rw-blue: #00529b;
+    --rw-sky: #1ea2dc;
+    --rw-yellow: #fee014;
+    --rw-green: #94c943;
+    --dark: #0f172a;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+  }
+
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .logo-bar {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .logo-bar .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--rw-blue); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; }
+
+  /* Cover */
+  .slide.cover {
+    background: linear-gradient(135deg, var(--rw-blue) 0%, #003366 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .cover h1 { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -1px; }
+  .cover .subtitle { font-size: 22px; font-weight: 300; opacity: 0.85; margin-bottom: 40px; }
+  .cover .meta { font-size: 15px; opacity: 0.6; }
+  .cover .meta span { margin: 0 16px; }
+  .cover .badge { display: inline-block; background: var(--rw-yellow); color: var(--dark); font-weight: 700; padding: 8px 24px; border-radius: 8px; font-size: 14px; margin-bottom: 40px; }
+
+  /* Section headers */
+  h2 { font-size: 36px; font-weight: 800; color: var(--rw-blue); margin-bottom: 8px; letter-spacing: -0.5px; }
+  h3 { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--gray); margin-bottom: 32px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { text-align: left; padding: 12px 16px; background: var(--rw-blue); color: #fff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+  tr:hover td { background: #f1f5f9; }
+  .risk-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .risk-high { background: #fee2e2; color: #dc2626; }
+  .risk-med { background: #fef3c7; color: #92400e; }
+  .risk-low { background: #dcfce7; color: #16a34a; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .info-card {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .info-card p { font-size: 13px; color: var(--gray); }
+  .info-card .number { font-size: 32px; font-weight: 900; color: var(--rw-blue); }
+
+  /* Summary boxes */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .summary-box { background: var(--light); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+  .summary-box .num { font-size: 36px; font-weight: 900; color: var(--rw-blue); }
+  .summary-box .label { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+  /* Bullet list */
+  .bullet-list { list-style: none; padding: 0; }
+  .bullet-list li { padding: 10px 0 10px 28px; border-bottom: 1px solid var(--border); font-size: 14px; position: relative; }
+  .bullet-list li::before { content: ''; position: absolute; left: 0; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--rw-blue); }
+  .bullet-list li:last-child { border-bottom: none; }
+
+  /* Two columns */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 20px 0; }
+
+  /* KPI Cards with trends */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .kpi-card { background: var(--light); border-radius: 12px; padding: 24px; text-align: center; border: 1px solid var(--border); }
+  .kpi-value { font-size: 40px; font-weight: 900; color: var(--rw-blue); line-height: 1.1; }
+  .kpi-label { font-size: 13px; color: var(--gray); margin-top: 6px; }
+  .kpi-trend { font-size: 12px; font-weight: 700; margin-top: 8px; }
+  .kpi-trend.up { color: #16a34a; }
+  .kpi-trend.down { color: #dc2626; }
+  .kpi-trend.neutral { color: var(--gray); }
+
+  /* Horizontal bar chart */
+  .bar-chart { margin: 20px 0; }
+  .bar-row { display: flex; align-items: center; margin: 10px 0; }
+  .bar-label { width: 150px; font-size: 13px; font-weight: 600; color: var(--dark); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 32px; background: #e2e8f0; border-radius: 8px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding-left: 12px; color: #fff; font-size: 12px; font-weight: 700; transition: width 0.3s; }
+  .bar-fill.blue { background: linear-gradient(90deg, var(--rw-blue), var(--rw-sky)); }
+  .bar-fill.green { background: linear-gradient(90deg, #16a34a, #22c55e); }
+  .bar-fill.yellow { background: linear-gradient(90deg, #d97706, #f59e0b); }
+  .bar-fill.purple { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+  .bar-value { width: 120px; text-align: right; font-weight: 700; font-size: 14px; color: var(--dark); flex-shrink: 0; padding-left: 12px; }
+
+  /* Progress rings */
+  .progress-rings { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin: 24px 0; }
+  .progress-ring-item { text-align: center; }
+  .progress-ring { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+  .progress-ring-inner { width: 88px; height: 88px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 22px; color: var(--rw-blue); }
+  .progress-ring-label { font-size: 13px; font-weight: 600; color: var(--dark); }
+  .progress-ring-sub { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+  /* Funnel visualization */
+  .funnel { margin: 24px auto; max-width: 600px; }
+  .funnel-step { margin: 3px auto; padding: 14px 20px; text-align: center; border-radius: 8px; color: #fff; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .funnel-step .funnel-num { font-weight: 900; font-size: 18px; }
+  .funnel-step .funnel-pct { font-size: 12px; opacity: 0.8; }
+
+  /* RAG status */
+  .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
+  .status-green { background: #22c55e; }
+  .status-amber { background: #f59e0b; }
+  .status-red { background: #ef4444; }
+
+  /* Callout boxes */
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout.info { background: #eff6ff; border-left: 4px solid var(--rw-blue); }
+  .callout.warning { background: #fefce8; border-left: 4px solid #f59e0b; }
+  .callout.success { background: #ecfdf5; border-left: 4px solid #22c55e; }
+
+  /* Stacked bar */
+  .stacked-bar { display: flex; height: 40px; border-radius: 8px; overflow: hidden; margin: 12px 0; }
+  .stacked-segment { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; min-width: 30px; }
+
+  /* Print */
+  @media print {
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+    body { font-size: 12px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .slide { padding: 30px 20px; }
+    .cover h1 { font-size: 28px; }
+    .card-grid, .summary-grid, .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .bar-label { width: 100px; font-size: 11px; }
+    .bar-value { width: 80px; font-size: 12px; }
+    table { font-size: 12px; }
+    td, th { padding: 8px; }
+    .progress-rings { gap: 16px; }
+    .funnel { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<div class="slide cover">
+  <div>
+    <div class="badge">CONFIDENTIAL &mdash; CFO BRIEFING</div>
+    <h1>RwandAir Digital Platform<br/>CFO Revenue &amp; ROI Report</h1>
+    <p class="subtitle">Financial Performance &amp; Digital Investment Analysis</p>
+    <p class="meta">
+      <span>Q1 2026</span>
+      <span>|</span>
+      <span>March 2026</span>
+      <span>|</span>
+      <span>Finance Division</span>
+    </p>
+  </div>
+  <div class="slide-number" style="color:rgba(255,255,255,0.4)">1 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 2: FINANCIAL SUMMARY ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Financial Summary</h2>
+  <p class="section-sub">Key financial metrics at a glance &mdash; Q1 2026.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">RWF 456M</div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-trend up">&#9650; 18.2% YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">RWF 191.5M</div>
+      <div class="kpi-label">Digital Channel Revenue</div>
+      <div class="kpi-trend up">&#9650; 28.5% YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">13%</div>
+      <div class="kpi-label">Booking Conversion Rate</div>
+      <div class="kpi-trend up">&#9650; 2.1pp YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">RWF 282K</div>
+      <div class="kpi-label">Avg Ticket Value</div>
+      <div class="kpi-trend up">&#9650; 5.7% YoY</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Key Insight:</strong> Digital channels (website + mobile) now contribute 70% of revenue, up from 58% in Q4 2025, validating continued investment in the digital platform.
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-box">
+      <div class="num">1,619</div>
+      <div class="label">Total Bookings</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">348</div>
+      <div class="label">Total PNRs</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">RWF 709M</div>
+      <div class="label">Annualized Revenue</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">42%</div>
+      <div class="label">Digital Direct Share</div>
+    </div>
+  </div>
+  <div class="slide-number">2 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 3: REVENUE BY CHANNEL ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Revenue by Channel</h2>
+  <p class="section-sub">Deep dive into channel performance, commissions, and net revenue.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Channel Mix</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Website</div>
+          <div class="bar-track"><div class="bar-fill blue" style="width:42%">42%</div></div>
+          <div class="bar-value">RWF 191.5M</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Mobile</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:28%">28%</div></div>
+          <div class="bar-value">RWF 127.7M</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Travel Agents</div>
+          <div class="bar-track"><div class="bar-fill yellow" style="width:19%">19%</div></div>
+          <div class="bar-value">RWF 86.6M</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Call Center</div>
+          <div class="bar-track"><div class="bar-fill purple" style="width:11%">11%</div></div>
+          <div class="bar-value">RWF 50.2M</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--gray);margin-top:8px">145 PNRs @ RWF 1.32M/PNR (Website) &bull; 98 PNRs @ RWF 1.30M/PNR (Mobile)<br/>67 PNRs @ RWF 1.29M/PNR (Agents) &bull; 38 PNRs @ RWF 1.32M/PNR (Call Center)</p>
+    </div>
+    <div>
+      <h3>Channel Economics</h3>
+      <table>
+        <tr><th>Channel</th><th>PNRs</th><th>Revenue</th><th>Rev/PNR</th><th>Comm %</th><th>Net Revenue</th></tr>
+        <tr>
+          <td><strong>Website</strong></td>
+          <td>145</td>
+          <td>RWF 191.5M</td>
+          <td>RWF 1.32M</td>
+          <td>0%</td>
+          <td style="font-weight:700">RWF 191.5M</td>
+        </tr>
+        <tr>
+          <td><strong>Mobile</strong></td>
+          <td>98</td>
+          <td>RWF 127.7M</td>
+          <td>RWF 1.30M</td>
+          <td>0%</td>
+          <td style="font-weight:700">RWF 127.7M</td>
+        </tr>
+        <tr>
+          <td><strong>Agents</strong></td>
+          <td>67</td>
+          <td>RWF 86.6M</td>
+          <td>RWF 1.29M</td>
+          <td>7%</td>
+          <td style="font-weight:700">RWF 80.5M</td>
+        </tr>
+        <tr>
+          <td><strong>Call Center</strong></td>
+          <td>38</td>
+          <td>RWF 50.2M</td>
+          <td>RWF 1.32M</td>
+          <td>0%</td>
+          <td style="font-weight:700">RWF 50.2M</td>
+        </tr>
+        <tr style="background:#f1f5f9">
+          <td><strong>TOTAL</strong></td>
+          <td><strong>348</strong></td>
+          <td><strong>RWF 456M</strong></td>
+          <td><strong>RWF 1.31M</strong></td>
+          <td>&mdash;</td>
+          <td style="font-weight:900">RWF 449.9M</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Margin Insight:</strong> Zero commission on digital channels saves RWF 6.1M vs agent commission. Each % shift from agents to digital adds ~RWF 870K in margin per quarter.
+  </div>
+  <div class="slide-number">3 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 4: PAYMENT MIX ANALYSIS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Payment Mix Analysis</h2>
+  <p class="section-sub">Payment method distribution and processing cost analysis.</p>
+
+  <h3>Payment Method Distribution</h3>
+  <div class="stacked-bar">
+    <div class="stacked-segment" style="width:35%;background:#2563eb">Card 35%</div>
+    <div class="stacked-segment" style="width:27%;background:#16a34a">MoMo 27%</div>
+    <div class="stacked-segment" style="width:13%;background:#d97706">Bank 13%</div>
+    <div class="stacked-segment" style="width:11%;background:#7c3aed">Miles 11%</div>
+    <div class="stacked-segment" style="width:9%;background:#0891b2">Wallet 9%</div>
+    <div class="stacked-segment" style="width:5%;background:#475569">Corp 5%</div>
+  </div>
+
+  <table>
+    <tr><th>Payment Method</th><th>Volume</th><th>Revenue</th><th>Processing Fee %</th><th>Net Fee Cost</th></tr>
+    <tr>
+      <td><strong>Card (Visa/MC)</strong></td>
+      <td>35%</td>
+      <td>RWF 159.6M</td>
+      <td>2.8%</td>
+      <td>RWF 4.47M</td>
+    </tr>
+    <tr>
+      <td><strong>Mobile Money</strong></td>
+      <td>27%</td>
+      <td>RWF 123.1M</td>
+      <td>1.5%</td>
+      <td>RWF 1.85M</td>
+    </tr>
+    <tr>
+      <td><strong>Bank Transfer</strong></td>
+      <td>13%</td>
+      <td>RWF 59.3M</td>
+      <td>0.5%</td>
+      <td>RWF 0.30M</td>
+    </tr>
+    <tr>
+      <td><strong>DreamMiles</strong></td>
+      <td>11%</td>
+      <td>RWF 50.2M</td>
+      <td>0%</td>
+      <td>RWF 0</td>
+    </tr>
+    <tr>
+      <td><strong>Wallet</strong></td>
+      <td>9%</td>
+      <td>RWF 41.0M</td>
+      <td>0%</td>
+      <td>RWF 0</td>
+    </tr>
+    <tr>
+      <td><strong>Corporate Invoice</strong></td>
+      <td>5%</td>
+      <td>RWF 22.8M</td>
+      <td>0.3%</td>
+      <td>RWF 0.07M</td>
+    </tr>
+    <tr style="background:#f1f5f9">
+      <td><strong>TOTAL</strong></td>
+      <td><strong>100%</strong></td>
+      <td><strong>RWF 456M</strong></td>
+      <td>&mdash;</td>
+      <td style="font-weight:900">RWF 6.69M <span style="font-size:12px;color:var(--gray);font-weight:500">(1.47% effective rate)</span></td>
+    </tr>
+  </table>
+
+  <div class="callout info">
+    <strong>Payment Insight:</strong> Mobile Money at 27% shows strong digital payment adoption in East Africa. Processing cost of 1.5% is significantly lower than card's 2.8%.
+  </div>
+  <div class="slide-number">4 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 5: REVENUE BY OFFICE ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Revenue by Office</h2>
+  <p class="section-sub">Office-level revenue performance and quarter-over-quarter trends.</p>
+
+  <table>
+    <tr>
+      <th>Office</th>
+      <th>Location</th>
+      <th>PNRs</th>
+      <th>Revenue</th>
+      <th>Avg Ticket</th>
+      <th>Share %</th>
+      <th>QoQ Change</th>
+    </tr>
+    <tr>
+      <td><strong>Kigali HQ</strong></td>
+      <td>Rwanda</td>
+      <td>156</td>
+      <td style="font-weight:700">RWF 285M</td>
+      <td>RWF 1.83M</td>
+      <td>40.2%</td>
+      <td style="color:#16a34a;font-weight:700">&#9650; 15.3%</td>
+    </tr>
+    <tr>
+      <td><strong>Dubai</strong></td>
+      <td>UAE</td>
+      <td>89</td>
+      <td style="font-weight:700">RWF 156M</td>
+      <td>RWF 1.75M</td>
+      <td>22.0%</td>
+      <td style="color:#16a34a;font-weight:700">&#9650; 24.8%</td>
+    </tr>
+    <tr>
+      <td><strong>Brussels</strong></td>
+      <td>Belgium</td>
+      <td>62</td>
+      <td style="font-weight:700">RWF 112M</td>
+      <td>RWF 1.81M</td>
+      <td>15.8%</td>
+      <td style="color:#16a34a;font-weight:700">&#9650; 8.7%</td>
+    </tr>
+    <tr>
+      <td><strong>Nairobi</strong></td>
+      <td>Kenya</td>
+      <td>78</td>
+      <td style="font-weight:700">RWF 89M</td>
+      <td>RWF 1.14M</td>
+      <td>12.5%</td>
+      <td style="color:#16a34a;font-weight:700">&#9650; 11.2%</td>
+    </tr>
+    <tr>
+      <td><strong>Johannesburg</strong></td>
+      <td>SA</td>
+      <td>45</td>
+      <td style="font-weight:700">RWF 67M</td>
+      <td>RWF 1.49M</td>
+      <td>9.5%</td>
+      <td style="color:#dc2626;font-weight:700">&#9660; 3.1%</td>
+    </tr>
+  </table>
+
+  <div class="bar-chart" style="margin-top:20px">
+    <div class="bar-row">
+      <div class="bar-label">Kigali HQ</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:40%">RWF 285M</div></div>
+      <div class="bar-value">40.2%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Dubai</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:22%">RWF 156M</div></div>
+      <div class="bar-value">22.0%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Brussels</div>
+      <div class="bar-track"><div class="bar-fill yellow" style="width:16%">RWF 112M</div></div>
+      <div class="bar-value">15.8%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Nairobi</div>
+      <div class="bar-track"><div class="bar-fill purple" style="width:12.5%">RWF 89M</div></div>
+      <div class="bar-value">12.5%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Johannesburg</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:9.5%">RWF 67M</div></div>
+      <div class="bar-value">9.5%</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Growth Highlight:</strong> Dubai office shows strongest QoQ growth (+24.8%), driven by increased direct flights and corporate travel recovery.
+  </div>
+  <div class="slide-number">5 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 6: ROUTE PROFITABILITY ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Route Profitability</h2>
+  <p class="section-sub">Top 10 revenue-generating routes &mdash; fare breakdown by class.</p>
+
+  <table>
+    <tr>
+      <th>Route</th>
+      <th>Aircraft</th>
+      <th>Economy Fare</th>
+      <th>Business Fare</th>
+      <th>Est. Revenue</th>
+      <th>Revenue Rank</th>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; DXB</strong></td>
+      <td>B737-800</td>
+      <td>RWF 385,000</td>
+      <td>RWF 1,540,000</td>
+      <td style="font-weight:700">RWF 86.2M</td>
+      <td><span style="background:var(--rw-blue);color:#fff;padding:2px 10px;border-radius:4px;font-weight:700">#1</span></td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; LHR</strong></td>
+      <td>A330</td>
+      <td>RWF 750,000</td>
+      <td>RWF 3,000,000</td>
+      <td style="font-weight:700">RWF 72.5M</td>
+      <td><span style="background:var(--rw-sky);color:#fff;padding:2px 10px;border-radius:4px;font-weight:700">#2</span></td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; BRU</strong></td>
+      <td>A330</td>
+      <td>RWF 680,000</td>
+      <td>RWF 2,720,000</td>
+      <td style="font-weight:700">RWF 65.8M</td>
+      <td><span style="background:var(--rw-sky);color:#fff;padding:2px 10px;border-radius:4px;font-weight:700">#3</span></td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; NBO</strong></td>
+      <td>B737-800</td>
+      <td>RWF 125,000</td>
+      <td>RWF 500,000</td>
+      <td style="font-weight:700">RWF 58.3M</td>
+      <td>#4</td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; JNB</strong></td>
+      <td>A330</td>
+      <td>RWF 450,000</td>
+      <td>RWF 1,800,000</td>
+      <td style="font-weight:700">RWF 52.1M</td>
+      <td>#5</td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; MBJ</strong></td>
+      <td>B737-800</td>
+      <td>RWF 285,000</td>
+      <td>RWF 1,140,000</td>
+      <td style="font-weight:700">RWF 34.7M</td>
+      <td>#6</td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; EBB</strong></td>
+      <td>CRJ-900</td>
+      <td>RWF 95,000</td>
+      <td>RWF 380,000</td>
+      <td style="font-weight:700">RWF 28.4M</td>
+      <td>#7</td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; DAR</strong></td>
+      <td>B737-800</td>
+      <td>RWF 145,000</td>
+      <td>RWF 580,000</td>
+      <td style="font-weight:700">RWF 25.1M</td>
+      <td>#8</td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; CAN</strong></td>
+      <td>A330</td>
+      <td>RWF 850,000</td>
+      <td>RWF 3,400,000</td>
+      <td style="font-weight:700">RWF 22.8M</td>
+      <td>#9</td>
+    </tr>
+    <tr>
+      <td><strong>KGL &rarr; ADD</strong></td>
+      <td>B737-800</td>
+      <td>RWF 175,000</td>
+      <td>RWF 700,000</td>
+      <td style="font-weight:700">RWF 19.6M</td>
+      <td>#10</td>
+    </tr>
+  </table>
+
+  <div class="callout info">
+    <strong>Revenue Mix:</strong> Business class contributes 4x fare premium on all routes. Long-haul routes (DXB, LHR, BRU) generate 49% of total revenue from 25% of PNRs.
+  </div>
+  <div class="slide-number">6 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 7: ANCILLARY REVENUE ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Ancillary Revenue</h2>
+  <p class="section-sub">Non-ticket revenue streams &mdash; add-ons and service upsells.</p>
+
+  <table>
+    <tr>
+      <th>Ancillary</th>
+      <th>Qty Sold</th>
+      <th>Revenue</th>
+      <th>Avg Price</th>
+      <th>% of Total Ancillary</th>
+    </tr>
+    <tr>
+      <td><strong>Extra Baggage</strong></td>
+      <td>234</td>
+      <td style="font-weight:700">RWF 8.2M</td>
+      <td>RWF 35,000</td>
+      <td>42%</td>
+    </tr>
+    <tr>
+      <td><strong>Seat Selection</strong></td>
+      <td>189</td>
+      <td style="font-weight:700">RWF 4.7M</td>
+      <td>RWF 25,000</td>
+      <td>24%</td>
+    </tr>
+    <tr>
+      <td><strong>Lounge Access</strong></td>
+      <td>67</td>
+      <td style="font-weight:700">RWF 2.7M</td>
+      <td>RWF 40,000</td>
+      <td>14%</td>
+    </tr>
+    <tr>
+      <td><strong>Travel Insurance</strong></td>
+      <td>145</td>
+      <td style="font-weight:700">RWF 2.2M</td>
+      <td>RWF 15,000</td>
+      <td>11%</td>
+    </tr>
+    <tr>
+      <td><strong>Priority Boarding</strong></td>
+      <td>98</td>
+      <td style="font-weight:700">RWF 1.0M</td>
+      <td>RWF 10,000</td>
+      <td>5%</td>
+    </tr>
+    <tr>
+      <td><strong>Special Meals</strong></td>
+      <td>56</td>
+      <td style="font-weight:700">RWF 0.8M</td>
+      <td>RWF 14,000</td>
+      <td>4%</td>
+    </tr>
+    <tr style="background:#f1f5f9">
+      <td><strong>TOTAL</strong></td>
+      <td><strong>789</strong></td>
+      <td style="font-weight:900">RWF 19.6M</td>
+      <td>&mdash;</td>
+      <td><strong>100%</strong></td>
+    </tr>
+  </table>
+
+  <div class="summary-grid">
+    <div class="summary-box">
+      <div class="num">RWF 19.6M</div>
+      <div class="label">Total Ancillary</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">RWF 12,100</div>
+      <div class="label">Ancillary/Booking</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">4.3%</div>
+      <div class="label">of Total Revenue</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">&#9650; 32%</div>
+      <div class="label">vs Q4 2025</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Growth Opportunity:</strong> Ancillary revenue growing faster than base fares. Target: increase to 8% of total revenue by Q4 2026 through improved seat selection UX and travel insurance upsell.
+  </div>
+  <div class="slide-number">7 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 8: DIGITAL TRANSFORMATION ROI ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Digital Transformation ROI</h2>
+  <p class="section-sub">Investment analysis and projected return over 12 months post-launch.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Investment (18-Month View)</h3>
+      <table>
+        <tr><th>Item</th><th>Cost</th></tr>
+        <tr>
+          <td>Development team (4 engineers x 18 weeks)</td>
+          <td style="font-weight:700">USD 192,000</td>
+        </tr>
+        <tr>
+          <td>Amadeus API licensing (annual)</td>
+          <td style="font-weight:700">USD 45,000</td>
+        </tr>
+        <tr>
+          <td>Infrastructure (cloud hosting)</td>
+          <td style="font-weight:700">USD 24,000</td>
+        </tr>
+        <tr>
+          <td>QA &amp; testing</td>
+          <td style="font-weight:700">USD 18,000</td>
+        </tr>
+        <tr>
+          <td>Contingency (15%)</td>
+          <td style="font-weight:700">USD 42,000</td>
+        </tr>
+        <tr style="background:#f1f5f9">
+          <td><strong>TOTAL</strong></td>
+          <td style="font-weight:900">USD 321,000 <span style="font-size:12px;color:var(--gray);font-weight:500">(~RWF 410M)</span></td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3>Projected Return (12-Month Post-Launch)</h3>
+      <table>
+        <tr><th>Benefit</th><th>Value</th></tr>
+        <tr>
+          <td>Conversion rate improvement (13% &rarr; 18%)</td>
+          <td style="font-weight:700;color:#16a34a">+RWF 175M/year</td>
+        </tr>
+        <tr>
+          <td>Agent commission savings (7% &rarr; 0% digital)</td>
+          <td style="font-weight:700;color:#16a34a">+RWF 24M/year</td>
+        </tr>
+        <tr>
+          <td>Call center cost reduction (-30%)</td>
+          <td style="font-weight:700;color:#16a34a">+RWF 18M/year</td>
+        </tr>
+        <tr>
+          <td>Ancillary revenue growth (4% &rarr; 8%)</td>
+          <td style="font-weight:700;color:#16a34a">+RWF 38M/year</td>
+        </tr>
+        <tr>
+          <td>Mobile Money adoption increase</td>
+          <td style="font-weight:700;color:#16a34a">+RWF 12M/year</td>
+        </tr>
+        <tr style="background:#f1f5f9">
+          <td><strong>TOTAL BENEFIT</strong></td>
+          <td style="font-weight:900;color:#16a34a">RWF 267M/year</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-box">
+      <div class="num">USD 321K</div>
+      <div class="label">Total Investment</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">RWF 267M</div>
+      <div class="label">Annual Benefit</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">10 Months</div>
+      <div class="label">Payback Period</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">183%</div>
+      <div class="label">3-Year ROI</div>
+    </div>
+  </div>
+  <div class="slide-number">8 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 9: BUDGET VS ACTUALS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Budget vs Actuals</h2>
+  <p class="section-sub">Q1 2026 spend tracking against approved budget.</p>
+
+  <table>
+    <tr>
+      <th>Line Item</th>
+      <th>Budget (Q1)</th>
+      <th>Actual (Q1)</th>
+      <th>Variance</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td><strong>Development</strong></td>
+      <td>RWF 85M</td>
+      <td>RWF 78M</td>
+      <td style="color:#16a34a;font-weight:700">RWF -7M (&#9660; 8.2%)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+    </tr>
+    <tr>
+      <td><strong>Infrastructure</strong></td>
+      <td>RWF 12M</td>
+      <td>RWF 11.5M</td>
+      <td style="color:#16a34a;font-weight:700">RWF -0.5M (&#9660; 4.2%)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+    </tr>
+    <tr>
+      <td><strong>Licensing</strong></td>
+      <td>RWF 15M</td>
+      <td>RWF 15M</td>
+      <td style="font-weight:700">RWF 0 (0%)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+    </tr>
+    <tr>
+      <td><strong>Marketing</strong></td>
+      <td>RWF 25M</td>
+      <td>RWF 28M</td>
+      <td style="color:#dc2626;font-weight:700">RWF +3M (&#9650; 12%)</td>
+      <td><span class="status-dot status-amber"></span> Amber</td>
+    </tr>
+    <tr>
+      <td><strong>QA/Testing</strong></td>
+      <td>RWF 8M</td>
+      <td>RWF 6M</td>
+      <td style="color:#16a34a;font-weight:700">RWF -2M (&#9660; 25%)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+    </tr>
+    <tr>
+      <td><strong>Contingency</strong></td>
+      <td>RWF 10M</td>
+      <td>RWF 3M</td>
+      <td style="color:#16a34a;font-weight:700">RWF -7M (&#9660; 70%)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+    </tr>
+    <tr style="background:#f1f5f9">
+      <td><strong>TOTAL</strong></td>
+      <td><strong>RWF 155M</strong></td>
+      <td><strong>RWF 141.5M</strong></td>
+      <td style="color:#16a34a;font-weight:900">RWF -13.5M (&#9660; 8.7%)</td>
+      <td><span class="status-dot status-green"></span> Green</td>
+    </tr>
+  </table>
+
+  <h3 style="margin-top:24px">Budget vs Actual by Category</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">Development</div>
+      <div class="bar-track">
+        <div class="bar-fill blue" style="width:55%">RWF 78M</div>
+      </div>
+      <div class="bar-value" style="font-size:11px;width:140px">Budget: RWF 85M</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Marketing</div>
+      <div class="bar-track">
+        <div class="bar-fill yellow" style="width:20%">RWF 28M</div>
+      </div>
+      <div class="bar-value" style="font-size:11px;width:140px">Budget: RWF 25M</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Licensing</div>
+      <div class="bar-track">
+        <div class="bar-fill green" style="width:10.5%">RWF 15M</div>
+      </div>
+      <div class="bar-value" style="font-size:11px;width:140px">Budget: RWF 15M</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Infrastructure</div>
+      <div class="bar-track">
+        <div class="bar-fill blue" style="width:8%">RWF 11.5M</div>
+      </div>
+      <div class="bar-value" style="font-size:11px;width:140px">Budget: RWF 12M</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">QA/Testing</div>
+      <div class="bar-track">
+        <div class="bar-fill green" style="width:4.2%"></div>
+      </div>
+      <div class="bar-value" style="font-size:11px;width:140px">RWF 6M / 8M</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Contingency</div>
+      <div class="bar-track">
+        <div class="bar-fill purple" style="width:2.1%"></div>
+      </div>
+      <div class="bar-value" style="font-size:11px;width:140px">RWF 3M / 10M</div>
+    </div>
+  </div>
+
+  <div class="callout success">
+    <strong>Budget Performance:</strong> Q1 spend is 8.7% under budget. Development team delivered ahead of schedule, allowing contingency reserve for Phase 2&ndash;3 risks.
+  </div>
+  <div class="slide-number">9 / 10</div>
+</div>
+
+<!-- ==================== SLIDE 10: FINANCIAL OUTLOOK & RECOMMENDATIONS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; CFO Revenue Report</div>
+  <h2>Financial Outlook &amp; Recommendations</h2>
+  <p class="section-sub">Q2 targets, cost optimization, and investment priorities.</p>
+
+  <div class="card-grid">
+    <div class="info-card" style="border-left:4px solid var(--rw-blue)">
+      <h4>Revenue Target Q2</h4>
+      <div class="number" style="margin:12px 0">RWF 540M</div>
+      <p style="font-size:14px;color:var(--dark)"><strong>+18% QoQ.</strong> Drive by increasing digital channel share to 75% and launching business class promotions on long-haul routes.</p>
+    </div>
+    <div class="info-card" style="border-left:4px solid #16a34a">
+      <h4>Cost Optimization</h4>
+      <div class="number" style="margin:12px 0;font-size:24px">1.47% &rarr; 1.2%</div>
+      <p style="font-size:14px;color:var(--dark)">Reduce processing fees by shifting card payments to Mobile Money. <strong>Estimated savings: RWF 1.2M/quarter.</strong></p>
+    </div>
+    <div class="info-card" style="border-left:4px solid #f59e0b">
+      <h4>Investment Priorities</h4>
+      <ul style="font-size:13px;color:var(--dark);padding-left:16px;margin-top:12px;line-height:2">
+        <li><strong>Amadeus licensing approval</strong> (Apr 15 deadline)</li>
+        <li><strong>Senior Amadeus engineer hire</strong> (critical path)</li>
+        <li><strong>Mobile app parity</strong> with web platform</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg, #eff6ff, #dbeafe);border-radius:16px;padding:32px;margin-top:32px;text-align:center">
+    <div style="font-size:16px;color:var(--gray);margin-bottom:8px">FY2026 FINANCIAL TARGETS</div>
+    <div class="summary-grid" style="margin:16px 0 0 0">
+      <div class="summary-box" style="background:#fff">
+        <div class="num">RWF 600M</div>
+        <div class="label">FY2026 Revenue Target</div>
+      </div>
+      <div class="summary-box" style="background:#fff">
+        <div class="num">75%</div>
+        <div class="label">Digital Channel Share</div>
+      </div>
+      <div class="summary-box" style="background:#fff">
+        <div class="num">8%</div>
+        <div class="label">Ancillary Revenue Share</div>
+      </div>
+      <div class="summary-box" style="background:#fff">
+        <div class="num">&lt;1.3%</div>
+        <div class="label">Payment Processing Rate</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">10 / 10</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RwandAir Digital Platform — Board Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rw-blue: #00529b;
+    --rw-sky: #1ea2dc;
+    --rw-yellow: #fee014;
+    --rw-green: #94c943;
+    --dark: #0f172a;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+  }
+
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .logo-bar {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .logo-bar .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--rw-blue); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; }
+
+  /* Cover */
+  .slide.cover {
+    background: linear-gradient(135deg, var(--rw-blue) 0%, #003366 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .cover h1 { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -1px; }
+  .cover .subtitle { font-size: 22px; font-weight: 300; opacity: 0.85; margin-bottom: 40px; }
+  .cover .meta { font-size: 15px; opacity: 0.6; }
+  .cover .meta span { margin: 0 16px; }
+  .cover .badge { display: inline-block; background: var(--rw-yellow); color: var(--dark); font-weight: 700; padding: 8px 24px; border-radius: 8px; font-size: 14px; margin-bottom: 40px; }
+
+  /* Section headers */
+  h2 { font-size: 36px; font-weight: 800; color: var(--rw-blue); margin-bottom: 8px; letter-spacing: -0.5px; }
+  h3 { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--gray); margin-bottom: 32px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { text-align: left; padding: 12px 16px; background: var(--rw-blue); color: #fff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+  tr:hover td { background: #f1f5f9; }
+  .risk-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .risk-high { background: #fee2e2; color: #dc2626; }
+  .risk-med { background: #fef3c7; color: #92400e; }
+  .risk-low { background: #dcfce7; color: #16a34a; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .info-card {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .info-card p { font-size: 13px; color: var(--gray); }
+  .info-card .number { font-size: 32px; font-weight: 900; color: var(--rw-blue); }
+
+  /* Summary boxes */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .summary-box { background: var(--light); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+  .summary-box .num { font-size: 36px; font-weight: 900; color: var(--rw-blue); }
+  .summary-box .label { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+  /* Two columns */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 20px 0; }
+
+  /* KPI Cards with trends */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .kpi-card { background: var(--light); border-radius: 12px; padding: 24px; text-align: center; border: 1px solid var(--border); }
+  .kpi-value { font-size: 40px; font-weight: 900; color: var(--rw-blue); line-height: 1.1; }
+  .kpi-label { font-size: 13px; color: var(--gray); margin-top: 6px; }
+  .kpi-trend { font-size: 12px; font-weight: 700; margin-top: 8px; }
+  .kpi-trend.up { color: #16a34a; }
+  .kpi-trend.down { color: #dc2626; }
+  .kpi-trend.neutral { color: var(--gray); }
+
+  /* Horizontal bar chart */
+  .bar-chart { margin: 20px 0; }
+  .bar-row { display: flex; align-items: center; margin: 10px 0; }
+  .bar-label { width: 150px; font-size: 13px; font-weight: 600; color: var(--dark); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 32px; background: #e2e8f0; border-radius: 8px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding-left: 12px; color: #fff; font-size: 12px; font-weight: 700; transition: width 0.3s; }
+  .bar-fill.blue { background: linear-gradient(90deg, var(--rw-blue), var(--rw-sky)); }
+  .bar-fill.green { background: linear-gradient(90deg, #16a34a, #22c55e); }
+  .bar-fill.yellow { background: linear-gradient(90deg, #d97706, #f59e0b); }
+  .bar-fill.purple { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+  .bar-fill.cyan { background: linear-gradient(90deg, #0891b2, #22d3ee); }
+  .bar-fill.gray-fill { background: linear-gradient(90deg, #64748b, #94a3b8); }
+  .bar-value { width: 120px; text-align: right; font-weight: 700; font-size: 14px; color: var(--dark); flex-shrink: 0; padding-left: 12px; }
+
+  /* RAG status */
+  .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
+  .status-green { background: #22c55e; }
+  .status-amber { background: #f59e0b; }
+  .status-red { background: #ef4444; }
+
+  /* Callout boxes */
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout.info { background: #eff6ff; border-left: 4px solid var(--rw-blue); }
+  .callout.warning { background: #fefce8; border-left: 4px solid #f59e0b; }
+  .callout.success { background: #ecfdf5; border-left: 4px solid #22c55e; }
+
+  /* Stacked bar */
+  .stacked-bar { display: flex; height: 40px; border-radius: 8px; overflow: hidden; margin: 16px 0; }
+  .stacked-bar .segment { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+
+  /* Decision cards */
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+
+  /* Mini progress bar inline */
+  .mini-progress { display: inline-block; width: 120px; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; vertical-align: middle; margin-right: 8px; }
+  .mini-progress .fill { height: 100%; border-radius: 5px; }
+  .mini-progress .fill.green { background: #22c55e; }
+  .mini-progress .fill.blue { background: var(--rw-blue); }
+  .mini-progress .fill.yellow { background: #f59e0b; }
+
+  /* Print */
+  @media print {
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+    body { font-size: 12px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .slide { padding: 30px 20px; }
+    .cover h1 { font-size: 28px; }
+    .card-grid, .summary-grid, .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .bar-label { width: 100px; font-size: 11px; }
+    .bar-value { width: 80px; font-size: 12px; }
+    table { font-size: 12px; }
+    td, th { padding: 8px; }
+    .decision-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<div class="slide cover">
+  <div>
+    <div class="badge">CONFIDENTIAL &mdash; BOARD OF DIRECTORS</div>
+    <h1>RwandAir Digital Platform<br/>Board Summary</h1>
+    <p class="subtitle">Q1 2026 Performance, Strategic Progress &amp; Key Decisions</p>
+    <p class="meta">
+      <span>Q1 2026</span>
+      <span>|</span>
+      <span>March 2026</span>
+      <span>|</span>
+      <span>Prepared for Board of Directors</span>
+    </p>
+  </div>
+  <div class="slide-number" style="color:rgba(255,255,255,0.4)">1 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 2: EXECUTIVE SUMMARY ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Executive Summary</h2>
+  <p class="section-sub">Three critical updates for board awareness &mdash; Q1 2026.</p>
+
+  <div class="info-card" style="border-left:4px solid var(--rw-blue); margin-bottom:16px">
+    <h4 style="color:var(--rw-blue)">Digital Platform Complete</h4>
+    <p>Full booking platform prototype operational with 22 API endpoints, 19 destination pages, admin dashboard, AI chatbot, wallet system, and 7 payment methods. Ready for production migration.</p>
+  </div>
+
+  <div class="info-card" style="border-left:4px solid #22c55e; margin-bottom:16px">
+    <h4 style="color:#16a34a">Revenue Performance</h4>
+    <p>RWF 456M total revenue in Q1 2026 (&#9650;18% QoQ). Digital channels (website + mobile) now represent 70% of bookings, up from 53% in Q3 2025.</p>
+  </div>
+
+  <div class="info-card" style="border-left:4px solid #f59e0b; margin-bottom:16px">
+    <h4 style="color:#d97706">Amadeus Migration On Track</h4>
+    <p>5-phase migration plan to Amadeus Digital APIs in progress. Phase 1 (Core Booking) at 35% completion. Target go-live: July 2026 (Q3).</p>
+  </div>
+
+  <div class="callout info">
+    <strong>Key Takeaway:</strong> The digital transformation is delivering measurable results: conversion rate up 2.1pp to 13%, AI chatbot resolving 80% of inquiries, and mobile bookings growing 30% quarter-over-quarter.
+  </div>
+
+  <div class="slide-number">2 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 3: KEY PERFORMANCE INDICATORS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Key Performance Indicators</h2>
+  <p class="section-sub">Core metrics across revenue, digital adoption, and operations &mdash; Q1 2026.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:34px">RWF 456M</div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-trend up">&#9650; 18.2% QoQ</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">42%</div>
+      <div class="kpi-label">Digital Direct Share</div>
+      <div class="kpi-trend up">&#9650; from 35%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">13%</div>
+      <div class="kpi-label">Conversion Rate</div>
+      <div class="kpi-trend up">&#9650; 2.1pp</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">19</div>
+      <div class="kpi-label">Active Routes</div>
+      <div class="kpi-trend up">&#9650; 3 new</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:34px">1,619</div>
+      <div class="kpi-label">Confirmed Bookings</div>
+      <div class="kpi-trend up">&#9650; 22%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value" style="font-size:34px">RWF 282K</div>
+      <div class="kpi-label">Avg Ticket Value</div>
+      <div class="kpi-trend up">&#9650; 5.7%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">80%</div>
+      <div class="kpi-label">AI Resolution Rate</div>
+      <div class="kpi-trend up">&#9650; 5pp</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">35%</div>
+      <div class="kpi-label">Phase 1 Migration</div>
+      <div class="kpi-trend neutral">In Progress</div>
+    </div>
+  </div>
+
+  <div class="slide-number">3 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 4: FINANCIAL HIGHLIGHTS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Financial Highlights</h2>
+  <p class="section-sub">Revenue by channel and payment mix &mdash; Q1 2026.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Revenue by Channel</h3>
+      <div class="stacked-bar">
+        <div class="segment" style="width:42%; background:linear-gradient(90deg, var(--rw-blue), var(--rw-sky))">42%</div>
+        <div class="segment" style="width:28%; background:linear-gradient(90deg, #16a34a, #22c55e)">28%</div>
+        <div class="segment" style="width:19%; background:linear-gradient(90deg, #d97706, #f59e0b)">19%</div>
+        <div class="segment" style="width:11%; background:linear-gradient(90deg, #7c3aed, #a78bfa)">11%</div>
+      </div>
+      <div style="display:flex; gap:16px; font-size:11px; color:var(--gray); margin-bottom:16px; flex-wrap:wrap">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--rw-blue);margin-right:4px;vertical-align:middle"></span>Website 42%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#22c55e;margin-right:4px;vertical-align:middle"></span>Mobile 28%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#f59e0b;margin-right:4px;vertical-align:middle"></span>Agents 19%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#a78bfa;margin-right:4px;vertical-align:middle"></span>Call Center 11%</span>
+      </div>
+
+      <table style="margin-top:8px">
+        <tr><th>Channel</th><th>Revenue</th><th>QoQ Change</th></tr>
+        <tr><td><strong>Website</strong></td><td>RWF 191.5M</td><td style="color:#16a34a;font-weight:700">+21%</td></tr>
+        <tr><td><strong>Mobile</strong></td><td>RWF 127.7M</td><td style="color:#16a34a;font-weight:700">+30%</td></tr>
+        <tr><td><strong>Agents</strong></td><td>RWF 86.6M</td><td style="color:#dc2626;font-weight:700">-5%</td></tr>
+        <tr><td><strong>Call Center</strong></td><td>RWF 50.2M</td><td style="color:#dc2626;font-weight:700">-15%</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <h3>Payment Mix</h3>
+      <div class="stacked-bar">
+        <div class="segment" style="width:35%; background:linear-gradient(90deg, var(--rw-blue), var(--rw-sky))">35%</div>
+        <div class="segment" style="width:27%; background:linear-gradient(90deg, #16a34a, #22c55e)">27%</div>
+        <div class="segment" style="width:13%; background:linear-gradient(90deg, #d97706, #f59e0b)">13%</div>
+        <div class="segment" style="width:11%; background:linear-gradient(90deg, #7c3aed, #a78bfa)">11%</div>
+        <div class="segment" style="width:9%; background:linear-gradient(90deg, #0891b2, #22d3ee)">9%</div>
+        <div class="segment" style="width:5%; background:linear-gradient(90deg, #64748b, #94a3b8); font-size:9px">5%</div>
+      </div>
+      <div style="display:flex; gap:12px; font-size:11px; color:var(--gray); margin-bottom:16px; flex-wrap:wrap">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--rw-blue);margin-right:4px;vertical-align:middle"></span>Card 35%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#22c55e;margin-right:4px;vertical-align:middle"></span>Mobile Money 27%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#f59e0b;margin-right:4px;vertical-align:middle"></span>Bank Transfer 13%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#a78bfa;margin-right:4px;vertical-align:middle"></span>DreamMiles 11%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#22d3ee;margin-right:4px;vertical-align:middle"></span>Wallet 9%</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#94a3b8;margin-right:4px;vertical-align:middle"></span>Corporate 5%</span>
+      </div>
+
+      <div class="bar-chart" style="margin-top:8px">
+        <div class="bar-row">
+          <div class="bar-label" style="width:120px">Card</div>
+          <div class="bar-track"><div class="bar-fill blue" style="width:35%">35%</div></div>
+          <div class="bar-value" style="width:50px">35%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:120px">Mobile Money</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:27%">27%</div></div>
+          <div class="bar-value" style="width:50px">27%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:120px">Bank Transfer</div>
+          <div class="bar-track"><div class="bar-fill yellow" style="width:13%">13%</div></div>
+          <div class="bar-value" style="width:50px">13%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:120px">DreamMiles</div>
+          <div class="bar-track"><div class="bar-fill purple" style="width:11%">11%</div></div>
+          <div class="bar-value" style="width:50px">11%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:120px">Wallet</div>
+          <div class="bar-track"><div class="bar-fill cyan" style="width:9%"></div></div>
+          <div class="bar-value" style="width:50px">9%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="width:120px">Corporate</div>
+          <div class="bar-track"><div class="bar-fill gray-fill" style="width:5%"></div></div>
+          <div class="bar-value" style="width:50px">5%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Key Insight:</strong> Mobile Money at 27% demonstrates strong digital payment adoption in the East African market. Zero commission on digital channels saves RWF 6.1M vs agent commissions.
+  </div>
+
+  <div class="slide-number">4 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 5: STRATEGIC PROGRESS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Strategic Progress</h2>
+  <p class="section-sub">RAG status of key digital transformation initiatives.</p>
+
+  <table>
+    <tr>
+      <th>Initiative</th>
+      <th>Status</th>
+      <th>Owner</th>
+      <th>Target</th>
+      <th style="width:220px">Progress</th>
+    </tr>
+    <tr>
+      <td><strong>Amadeus API Migration</strong></td>
+      <td><span class="status-dot status-amber"></span> Amber</td>
+      <td>CTO</td>
+      <td>Jul 2026</td>
+      <td>
+        <div class="mini-progress"><div class="fill yellow" style="width:20%"></div></div> 20%
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Digital Booking Platform</strong></td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td>Product</td>
+      <td>Complete</td>
+      <td>
+        <div class="mini-progress"><div class="fill green" style="width:100%"></div></div> 100%
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Payment Integration</strong></td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td>Payments</td>
+      <td>Apr 2026</td>
+      <td>
+        <div class="mini-progress"><div class="fill green" style="width:75%"></div></div> 75%
+      </td>
+    </tr>
+    <tr>
+      <td><strong>AI Customer Service</strong></td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td>CX Team</td>
+      <td>Complete</td>
+      <td>
+        <div class="mini-progress"><div class="fill green" style="width:100%"></div></div> 100%
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Loyalty (DreamMiles)</strong></td>
+      <td><span class="status-dot status-green"></span> Green</td>
+      <td>Marketing</td>
+      <td>May 2026</td>
+      <td>
+        <div class="mini-progress"><div class="fill green" style="width:65%"></div></div> 65%
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Route Expansion</strong></td>
+      <td><span class="status-dot status-amber"></span> Amber</td>
+      <td>Network</td>
+      <td>Q2 2026</td>
+      <td>
+        <div class="mini-progress"><div class="fill yellow" style="width:40%"></div></div> 40%
+      </td>
+    </tr>
+  </table>
+
+  <div class="slide-number">5 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 6: RISK REGISTER ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Risk Register</h2>
+  <p class="section-sub">Top risks requiring board awareness and mitigation actions.</p>
+
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Risk</th>
+      <th>Impact</th>
+      <th>Likelihood</th>
+      <th>Mitigation</th>
+    </tr>
+    <tr>
+      <td style="font-weight:700">1</td>
+      <td><strong>Amadeus sandbox access delay</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>Escalate to Amadeus account manager; alternative: use certification environment</td>
+    </tr>
+    <tr>
+      <td style="font-weight:700">2</td>
+      <td><strong>Branded fare mapping complexity</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td>1-week discovery sprint; configurable fare-family engine</td>
+    </tr>
+    <tr>
+      <td style="font-weight:700">3</td>
+      <td><strong>Senior Amadeus engineer shortage</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>Engage Amadeus professional services for first 6 weeks as bridge</td>
+    </tr>
+    <tr>
+      <td style="font-weight:700">4</td>
+      <td><strong>Payment gateway timeout risks</strong></td>
+      <td><span class="risk-tag risk-high">HIGH</span></td>
+      <td><span class="risk-tag risk-med">MED</span></td>
+      <td>Pending payment queue with auto-retry; manual resolution queue</td>
+    </tr>
+  </table>
+
+  <div class="callout warning">
+    <strong>&#9888; Critical Path Alert:</strong> Risk #3 is on critical path. Without an Amadeus-experienced engineer, timeline extends by 4&ndash;6 weeks. Recommend immediate action.
+  </div>
+
+  <div class="slide-number">6 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 7: DECISIONS REQUIRED ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Decisions Required</h2>
+  <p class="section-sub">Four items requiring board decision and approval.</p>
+
+  <div class="decision-grid">
+    <div class="info-card" style="border-left:4px solid #dc2626">
+      <h4 style="color:#dc2626">1. Approve Amadeus Licensing Budget</h4>
+      <p>USD 45,000/year for Digital API access.</p>
+      <p style="margin-top:8px"><strong>Deadline:</strong> April 15, 2026</p>
+      <p><strong>Impact:</strong> Blocks Phase 3 integration.</p>
+    </div>
+
+    <div class="info-card" style="border-left:4px solid #f59e0b">
+      <h4 style="color:#d97706">2. Authorize Senior Engineer Hire</h4>
+      <p>Backend engineer with Amadeus experience. Budget: USD 8,000&ndash;12,000/month.</p>
+      <p style="margin-top:8px"><strong>Impact:</strong> Critical path &mdash; delays entire migration by 4&ndash;6 weeks if not filled.</p>
+    </div>
+
+    <div class="info-card" style="border-left:4px solid var(--rw-blue)">
+      <h4 style="color:var(--rw-blue)">3. Confirm Q3 2026 Go-Live Date</h4>
+      <p>July 2026 target requires alignment with commercial team for marketing launch and agent training.</p>
+      <p style="margin-top:8px"><strong>Impact:</strong> Marketing and operations planning dependency.</p>
+    </div>
+
+    <div class="info-card" style="border-left:4px solid #22c55e">
+      <h4 style="color:#16a34a">4. Approve Payment Gateway Vendor</h4>
+      <p>Select between MTN MoMo direct integration vs Irembo PSP aggregator. Budget: USD 5,000&ndash;15,000 setup + transaction fees.</p>
+      <p style="margin-top:8px"><strong>Impact:</strong> Phase 3 dependency.</p>
+    </div>
+  </div>
+
+  <div class="slide-number">7 / 8</div>
+</div>
+
+<!-- ==================== SLIDE 8: STRATEGIC OUTLOOK ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Board Summary</div>
+  <h2>Strategic Outlook</h2>
+  <p class="section-sub">Quarterly milestones through the remainder of FY2026.</p>
+
+  <div class="card-grid">
+    <div class="info-card" style="border-left:4px solid var(--rw-blue)">
+      <h4 style="color:var(--rw-blue)">Q2 2026 (Apr&ndash;Jun)</h4>
+      <p>Complete Amadeus Phase 1&ndash;3, hire Amadeus specialist, launch real payment processing in sandbox, achieve 15% conversion rate.</p>
+    </div>
+    <div class="info-card" style="border-left:4px solid #f59e0b">
+      <h4 style="color:#d97706">Q3 2026 (Jul&ndash;Sep)</h4>
+      <p>Production go-live with staged rollout, 100% traffic migration, target RWF 540M quarterly revenue, launch mobile app parity.</p>
+    </div>
+    <div class="info-card" style="border-left:4px solid #22c55e">
+      <h4 style="color:#16a34a">Q4 2026 (Oct&ndash;Dec)</h4>
+      <p>Full platform optimization, achieve 18% conversion rate, RWF 600M revenue target, expand to 22 routes, loyalty program full launch.</p>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg, #eff6ff, #dbeafe);border-radius:16px;padding:32px;margin-top:32px;text-align:center">
+    <div style="font-size:14px;color:var(--gray);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;font-weight:600">FY2026 Targets</div>
+    <div class="summary-grid" style="margin:16px 0 0 0">
+      <div class="summary-box" style="background:#fff">
+        <div class="num" style="font-size:28px">RWF 600M</div>
+        <div class="label">FY2026 Revenue Target</div>
+      </div>
+      <div class="summary-box" style="background:#fff">
+        <div class="num" style="font-size:28px">18%</div>
+        <div class="label">Conversion Rate Goal</div>
+      </div>
+      <div class="summary-box" style="background:#fff">
+        <div class="num" style="font-size:28px">75%</div>
+        <div class="label">Digital Channel Share</div>
+      </div>
+      <div class="summary-box" style="background:#fff">
+        <div class="num" style="font-size:28px">Jul 2026</div>
+        <div class="label">Go-Live</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align:center; color:var(--gray); font-size:13px; margin-top:24px">Next Board Review: June 2026 &mdash; Go-Live Readiness Assessment</p>
+
+  <div class="slide-number">8 / 8</div>
+</div>
+
+</body>
+</html>
