@@ -5,6 +5,7 @@ WORKDIR /app
 COPY index.html .
 COPY css/ css/
 COPY js/ js/
+COPY img/ img/
 
 EXPOSE 8080
 
