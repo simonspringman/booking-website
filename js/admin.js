@@ -264,44 +264,244 @@ function loadCLevel() {
   var thead = document.getElementById('adminTableHead');
   var tbody = document.getElementById('adminTableBody');
 
-  var reports = [
-    { file: 'ceo-dashboard.html', icon: '👤', title: 'CEO Dashboard', desc: 'Strategic overview — KPIs, revenue trends, digital transformation progress, route network, 90-day outlook.', slides: 10, audience: 'Chief Executive Officer' },
-    { file: 'cfo-revenue-report.html', icon: '💰', title: 'CFO Revenue & ROI Report', desc: 'Financial deep-dive — revenue by channel, payment mix, route profitability, ancillary revenue, ROI projections, budget vs actuals.', slides: 10, audience: 'Chief Financial Officer' },
-    { file: 'cto-tech-report.html', icon: '⚙', title: 'CTO Technical Status', desc: 'Architecture, API migration status, platform capabilities, tech stack, security & compliance, technical debt, performance targets.', slides: 11, audience: 'Chief Technology Officer' },
-    { file: 'coo-operations-report.html', icon: '📋', title: 'COO Operations Report', desc: 'Booking funnel, route performance, channel distribution, T2T holds, customer service metrics, passenger & office operations.', slides: 10, audience: 'Chief Operating Officer' },
-    { file: 'board-summary.html', icon: '🏛', title: 'Board Summary', desc: 'Concise board-level briefing — executive summary, KPIs, financial highlights, strategic progress, risk register, decisions required.', slides: 8, audience: 'Board of Directors' },
-    { file: 'migration-plan.html', icon: '🚀', title: 'Migration Plan', desc: 'Production migration roadmap — Amadeus Digital APIs integration, 5 phases, 14–18 weeks timeline, team requirements, risk matrix.', slides: 12, audience: 'All C-Level / Technical Leadership' }
-  ];
-
-  summary.innerHTML = summaryCard('Total Reports', reports.length, '', 'blue') +
-    summaryCard('Total Slides', reports.reduce(function(s, r) { return s + r.slides; }, 0), '', 'green') +
-    summaryCard('Period', 'Q1 2026', '', 'yellow');
+  // Top KPIs
+  summary.innerHTML = summaryCard('Total Revenue', 'RWF 456M', '▲ 18.2% QoQ', 'blue') +
+    summaryCard('Conversion Rate', '13%', '▲ 2.1pp QoQ', 'green') +
+    summaryCard('Active Routes', '19', '3 new in Q1', 'yellow') +
+    summaryCard('Bookings', '1,619', '▲ 22.4% QoQ', 'green');
 
   thead.innerHTML = '';
   tbody.innerHTML = '';
 
-  var container = document.getElementById('adminSummary');
-  var cardsHtml = '<div style="grid-column:1/-1;margin-top:16px">' +
-    '<p style="color:#64748b;font-size:14px;margin-bottom:20px">Download executive presentations as self-contained HTML files. Open in any browser, print-friendly, no internet required.</p>' +
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">';
+  var wrap = document.querySelector('.admin-table-wrap');
+  var oldDash = document.getElementById('clevelDashboard');
+  if (oldDash) oldDash.remove();
 
-  reports.forEach(function(r) {
-    cardsHtml += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px">' +
-      '<div style="font-size:32px">' + r.icon + '</div>' +
-      '<div style="font-size:16px;font-weight:700;color:#0f172a">' + r.title + '</div>' +
-      '<div style="font-size:12px;color:#64748b;flex:1">' + r.desc + '</div>' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">' +
-        '<span style="font-size:11px;color:#94a3b8">' + r.slides + ' slides &bull; ' + r.audience + '</span>' +
+  var dash = document.createElement('div');
+  dash.id = 'clevelDashboard';
+  dash.innerHTML =
+    // ---- SECTION: Revenue & Financial Overview ----
+    '<div style="margin-bottom:32px">' +
+      '<h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#0f172a">💰 Revenue & Financial Overview</h3>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">' +
+        // Revenue by Channel
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px">' +
+          '<div style="font-size:14px;font-weight:700;margin-bottom:12px">Revenue by Channel</div>' +
+          clevelBar('Website', 42, 'RWF 191.5M', '#00529b') +
+          clevelBar('Mobile App', 28, 'RWF 127.7M', '#1ea2dc') +
+          clevelBar('Travel Agents', 19, 'RWF 86.6M', '#f59e0b') +
+          clevelBar('Call Center', 11, 'RWF 50.2M', '#64748b') +
+          '<div style="margin-top:12px;padding:10px;background:#ecfdf5;border-radius:8px;font-size:12px;color:#166534"><strong>Insight:</strong> Digital channels (70%) growing 25%+ QoQ while offline channels decline.</div>' +
+        '</div>' +
+        // Payment Mix
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px">' +
+          '<div style="font-size:14px;font-weight:700;margin-bottom:12px">Payment Mix</div>' +
+          clevelBar('Card (Visa/MC)', 35, 'RWF 159.6M', '#2563eb') +
+          clevelBar('Mobile Money', 27, 'RWF 123.1M', '#16a34a') +
+          clevelBar('Bank Transfer', 13, 'RWF 59.3M', '#d97706') +
+          clevelBar('DreamMiles', 11, 'RWF 50.2M', '#7c3aed') +
+          clevelBar('Wallet', 9, 'RWF 41.0M', '#0891b2') +
+          clevelBar('Corporate', 5, 'RWF 22.8M', '#475569') +
+          '<div style="margin-top:12px;padding:10px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1e40af"><strong>Processing cost:</strong> 1.47% effective rate. MoMo (1.5%) cheaper than Card (2.8%).</div>' +
+        '</div>' +
       '</div>' +
-      '<div style="display:flex;gap:8px;margin-top:4px">' +
-        '<a href="/' + r.file + '" target="_blank" style="flex:1;text-align:center;padding:8px 12px;background:#00529b;color:#fff;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600">Open ↗</a>' +
-        '<a href="/' + r.file + '" download style="flex:1;text-align:center;padding:8px 12px;background:#e2e8f0;color:#0f172a;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600">Download ↓</a>' +
+      // Office Performance row
+      '<div style="margin-top:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px">' +
+        '<div style="font-size:14px;font-weight:700;margin-bottom:12px">Office Revenue Performance</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;text-align:center">' +
+          clevelOffice('Kigali HQ', 'RWF 285M', '40.2%', '▲ 15.3%', true) +
+          clevelOffice('Dubai', 'RWF 156M', '22.0%', '▲ 24.8%', true) +
+          clevelOffice('Brussels', 'RWF 112M', '15.8%', '▲ 8.7%', true) +
+          clevelOffice('Nairobi', 'RWF 89M', '12.5%', '▲ 11.2%', true) +
+          clevelOffice('Johannesburg', 'RWF 67M', '9.5%', '▼ 3.1%', false) +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    // ---- SECTION: Operations & Customer Metrics ----
+    '<div style="margin-bottom:32px">' +
+      '<h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#0f172a">📊 Operations & Customer Metrics</h3>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">' +
+        // Booking Funnel
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px">' +
+          '<div style="font-size:14px;font-weight:700;margin-bottom:12px">Booking Funnel</div>' +
+          clevelFunnel('Sessions', '12,450', 100) +
+          clevelFunnel('Search', '8,715', 70) +
+          clevelFunnel('Results', '4,358', 35) +
+          clevelFunnel('Selected', '2,614', 21) +
+          clevelFunnel('Payment', '2,241', 18) +
+          clevelFunnel('Confirmed', '1,619', 13) +
+          '<div style="margin-top:10px;padding:8px;background:#fef3c7;border-radius:6px;font-size:11px;color:#92400e"><strong>⚠ Leak:</strong> Results→Selected (44% drop). Improve fare comparison UX.</div>' +
+        '</div>' +
+        // T2T Holds
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px">' +
+          '<div style="font-size:14px;font-weight:700;margin-bottom:12px">Time-to-Think Holds</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#00529b">15</div><div style="font-size:11px;color:#64748b">Total Holds</div></div>' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#16a34a">33%</div><div style="font-size:11px;color:#64748b">Conversion</div></div>' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#f59e0b">5</div><div style="font-size:11px;color:#64748b">Active</div></div>' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#dc2626">5</div><div style="font-size:11px;color:#64748b">Expired</div></div>' +
+          '</div>' +
+          '<div style="font-size:12px;color:#64748b;margin-bottom:6px"><strong>Fee Revenue:</strong> RWF 375,000</div>' +
+          '<div style="font-size:12px;color:#64748b;margin-bottom:6px"><strong>Most Popular:</strong> 48h hold (RWF 25,000)</div>' +
+          '<div style="margin-top:8px;padding:8px;background:#ecfdf5;border-radius:6px;font-size:11px;color:#166534"><strong>✓</strong> T2T reduces abandonment. Recommend promoting 48h as default.</div>' +
+        '</div>' +
+        // AI Chatbot
+        '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px">' +
+          '<div style="font-size:14px;font-weight:700;margin-bottom:12px">AI Chat Assistant</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#16a34a">80%</div><div style="font-size:11px;color:#64748b">AI Resolved</div></div>' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#00529b">4.2/5</div><div style="font-size:11px;color:#64748b">Satisfaction</div></div>' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#f59e0b">13%</div><div style="font-size:11px;color:#64748b">Escalated</div></div>' +
+            '<div style="text-align:center;padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0"><div style="font-size:24px;font-weight:900;color:#64748b">15/day</div><div style="font-size:11px;color:#64748b">Sessions</div></div>' +
+          '</div>' +
+          '<div style="font-size:12px;color:#64748b;margin-bottom:4px"><strong>Top topics:</strong> Booking 35%, Baggage 25%, Status 20%</div>' +
+          '<div style="font-size:12px;color:#64748b"><strong>Languages:</strong> EN 55%, FR 30%, RW 15%</div>' +
+          '<div style="margin-top:8px;padding:8px;background:#ecfdf5;border-radius:6px;font-size:11px;color:#166534"><strong>✓</strong> Reducing call center load by ~40%. Above industry avg (65%).</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    // ---- SECTION: Strategic Initiatives RAG Status ----
+    '<div style="margin-bottom:32px">' +
+      '<h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#0f172a">🎯 Strategic Initiatives</h3>' +
+      '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden">' +
+        '<table style="width:100%;border-collapse:collapse;font-size:13px">' +
+          '<thead><tr style="background:#00529b;color:#fff"><th style="padding:10px 14px;text-align:left">Initiative</th><th style="padding:10px 14px;text-align:center">Status</th><th style="padding:10px 14px">Owner</th><th style="padding:10px 14px">Target</th><th style="padding:10px 14px;width:200px">Progress</th><th style="padding:10px 14px">Notes</th></tr></thead>' +
+          '<tbody>' +
+            clevelRAG('Amadeus API Migration', 'amber', 'CTO', 'Jul 2026', 20, 'Pending sandbox access') +
+            clevelRAG('Digital Booking Platform', 'green', 'Product', 'Complete', 100, '22 endpoints operational') +
+            clevelRAG('Payment Integration', 'green', 'Payments', 'Apr 2026', 75, 'Outpace / BK / DPO / MoMo') +
+            clevelRAG('Amadeus ALMS Loyalty', 'amber', 'Marketing', 'Jun 2026', 30, 'ALMS integration planning') +
+            clevelRAG('AI Customer Service', 'green', 'CX Team', 'Complete', 100, '80% resolution, 3 languages') +
+            clevelRAG('Route Expansion', 'amber', 'Network', 'Q2 2026', 40, 'Guangzhou pending bilateral') +
+            clevelRAG('Online Check-in', 'red', 'Operations', 'TBD', 0, 'DCS out of service — deferred') +
+          '</tbody>' +
+        '</table>' +
+      '</div>' +
+    '</div>' +
+
+    // ---- SECTION: Risk Register ----
+    '<div style="margin-bottom:32px">' +
+      '<h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#0f172a">⚠️ Risk Register</h3>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+        clevelRisk('HIGH', 'Amadeus branded fare mapping', 'WB fare families (Lite/Classic/Business) may not map cleanly to Amadeus fareDetailsBySegment. 1–2 week discovery sprint needed.', 'Start fare-family mapping sprint immediately. Build configurable engine.') +
+        clevelRisk('HIGH', 'Senior Amadeus engineer hiring', 'Without Amadeus-experienced developer, timeline extends 4–6 weeks. Specialized talent is scarce.', 'Engage Amadeus professional services as bridge. Budget: USD 8–12K/month.') +
+        clevelRisk('HIGH', 'Payment gateway settlement delays', 'Outpace/DPO settlement timing, BK API timeouts, MTN MoMo callback failures can block ticketing.', 'Pending payment queue with auto-retry. Manual resolution queue in admin.') +
+        clevelRisk('MED', 'T2T hold duration mismatch', 'Amadeus payment deadlines set by fare rules may not support 24/48/72h. Need airline config override.', 'Shadow hold pattern: PNR in Amadeus + extended hold on our side. Fee covers risk.') +
+      '</div>' +
+    '</div>' +
+
+    // ---- SECTION: Decisions Required ----
+    '<div style="margin-bottom:32px">' +
+      '<h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#0f172a">🔴 Decisions Required</h3>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+        clevelDecision(1, 'Approve Amadeus Licensing Budget', 'USD 45,000/year for Digital API access.', 'April 15, 2026', 'critical', 'Blocks Phase 3 integration. Without this, no real API testing.') +
+        clevelDecision(2, 'Authorize Senior Engineer Hire', 'Backend engineer with Amadeus experience. USD 8–12K/month.', 'Immediate', 'critical', 'Critical path — delays entire migration by 4–6 weeks if unfilled.') +
+        clevelDecision(3, 'Confirm Q3 2026 Go-Live Date', 'July 2026 target. Requires commercial team alignment.', 'April 30, 2026', 'important', 'Marketing launch and agent training planning dependency.') +
+        clevelDecision(4, 'Approve Payment Gateway Vendor', 'Outpace (primary) + BK + DPO. Setup: USD 5–15K + txn fees.', 'May 15, 2026', 'important', 'Phase 3 dependency. Vendor contracts need legal review.') +
+      '</div>' +
+    '</div>' +
+
+    // ---- SECTION: Downloadable Reports ----
+    '<div style="margin-bottom:32px">' +
+      '<h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#0f172a">📥 Downloadable Presentations</h3>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">' +
+        clevelReportCard('👤', 'CEO Dashboard', 'ceo-dashboard.html', '10 slides') +
+        clevelReportCard('💰', 'CFO Revenue Report', 'cfo-revenue-report.html', '10 slides') +
+        clevelReportCard('⚙', 'CTO Tech Report', 'cto-tech-report.html', '11 slides') +
+        clevelReportCard('📋', 'COO Operations', 'coo-operations-report.html', '10 slides') +
+        clevelReportCard('🏛', 'Board Summary', 'board-summary.html', '8 slides') +
+        clevelReportCard('🚀', 'Migration Plan', 'migration-plan.html', '12 slides') +
       '</div>' +
     '</div>';
-  });
 
-  cardsHtml += '</div></div>';
-  container.innerHTML += cardsHtml;
+  wrap.appendChild(dash);
+}
+
+function clevelBar(label, pct, value, color) {
+  return '<div style="display:flex;align-items:center;margin:6px 0;gap:8px">' +
+    '<div style="width:100px;font-size:12px;font-weight:600;color:#0f172a;flex-shrink:0">' + label + '</div>' +
+    '<div style="flex:1;height:20px;background:#e2e8f0;border-radius:6px;overflow:hidden">' +
+      '<div style="width:' + pct + '%;height:100%;background:' + color + ';border-radius:6px;display:flex;align-items:center;padding-left:6px;color:#fff;font-size:10px;font-weight:700">' + pct + '%</div>' +
+    '</div>' +
+    '<div style="width:90px;text-align:right;font-size:12px;font-weight:700;color:#0f172a;flex-shrink:0">' + value + '</div>' +
+  '</div>';
+}
+
+function clevelOffice(name, revenue, share, trend, isUp) {
+  var tColor = isUp ? '#16a34a' : '#dc2626';
+  return '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px">' +
+    '<div style="font-size:13px;font-weight:700;color:#0f172a">' + name + '</div>' +
+    '<div style="font-size:18px;font-weight:900;color:#00529b;margin:4px 0">' + revenue + '</div>' +
+    '<div style="font-size:11px;color:#64748b">' + share + ' share</div>' +
+    '<div style="font-size:12px;font-weight:700;color:' + tColor + ';margin-top:4px">' + trend + '</div>' +
+  '</div>';
+}
+
+function clevelFunnel(label, value, pct) {
+  var opacity = 0.3 + (pct / 100) * 0.7;
+  return '<div style="display:flex;align-items:center;margin:3px 0;gap:6px">' +
+    '<div style="width:70px;font-size:11px;color:#64748b;flex-shrink:0">' + label + '</div>' +
+    '<div style="flex:1;height:18px;background:rgba(0,82,155,' + opacity + ');border-radius:4px;display:flex;align-items:center;padding-left:6px;max-width:' + pct + '%">' +
+      '<span style="color:#fff;font-size:10px;font-weight:700">' + value + '</span>' +
+    '</div>' +
+    '<div style="font-size:10px;color:#94a3b8;width:30px;flex-shrink:0">' + pct + '%</div>' +
+  '</div>';
+}
+
+function clevelRAG(name, status, owner, target, pct, notes) {
+  var dotColors = { green: '#22c55e', amber: '#f59e0b', red: '#ef4444' };
+  var dot = '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + dotColors[status] + ';margin-right:6px"></span>';
+  var bar = '<div style="width:100%;height:8px;background:#e2e8f0;border-radius:4px"><div style="width:' + pct + '%;height:100%;background:' + dotColors[status] + ';border-radius:4px"></div></div>';
+  return '<tr style="border-bottom:1px solid #e2e8f0">' +
+    '<td style="padding:10px 14px;font-weight:600">' + name + '</td>' +
+    '<td style="padding:10px 14px;text-align:center">' + dot + status.toUpperCase() + '</td>' +
+    '<td style="padding:10px 14px">' + owner + '</td>' +
+    '<td style="padding:10px 14px">' + target + '</td>' +
+    '<td style="padding:10px 14px">' + bar + '<span style="font-size:10px;color:#64748b">' + pct + '%</span></td>' +
+    '<td style="padding:10px 14px;font-size:12px;color:#64748b">' + notes + '</td>' +
+  '</tr>';
+}
+
+function clevelRisk(severity, title, description, mitigation) {
+  var bgColor = severity === 'HIGH' ? '#fef2f2' : '#fefce8';
+  var borderColor = severity === 'HIGH' ? '#dc2626' : '#f59e0b';
+  var tagBg = severity === 'HIGH' ? '#fee2e2' : '#fef3c7';
+  var tagColor = severity === 'HIGH' ? '#dc2626' : '#92400e';
+  return '<div style="background:' + bgColor + ';border:1px solid #e2e8f0;border-left:4px solid ' + borderColor + ';border-radius:8px;padding:16px">' +
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+      '<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;background:' + tagBg + ';color:' + tagColor + '">' + severity + '</span>' +
+      '<span style="font-size:14px;font-weight:700;color:#0f172a">' + title + '</span>' +
+    '</div>' +
+    '<div style="font-size:12px;color:#475569;margin-bottom:8px">' + description + '</div>' +
+    '<div style="font-size:12px;color:#166534;background:#ecfdf5;padding:8px;border-radius:6px"><strong>Mitigation:</strong> ' + mitigation + '</div>' +
+  '</div>';
+}
+
+function clevelDecision(num, title, detail, deadline, priority, impact) {
+  var borderColor = priority === 'critical' ? '#dc2626' : '#f59e0b';
+  var tagBg = priority === 'critical' ? '#fee2e2' : '#fef3c7';
+  var tagColor = priority === 'critical' ? '#dc2626' : '#92400e';
+  var tagLabel = priority === 'critical' ? '🔴 URGENT' : '🟡 IMPORTANT';
+  return '<div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' + borderColor + ';border-radius:8px;padding:16px">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+      '<span style="font-size:15px;font-weight:700;color:#0f172a">#' + num + ' ' + title + '</span>' +
+      '<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:' + tagBg + ';color:' + tagColor + '">' + tagLabel + '</span>' +
+    '</div>' +
+    '<div style="font-size:13px;color:#0f172a;margin-bottom:6px">' + detail + '</div>' +
+    '<div style="font-size:12px;color:#64748b;margin-bottom:6px"><strong>Deadline:</strong> ' + deadline + '</div>' +
+    '<div style="font-size:12px;color:#475569;background:#f8fafc;padding:8px;border-radius:6px"><strong>Impact:</strong> ' + impact + '</div>' +
+  '</div>';
+}
+
+function clevelReportCard(icon, title, file, slides) {
+  return '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">' +
+    '<div style="font-size:24px">' + icon + '</div>' +
+    '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#0f172a">' + title + '</div><div style="font-size:11px;color:#94a3b8">' + slides + '</div></div>' +
+    '<a href="/' + file + '" target="_blank" style="padding:6px 12px;background:#00529b;color:#fff;border-radius:6px;text-decoration:none;font-size:11px;font-weight:600">Open</a>' +
+    '<a href="/' + file + '" download style="padding:6px 12px;background:#e2e8f0;color:#0f172a;border-radius:6px;text-decoration:none;font-size:11px;font-weight:600">↓</a>' +
+  '</div>';
 }
 
 // ---- CSV EXPORT ----
