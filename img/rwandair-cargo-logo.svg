@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 60" width="360" height="60">
+  <defs>
+    <clipPath id="emblemClip">
+      <circle cx="28" cy="30" r="24"/>
+    </clipPath>
+  </defs>
+  <!-- Emblem -->
+  <g>
+    <!-- Blue circle background -->
+    <circle cx="28" cy="30" r="24" fill="#0054A6"/>
+    <!-- Lighter blue inner -->
+    <circle cx="28" cy="29" r="20" fill="#1A9FDA"/>
+    <!-- Green swoosh -->
+    <path d="M6,40 Q18,56 46,46 Q36,58 8,46 Z" fill="#7AB648"/>
+    <!-- Light blue accent -->
+    <path d="M5,32 Q8,46 22,50 Q12,44 8,32 Z" fill="#00AEEF"/>
+    <!-- Sun white glow -->
+    <circle cx="28" cy="27" r="14" fill="rgba(255,255,255,0.15)"/>
+    <!-- Sun body -->
+    <circle cx="28" cy="27" r="8" fill="#FFD500"/>
+    <circle cx="28" cy="27" r="5.5" fill="#FFF200"/>
+    <!-- Sun rays -->
+    <g fill="#FFD500" clip-path="url(#emblemClip)">
+      <polygon points="28,8 29.5,17 26.5,17"/>
+      <polygon points="28,37 29.5,46 26.5,46"/>
+      <polygon points="9,27 18,25.5 18,28.5"/>
+      <polygon points="38,25.5 47,27 38,28.5"/>
+      <polygon points="14.5,14.5 21,19.5 18.5,21.5"/>
+      <polygon points="35,32.5 41.5,37.5 38.5,35.5"/>
+      <polygon points="41.5,14.5 38.5,21.5 35,19.5"/>
+      <polygon points="18.5,32.5 21,37.5 14.5,35.5"/>
+      <polygon points="17,11 21.5,18 19,19"/>
+      <polygon points="35,35 39.5,42 37,40"/>
+      <polygon points="39,11 39.5,18 37,19"/>
+      <polygon points="19,35 21.5,42 17,40"/>
+      <polygon points="11,20 19,21.5 18,24"/>
+      <polygon points="38,30 46,32 38,34"/>
+      <polygon points="11,34 19,32 18,30"/>
+      <polygon points="38,24 46,20 38,21.5"/>
+    </g>
+  </g>
+  <!-- RwandAir text -->
+  <text x="62" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" font-style="italic" fill="#00529b" letter-spacing="-0.5">RwandAir</text>
+  <!-- CARGO text -->
+  <text x="228" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="700" font-style="italic" fill="#005fa3" letter-spacing="0.5">CARGO</text>
+</svg>

@@ -2335,9 +2335,8 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 /* --- Cargo Top Bar (shared for dashboard) --- */
 .cargo-topbar { background: #fff; border-bottom: 1px solid var(--gray-200); padding: 12px 24px; position: sticky; top: 0; z-index: 100; }
 .cargo-topbar-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1400px; margin: 0 auto; gap: 24px; }
-.cargo-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-.cargo-logo .logo-img { height: 32px; }
-.cargo-logo-text { font-size: 18px; font-weight: 700; color: #e02020; font-style: italic; letter-spacing: 1px; }
+.cargo-logo { display: flex; align-items: center; cursor: pointer; }
+.cargo-logo-img { height: 36px; }
 .cargo-search-bar { display: flex; align-items: center; gap: 8px; background: var(--gray-100); border-radius: var(--radius-full); padding: 8px 16px; flex: 1; max-width: 400px; }
 .cargo-search-input { border: none; background: transparent; outline: none; font-family: var(--font); font-size: 14px; width: 100%; }
 .cargo-user-info { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; }
@@ -2400,8 +2399,7 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 /* --- Cargo Navigation --- */
 .cargo-nav { background: var(--blue); padding: 0; position: sticky; top: 0; z-index: 100; }
 .cargo-nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 12px 24px; }
-.cargo-nav .cargo-logo-text { color: #e02020; }
-.cargo-nav .logo-img { height: 28px; filter: brightness(0) invert(1); }
+.cargo-nav .cargo-logo-img { height: 32px; }
 .cargo-nav-links { display: flex; gap: 24px; }
 .cargo-nav-links a { color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; }
 .cargo-nav-links a:hover { color: var(--yellow); }
@@ -2548,8 +2546,7 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 
 /* --- Cargo Booking Wizard --- */
 .cargo-booking-topbar { background: var(--yellow); padding: 16px 32px; }
-.cargo-booking-topbar .cargo-logo-text { color: #e02020; }
-.cargo-booking-topbar .logo-img { height: 28px; }
+.cargo-booking-topbar .cargo-logo-img { height: 32px; }
 
 .cargo-stepper { display: flex; align-items: center; justify-content: center; padding: 32px 24px; gap: 0; max-width: 700px; margin: 0 auto; }
 .cargo-step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
