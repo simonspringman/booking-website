@@ -2335,10 +2335,9 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 /* --- Cargo Top Bar (shared for dashboard) --- */
 .cargo-topbar { background: #fff; border-bottom: 1px solid var(--gray-200); padding: 12px 24px; position: sticky; top: 0; z-index: 100; }
 .cargo-topbar-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1400px; margin: 0 auto; gap: 24px; }
-.cargo-logo { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.cargo-logo .logo-img { height: 36px; }
-.cargo-logo-brand { font-size: 22px; font-weight: 600; color: #00529b; font-style: italic; letter-spacing: 0.5px; font-family: 'Lato', sans-serif; margin-right: 4px; }
-.cargo-logo-text { font-size: 22px; font-weight: 700; color: #1a8fd1; font-style: italic; letter-spacing: 1px; font-family: 'Lato', sans-serif; }
+.cargo-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.cargo-logo .logo-img { height: 32px; }
+.cargo-logo-text { font-size: 18px; font-weight: 700; color: #e02020; font-style: italic; letter-spacing: 1px; }
 .cargo-search-bar { display: flex; align-items: center; gap: 8px; background: var(--gray-100); border-radius: var(--radius-full); padding: 8px 16px; flex: 1; max-width: 400px; }
 .cargo-search-input { border: none; background: transparent; outline: none; font-family: var(--font); font-size: 14px; width: 100%; }
 .cargo-user-info { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; }
@@ -2399,16 +2398,17 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 .dash-view-btn:hover { background: var(--gray-50); }
 
 /* --- Cargo Navigation --- */
-.cargo-nav { background: #fff; padding: 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray-200); }
+.cargo-nav { background: var(--blue); padding: 0; position: sticky; top: 0; z-index: 100; }
 .cargo-nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 12px 24px; }
-.cargo-nav .logo-img { height: 32px; }
+.cargo-nav .cargo-logo-text { color: #e02020; }
+.cargo-nav .logo-img { height: 28px; filter: brightness(0) invert(1); }
 .cargo-nav-links { display: flex; gap: 24px; }
-.cargo-nav-links a { color: var(--gray-700); font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; }
-.cargo-nav-links a:hover { color: var(--blue); }
-.cargo-nav-actions { display: flex; align-items: center; gap: 16px; color: var(--gray-700); }
-.cargo-nav-actions svg { stroke: var(--gray-700); }
-.cargo-login-link { display: flex; align-items: center; gap: 6px; color: var(--gray-700) !important; font-size: 13px; font-weight: 600; }
-.cargo-lang { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.cargo-nav-links a { color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; }
+.cargo-nav-links a:hover { color: var(--yellow); }
+.cargo-nav-actions { display: flex; align-items: center; gap: 16px; color: #fff; }
+.cargo-nav-actions svg { stroke: #fff; }
+.cargo-login-link { display: flex; align-items: center; gap: 6px; color: #fff !important; font-size: 13px; font-weight: 600; }
+.cargo-lang { font-size: 13px; font-weight: 600; }
 
 /* --- Cargo Hero --- */
 .cargo-hero { position: relative; }
@@ -2548,7 +2548,8 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 
 /* --- Cargo Booking Wizard --- */
 .cargo-booking-topbar { background: var(--yellow); padding: 16px 32px; }
-.cargo-booking-topbar .logo-img { height: 32px; }
+.cargo-booking-topbar .cargo-logo-text { color: #e02020; }
+.cargo-booking-topbar .logo-img { height: 28px; }
 
 .cargo-stepper { display: flex; align-items: center; justify-content: center; padding: 32px 24px; gap: 0; max-width: 700px; margin: 0 auto; }
 .cargo-step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
