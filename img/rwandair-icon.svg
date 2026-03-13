@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Outer blue circle -->
+  <ellipse cx="48" cy="50" rx="42" ry="42" fill="#0054A6"/>
+  <!-- Inner lighter blue arc -->
+  <ellipse cx="48" cy="50" rx="38" ry="38" fill="#1A9FDA"/>
+  <!-- Green swoosh -->
+  <path d="M12,62 Q30,85 70,72 Q50,90 15,70 Z" fill="#7AB648"/>
+  <!-- Light blue accent -->
+  <path d="M10,50 Q15,70 40,75 Q20,65 15,50 Z" fill="#00AEEF"/>
+  <!-- Sun center -->
+  <circle cx="48" cy="45" r="12" fill="#FFD500"/>
+  <circle cx="48" cy="45" r="8" fill="#FFF200"/>
+  <!-- Sun rays -->
+  <g fill="#FFD500">
+    <polygon points="48,20 50,30 46,30"/>
+    <polygon points="48,60 50,70 46,70"/>
+    <polygon points="25,45 35,43 35,47"/>
+    <polygon points="61,43 71,45 61,47"/>
+    <polygon points="31,28 38,35 34,37"/>
+    <polygon points="58,53 65,60 62,55"/>
+    <polygon points="62,28 65,35 58,37"/>
+    <polygon points="34,53 38,60 31,55"/>
+    <polygon points="36,24 41,32 37,33"/>
+    <polygon points="55,57 63,65 59,62"/>
+    <polygon points="60,24 63,32 59,33"/>
+    <polygon points="37,57 41,65 36,62"/>
+    <polygon points="27,35 35,38 33,42"/>
+    <polygon points="63,48 71,52 63,55"/>
+    <polygon points="27,55 35,52 33,48"/>
+    <polygon points="63,38 71,35 63,42"/>
+  </g>
+</svg>
