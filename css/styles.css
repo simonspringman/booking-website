@@ -2397,16 +2397,16 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 .dash-view-btn:hover { background: var(--gray-50); }
 
 /* --- Cargo Navigation --- */
-.cargo-nav { background: var(--blue); padding: 0; position: sticky; top: 0; z-index: 100; }
+.cargo-nav { background: #fff; padding: 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray-200); }
 .cargo-nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 12px 24px; }
 .cargo-nav .cargo-logo-img { height: 32px; }
 .cargo-nav-links { display: flex; gap: 24px; }
-.cargo-nav-links a { color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; }
-.cargo-nav-links a:hover { color: var(--yellow); }
-.cargo-nav-actions { display: flex; align-items: center; gap: 16px; color: #fff; }
-.cargo-nav-actions svg { stroke: #fff; }
-.cargo-login-link { display: flex; align-items: center; gap: 6px; color: #fff !important; font-size: 13px; font-weight: 600; }
-.cargo-lang { font-size: 13px; font-weight: 600; }
+.cargo-nav-links a { color: var(--gray-700); font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; }
+.cargo-nav-links a:hover { color: var(--blue); }
+.cargo-nav-actions { display: flex; align-items: center; gap: 16px; color: var(--gray-700); }
+.cargo-nav-actions svg { stroke: var(--gray-700); }
+.cargo-login-link { display: flex; align-items: center; gap: 6px; color: var(--gray-700) !important; font-size: 13px; font-weight: 600; }
+.cargo-lang { font-size: 13px; font-weight: 600; color: var(--gray-700); }
 
 /* --- Cargo Hero --- */
 .cargo-hero { position: relative; }
