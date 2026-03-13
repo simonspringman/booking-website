@@ -1395,19 +1395,134 @@
   <!-- ============ PAGE: MANAGE BOOKING ============ -->
   <section class="page" id="page-manage">
     <div class="container">
-      <div class="manage-card">
+      <!-- Lookup Form -->
+      <div class="manage-card" id="manageLookup">
         <h1>Manage Your Booking</h1>
-        <p>Access your booking to check-in, choose seats, add baggage, or view your itinerary.</p>
+        <p>Access your booking to check-in, choose seats, add baggage, change dates, or request a refund.</p>
         <div class="manage-form">
           <div class="form-group">
             <label>Booking Reference</label>
-            <input type="text" placeholder="e.g. WB-2025-NBO-78421" maxlength="20"/>
+            <input type="text" placeholder="e.g. WB-2026-NBO-10042" maxlength="20" id="manageRef"/>
           </div>
           <div class="form-group">
             <label>Last Name</label>
-            <input type="text" placeholder="As per booking"/>
+            <input type="text" placeholder="As per booking" id="manageLast"/>
           </div>
-          <button class="btn-primary btn-lg">Retrieve Booking</button>
+          <button class="btn-primary btn-lg" onclick="retrieveBooking()">Retrieve Booking</button>
+          <div class="manage-error hidden" id="manageError"></div>
+        </div>
+        <div class="manage-demo-hint">
+          <strong>Demo bookings:</strong>
+          <span class="manage-demo-ref" onclick="fillManageDemo('WB-2026-NBO-10042','Uwimana')">WB-2026-NBO-10042</span>
+          <span class="manage-demo-ref" onclick="fillManageDemo('WB-2026-DXB-20085','Uwimana')">WB-2026-DXB-20085</span>
+          <span class="manage-demo-ref" onclick="fillManageDemo('WB-2026-LHR-30012','Uwimana')">WB-2026-LHR-30012 (cancelled)</span>
+        </div>
+      </div>
+
+      <!-- Booking Result -->
+      <div class="hidden" id="manageResult">
+        <div class="manage-back-bar">
+          <button class="btn-outline btn-sm" onclick="backToManageLookup()">← Back to Lookup</button>
+        </div>
+
+        <!-- Status Banner -->
+        <div class="manage-status-banner" id="manageStatusBanner">
+          <div class="manage-status-icon" id="manageStatusIcon"></div>
+          <div class="manage-status-info">
+            <h2 id="manageStatusTitle">Booking Confirmed</h2>
+            <p id="manageStatusRef">Booking Ref: <strong></strong></p>
+          </div>
+        </div>
+
+        <div class="manage-grid">
+          <!-- Left: Details -->
+          <div class="manage-main">
+            <!-- Flights -->
+            <div class="card manage-flights-card">
+              <h3>Flight Itinerary</h3>
+              <div id="manageFlights"></div>
+            </div>
+
+            <!-- Passengers -->
+            <div class="card">
+              <h3>Passengers</h3>
+              <div id="managePassengers"></div>
+            </div>
+
+            <!-- E-Tickets -->
+            <div class="card">
+              <h3>E-Tickets</h3>
+              <div id="manageTickets"></div>
+            </div>
+
+            <!-- Ancillaries -->
+            <div class="card" id="manageAncillariesCard">
+              <h3>Extras & Add-ons</h3>
+              <div id="manageAncillaries"></div>
+            </div>
+
+            <!-- Refund Info (for cancelled) -->
+            <div class="card hidden" id="manageRefundCard">
+              <h3>Refund Details</h3>
+              <div id="manageRefundInfo"></div>
+            </div>
+          </div>
+
+          <!-- Right: Actions Sidebar -->
+          <div class="manage-sidebar">
+            <div class="card">
+              <h3>Fare Summary</h3>
+              <div id="manageFareSummary"></div>
+            </div>
+
+            <div class="card manage-actions-card" id="manageActionsCard">
+              <h3>Quick Actions</h3>
+              <div class="manage-actions" id="manageActions"></div>
+            </div>
+
+            <!-- Wallet Refund Card -->
+            <div class="card hidden" id="manageWalletCard">
+              <h3>💰 Wallet Balance</h3>
+              <div id="manageWalletInfo"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cancel Confirmation Modal -->
+        <div class="modal-overlay hidden" id="manageCancelModal">
+          <div class="modal" style="max-width:460px;padding:32px;">
+            <h3>Cancel Booking</h3>
+            <p>Are you sure you want to cancel this booking?</p>
+            <div class="manage-cancel-refund" id="manageCancelRefundInfo"></div>
+            <div class="form-group" style="margin-top:12px">
+              <label>Reason (optional)</label>
+              <select id="manageCancelReason">
+                <option value="">Select reason</option>
+                <option value="Change of plans">Change of plans</option>
+                <option value="Schedule conflict">Schedule conflict</option>
+                <option value="Found better fare">Found better fare</option>
+                <option value="Personal reasons">Personal reasons</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="manage-refund-method" style="margin-top:12px">
+              <label><strong>Refund to:</strong></label>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <label class="manage-refund-opt selected" data-method="wallet">
+                  <input type="radio" name="refundMethod" value="wallet" checked/>
+                  <span>👛 Wallet (Instant)</span>
+                </label>
+                <label class="manage-refund-opt" data-method="original">
+                  <input type="radio" name="refundMethod" value="original"/>
+                  <span>💳 Original Method (7–14 days)</span>
+                </label>
+              </div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:20px">
+              <button class="btn-outline" onclick="closeCancelModal()">Keep Booking</button>
+              <button class="btn-primary" style="background:#ef4444" onclick="confirmCancelBooking()">Cancel & Refund</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

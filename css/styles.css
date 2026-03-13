@@ -2996,3 +2996,111 @@ select.swm-input { cursor: pointer; appearance: auto; }
   .form-actions { flex-wrap: wrap; }
   .btn-t2t { width: 100%; justify-content: center; order: 1; }
 }
+
+/* ============================================
+   MANAGE BOOKING Styles
+   ============================================ */
+.manage-error { background: #fef2f2; color: #dc2626; padding: 12px 16px; border-radius: 8px; margin-top: 12px; font-size: 14px; }
+.manage-demo-hint { margin-top: 20px; padding: 14px 16px; background: #f0f9ff; border-radius: 8px; font-size: 13px; color: #64748b; }
+.manage-demo-hint strong { color: #0f172a; display: block; margin-bottom: 6px; }
+.manage-demo-ref { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 4px; cursor: pointer; margin: 2px 4px; font-family: monospace; font-size: 12px; transition: background 0.2s; }
+.manage-demo-ref:hover { background: #bae6fd; }
+
+.manage-back-bar { margin-bottom: 16px; }
+.manage-status-banner {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px; border-radius: 12px; margin-bottom: 24px;
+}
+.manage-status-banner.confirmed { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-left: 5px solid #22c55e; }
+.manage-status-banner.cancelled { background: linear-gradient(135deg, #fef2f2, #fee2e2); border-left: 5px solid #ef4444; }
+.manage-status-banner.on_hold { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-left: 5px solid #3b82f6; }
+.manage-status-icon { font-size: 36px; }
+.manage-status-info h2 { margin: 0; font-size: 22px; }
+.manage-status-info p { margin: 4px 0 0; color: #64748b; }
+.manage-status-info p strong { color: #0057b8; letter-spacing: 0.5px; font-family: monospace; font-size: 15px; }
+
+.manage-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+.manage-main { display: flex; flex-direction: column; gap: 20px; }
+.manage-sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+/* Flights card */
+.manage-flight-seg { padding: 16px 0; border-bottom: 1px solid #f1f5f9; }
+.manage-flight-seg:last-child { border-bottom: none; }
+.mf-badge { display: inline-block; background: #0057b8; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
+.mf-badge.return { background: #059669; }
+.mf-route { display: flex; align-items: center; gap: 16px; margin: 8px 0; }
+.mf-city { text-align: center; }
+.mf-city .mf-time { font-size: 22px; font-weight: 700; color: #0f172a; display: block; }
+.mf-city .mf-code { font-size: 13px; color: #64748b; }
+.mf-arrow { flex: 1; text-align: center; color: #94a3b8; font-size: 13px; }
+.mf-arrow span { display: block; color: #cbd5e1; }
+.mf-meta { display: flex; gap: 16px; font-size: 13px; color: #64748b; margin-top: 4px; }
+.mf-meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+/* Passengers */
+.manage-pax { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.manage-pax:last-child { border-bottom: none; }
+.manage-pax-avatar { width: 40px; height: 40px; border-radius: 50%; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+.manage-pax-info strong { display: block; color: #0f172a; }
+.manage-pax-info span { font-size: 13px; color: #64748b; }
+
+/* E-tickets */
+.manage-ticket { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.manage-ticket:last-child { margin-bottom: 0; }
+.manage-ticket-left strong { display: block; color: #0f172a; }
+.manage-ticket-left span { font-size: 13px; color: #64748b; }
+.manage-ticket-status { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px; }
+.manage-ticket-status.issued { background: #dcfce7; color: #16a34a; }
+.manage-ticket-status.voided { background: #fee2e2; color: #dc2626; }
+
+/* Ancillaries */
+.manage-anc-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+.manage-anc-item:last-child { border-bottom: none; }
+.manage-anc-none { color: #94a3b8; font-size: 14px; padding: 8px 0; }
+
+/* Fare summary */
+.manage-fare-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: #475569; }
+.manage-fare-row.total { border-top: 2px solid #e2e8f0; margin-top: 8px; padding-top: 10px; font-weight: 700; font-size: 16px; color: #0f172a; }
+
+/* Actions */
+.manage-actions { display: flex; flex-direction: column; gap: 8px; }
+.manage-action-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 8px;
+  background: #fff; cursor: pointer; font-size: 14px; color: #334155;
+  transition: all 0.2s; width: 100%; text-align: left;
+}
+.manage-action-btn:hover { background: #f8fafc; border-color: #93c5fd; }
+.manage-action-btn .ma-icon { font-size: 18px; }
+.manage-action-btn.danger { color: #dc2626; border-color: #fecaca; }
+.manage-action-btn.danger:hover { background: #fef2f2; }
+
+/* Cancel modal */
+.manage-cancel-refund { background: #f8fafc; border-radius: 8px; padding: 14px; margin: 12px 0; }
+.manage-cancel-refund p { margin: 4px 0; font-size: 14px; color: #475569; }
+.manage-cancel-refund .refund-amount { font-size: 22px; font-weight: 800; color: #0057b8; }
+
+.manage-refund-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border: 2px solid #e2e8f0; border-radius: 8px;
+  cursor: pointer; transition: all 0.2s; flex: 1;
+}
+.manage-refund-opt.selected { border-color: #0057b8; background: #e8f0fe; }
+.manage-refund-opt input { display: none; }
+.manage-refund-opt span { font-size: 13px; font-weight: 600; }
+
+/* Wallet info */
+.manage-wallet-balance { font-size: 28px; font-weight: 900; color: #0057b8; margin: 8px 0; }
+.manage-wallet-txns { margin-top: 12px; }
+.manage-wallet-txn { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+.manage-wallet-txn:last-child { border-bottom: none; }
+.manage-wallet-txn .credit { color: #16a34a; font-weight: 700; }
+
+/* Refund card */
+.manage-refund-detail { padding: 12px 0; }
+.manage-refund-detail p { margin: 6px 0; font-size: 14px; color: #475569; }
+.manage-refund-detail .refund-amount { font-size: 20px; font-weight: 800; color: #16a34a; }
+
+@media (max-width: 900px) {
+  .manage-grid { grid-template-columns: 1fr; }
+}

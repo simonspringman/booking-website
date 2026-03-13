@@ -2133,6 +2133,293 @@ function resumeBooking() {
 // Initialize retargeting on load
 document.addEventListener('DOMContentLoaded', initRetargeting);
 
+// ---- MANAGE BOOKING ----
+var managedBooking = null;
+
+function fillManageDemo(ref, last) {
+  document.getElementById('manageRef').value = ref;
+  document.getElementById('manageLast').value = last;
+}
+
+function retrieveBooking() {
+  var ref = document.getElementById('manageRef').value.trim();
+  var last = document.getElementById('manageLast').value.trim();
+  var errEl = document.getElementById('manageError');
+  errEl.classList.add('hidden');
+
+  if (!ref || !last) {
+    errEl.textContent = 'Please enter both booking reference and last name.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  var btn = document.querySelector('#manageLookup .btn-primary');
+  btn.textContent = 'Retrieving...';
+  btn.disabled = true;
+
+  fetch('/api/manage', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bookingRef: ref, lastName: last })
+  })
+  .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+  .then(function(result) {
+    btn.textContent = 'Retrieve Booking';
+    btn.disabled = false;
+    if (!result.ok) {
+      errEl.textContent = result.data.error || 'Booking not found.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    managedBooking = result.data;
+    renderManagedBooking(result.data);
+  })
+  .catch(function() {
+    btn.textContent = 'Retrieve Booking';
+    btn.disabled = false;
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.remove('hidden');
+  });
+}
+
+function renderManagedBooking(b) {
+  document.getElementById('manageLookup').classList.add('hidden');
+  document.getElementById('manageResult').classList.remove('hidden');
+
+  // Status banner
+  var banner = document.getElementById('manageStatusBanner');
+  var icon = document.getElementById('manageStatusIcon');
+  var title = document.getElementById('manageStatusTitle');
+  var refP = document.getElementById('manageStatusRef');
+
+  if (b.status === 'confirmed') {
+    icon.textContent = '✅'; title.textContent = 'Booking Confirmed';
+    banner.className = 'manage-status-banner confirmed';
+  } else if (b.status === 'cancelled') {
+    icon.textContent = '❌'; title.textContent = 'Booking Cancelled';
+    banner.className = 'manage-status-banner cancelled';
+  } else {
+    icon.textContent = '⏳'; title.textContent = 'Booking On Hold';
+    banner.className = 'manage-status-banner on_hold';
+  }
+  refP.innerHTML = 'Booking Ref: <strong>' + b.bookingRef + '</strong>' +
+    (b.createdAt ? ' &middot; Booked ' + new Date(b.createdAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '');
+
+  // Flights
+  var flightsEl = document.getElementById('manageFlights');
+  var fhtml = '';
+  if (b.outboundFlight) {
+    var ob = b.outboundFlight;
+    fhtml += '<div class="manage-flight-seg"><span class="mf-badge">Outbound</span>' +
+      '<div class="mf-route">' +
+        '<div class="mf-city"><span class="mf-time">' + ob.departure + '</span><span class="mf-code">' + ob.origin + '</span></div>' +
+        '<div class="mf-arrow"><span>✈ ───────── ✈</span>' + ob.duration + ' &middot; Direct</div>' +
+        '<div class="mf-city"><span class="mf-time">' + ob.arrival + '</span><span class="mf-code">' + ob.destination + '</span></div>' +
+      '</div>' +
+      '<div class="mf-meta"><span>✈ ' + ob.flightNumber + '</span><span>📅 ' + ob.date + '</span><span>💺 ' + (ob.cabin || b.cabin || 'Economy') + '</span>' + (ob.aircraft ? '<span>🛩 ' + ob.aircraft + '</span>' : '') + '</div></div>';
+  }
+  if (b.inboundFlight) {
+    var ib = b.inboundFlight;
+    fhtml += '<div class="manage-flight-seg"><span class="mf-badge return">Return</span>' +
+      '<div class="mf-route">' +
+        '<div class="mf-city"><span class="mf-time">' + ib.departure + '</span><span class="mf-code">' + ib.origin + '</span></div>' +
+        '<div class="mf-arrow"><span>✈ ───────── ✈</span>' + ib.duration + ' &middot; Direct</div>' +
+        '<div class="mf-city"><span class="mf-time">' + ib.arrival + '</span><span class="mf-code">' + ib.destination + '</span></div>' +
+      '</div>' +
+      '<div class="mf-meta"><span>✈ ' + ib.flightNumber + '</span><span>📅 ' + ib.date + '</span><span>💺 ' + (ib.cabin || b.cabin || 'Economy') + '</span></div></div>';
+  }
+  flightsEl.innerHTML = fhtml;
+
+  // Passengers
+  var paxEl = document.getElementById('managePassengers');
+  var phtml = '';
+  (b.passengers || []).forEach(function(p) {
+    var initials = ((p.firstName || '')[0] + (p.lastName || '')[0]).toUpperCase();
+    phtml += '<div class="manage-pax"><div class="manage-pax-avatar">' + initials + '</div>' +
+      '<div class="manage-pax-info"><strong>' + (p.title || '') + ' ' + p.firstName + ' ' + p.lastName + '</strong>' +
+      '<span>Seat: ' + (p.seat || 'TBA') + ' &middot; Meal: ' + (p.meal || 'Standard') + ' &middot; Passport: ' + (p.passport || 'N/A') + '</span></div></div>';
+  });
+  paxEl.innerHTML = phtml;
+
+  // E-Tickets
+  var tickEl = document.getElementById('manageTickets');
+  var thtml = '';
+  (b.etickets || []).forEach(function(t) {
+    thtml += '<div class="manage-ticket"><div class="manage-ticket-left"><strong>🎫 ' + t.number + '</strong>' +
+      '<span>' + t.passenger + ' &middot; Seat ' + t.seat + '</span></div>' +
+      '<span class="manage-ticket-status ' + t.status + '">' + t.status.toUpperCase() + '</span></div>';
+  });
+  tickEl.innerHTML = thtml;
+
+  // Ancillaries
+  var ancEl = document.getElementById('manageAncillaries');
+  if (b.ancillaries && b.ancillaries.length) {
+    var ahtml = '';
+    b.ancillaries.forEach(function(a) {
+      ahtml += '<div class="manage-anc-item"><span>' + a.name + '</span><strong>' + (a.price ? fmtPrice(a.price) : 'Free') + '</strong></div>';
+    });
+    ancEl.innerHTML = ahtml;
+  } else {
+    ancEl.innerHTML = '<p class="manage-anc-none">No extras added yet.</p>';
+  }
+
+  // Fare summary
+  var fareEl = document.getElementById('manageFareSummary');
+  var fare = b.fare || b.outboundFlight.fare;
+  var fsum = '<div class="manage-fare-row"><span>Base fare</span><span>' + fmtPrice(fare.base || 0) + '</span></div>' +
+    '<div class="manage-fare-row"><span>Taxes & fees</span><span>' + fmtPrice(fare.tax || 0) + '</span></div>';
+  if (b.ancillaries && b.ancillaries.length) {
+    var ancTotal = b.ancillaries.reduce(function(s, a) { return s + (a.price || 0); }, 0);
+    if (ancTotal) fsum += '<div class="manage-fare-row"><span>Extras</span><span>' + fmtPrice(ancTotal) + '</span></div>';
+  }
+  fsum += '<div class="manage-fare-row total"><span>Total</span><span>' + fmtPrice(fare.totalAllPax || fare.total || 0) + '</span></div>';
+  if (b.paymentMethod) fsum += '<div style="font-size:13px;color:#64748b;margin-top:8px">Paid via ' + b.paymentMethod + '</div>';
+  if (b.dreamMilesEarned) fsum += '<div style="font-size:13px;color:#f59e0b;margin-top:4px">⭐ ' + b.dreamMilesEarned + ' DreamMiles earned</div>';
+  fareEl.innerHTML = fsum;
+
+  // Actions
+  var actEl = document.getElementById('manageActions');
+  var actCard = document.getElementById('manageActionsCard');
+  if (b.status === 'cancelled') {
+    actCard.classList.add('hidden');
+  } else {
+    actCard.classList.remove('hidden');
+    actEl.innerHTML =
+      '<button class="manage-action-btn" onclick="manageAddExtra()"><span class="ma-icon">🧳</span> Add Extra Baggage / Services</button>' +
+      '<button class="manage-action-btn" onclick="managePrint()"><span class="ma-icon">🖨</span> Print Itinerary</button>' +
+      '<button class="manage-action-btn" onclick="manageEmail()"><span class="ma-icon">📧</span> Email Confirmation</button>' +
+      '<button class="manage-action-btn danger" onclick="openCancelModal()"><span class="ma-icon">✕</span> Cancel Booking & Refund</button>';
+  }
+
+  // Refund card
+  var refundCard = document.getElementById('manageRefundCard');
+  if (b.status === 'cancelled') {
+    refundCard.classList.remove('hidden');
+    var rhtml = '<div class="manage-refund-detail">' +
+      '<p><strong>Status:</strong> ' + (b.refundStatus === 'completed' ? '✅ Refund Completed' : '⏳ Refund Pending') + '</p>' +
+      '<p><strong>Refund Amount:</strong> <span class="refund-amount">' + fmtPrice(b.refundAmount || 0) + '</span></p>' +
+      (b.refundMethod ? '<p><strong>Refunded to:</strong> ' + (b.refundMethod === 'wallet' ? '👛 Wallet' : '💳 Original Payment Method') + '</p>' : '') +
+      (b.cancelledAt ? '<p><strong>Cancelled:</strong> ' + new Date(b.cancelledAt).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) + '</p>' : '') +
+      (b.cancellationReason ? '<p><strong>Reason:</strong> ' + b.cancellationReason + '</p>' : '') +
+      (b.refundNote ? '<p style="color:#16a34a;margin-top:8px">' + b.refundNote + '</p>' : '') +
+    '</div>';
+    document.getElementById('manageRefundInfo').innerHTML = rhtml;
+  } else {
+    refundCard.classList.add('hidden');
+  }
+
+  // Wallet card
+  var walletCard = document.getElementById('manageWalletCard');
+  if (typeof loggedInUser !== 'undefined' && loggedInUser && loggedInUser.wallet) {
+    walletCard.classList.remove('hidden');
+    var w = loggedInUser.wallet;
+    var whtml = '<div class="manage-wallet-balance">' + fmtPrice(w.balance) + '</div>' +
+      '<div style="font-size:13px;color:#64748b">Available for bookings or refunds</div>';
+    if (w.transactions && w.transactions.length) {
+      whtml += '<div class="manage-wallet-txns"><strong style="font-size:13px;color:#0f172a">Recent Transactions:</strong>';
+      w.transactions.slice(0, 5).forEach(function(txn) {
+        whtml += '<div class="manage-wallet-txn"><div><span>' + txn.reason + '</span><br><span style="color:#94a3b8;font-size:11px">' +
+          new Date(txn.date).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) + '</span></div>' +
+          '<span class="' + txn.type + '">+' + fmtPrice(txn.amount) + '</span></div>';
+      });
+      whtml += '</div>';
+    }
+    document.getElementById('manageWalletInfo').innerHTML = whtml;
+  } else {
+    walletCard.classList.add('hidden');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToManageLookup() {
+  document.getElementById('manageLookup').classList.remove('hidden');
+  document.getElementById('manageResult').classList.add('hidden');
+  managedBooking = null;
+}
+
+function openCancelModal() {
+  if (!managedBooking) return;
+  var b = managedBooking;
+  var fare = b.fare || b.outboundFlight.fare;
+  var total = fare.totalAllPax || fare.total || 0;
+  var refundAmt = Math.round(total * 0.85);
+
+  document.getElementById('manageCancelRefundInfo').innerHTML =
+    '<p>Booking: <strong>' + b.bookingRef + '</strong></p>' +
+    '<p>Total paid: ' + fmtPrice(total) + '</p>' +
+    '<p>Refund amount (85%): <span class="refund-amount">' + fmtPrice(refundAmt) + '</span></p>' +
+    '<p style="font-size:12px;color:#94a3b8">A 15% cancellation fee applies per RwandAir policy.</p>';
+
+  var opts = document.querySelectorAll('.manage-refund-opt');
+  opts.forEach(function(o) {
+    o.onclick = function() {
+      opts.forEach(function(x) { x.classList.remove('selected'); });
+      o.classList.add('selected');
+      o.querySelector('input').checked = true;
+    };
+  });
+  document.getElementById('manageCancelModal').classList.remove('hidden');
+}
+
+function closeCancelModal() {
+  document.getElementById('manageCancelModal').classList.add('hidden');
+}
+
+function confirmCancelBooking() {
+  if (!managedBooking) return;
+  var b = managedBooking;
+  var reason = document.getElementById('manageCancelReason').value;
+  var method = document.querySelector('input[name="refundMethod"]:checked').value;
+  var lastName = b.passengers[0].lastName;
+  closeCancelModal();
+
+  if (method === 'wallet' && typeof loggedInUser !== 'undefined' && loggedInUser) {
+    var token = localStorage.getItem('rwToken');
+    fetch('/api/bookings/cancel-to-wallet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ bookingRef: b.bookingRef, lastName: lastName, reason: reason })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) { alert(data.error); return; }
+      if (loggedInUser) {
+        loggedInUser.wallet = loggedInUser.wallet || { balance: 0, currency: 'RWF', transactions: [] };
+        loggedInUser.wallet.balance = data.newWalletBalance;
+        loggedInUser.wallet.transactions.unshift(data.transaction);
+      }
+      managedBooking.status = 'cancelled';
+      managedBooking.cancelledAt = data.cancelledAt;
+      managedBooking.cancellationReason = reason || 'Requested by passenger';
+      managedBooking.refundStatus = 'completed';
+      managedBooking.refundAmount = data.refundAmount;
+      managedBooking.refundMethod = 'wallet';
+      managedBooking.refundNote = data.refundNote;
+      renderManagedBooking(managedBooking);
+    });
+  } else {
+    fetch('/api/bookings/cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookingRef: b.bookingRef, lastName: lastName, reason: reason })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) { alert(data.error); return; }
+      managedBooking.status = 'cancelled';
+      managedBooking.cancelledAt = data.cancelledAt;
+      managedBooking.refundStatus = 'pending';
+      managedBooking.refundAmount = data.refundAmount;
+      managedBooking.refundNote = data.refundNote;
+      renderManagedBooking(managedBooking);
+    });
+  }
+}
+
+function manageAddExtra() { alert('Coming soon! Add baggage, lounge, insurance and more.'); }
+function managePrint() { window.print(); }
+function manageEmail() { alert('Confirmation email sent to ' + (managedBooking && managedBooking.contact ? managedBooking.contact.email : 'your email') + '!'); }
+
 // ---- PAYMENT ----
 function processPayment() {
   const terms = document.getElementById('termsCheck');

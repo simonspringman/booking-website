@@ -168,6 +168,93 @@ const RETURN_SLOTS = [
 const holds    = new Map();
 const bookings = new Map();
 
+// Pre-seeded demo bookings for Manage Booking demo
+bookings.set('WB-2026-NBO-10042', {
+  bookingRef: 'WB-2026-NBO-10042', pnr: 'WB-2026-NBO-10042',
+  status: 'confirmed',
+  outboundFlight: {
+    origin:'KGL', destination:'NBO', flightNumber:'WB 400',
+    date:'2026-03-26', departure:'08:30', arrival:'09:55',
+    duration:'1h 25m', cabin:'Economy', aircraft:'A330',
+    fare:{ base:180000, tax:28500, total:208500, currency:'RWF', label:'RWF 208,500', totalAllPax:417000, labelTotal:'RWF 417,000' }
+  },
+  inboundFlight: {
+    origin:'NBO', destination:'KGL', flightNumber:'WB 401',
+    date:'2026-04-02', departure:'14:15', arrival:'15:45',
+    duration:'1h 30m', cabin:'Economy', aircraft:'A330',
+    fare:{ base:180000, tax:28500, total:208500, currency:'RWF', label:'RWF 208,500' }
+  },
+  passengers: [
+    { title:'Mr', firstName:'Jean', lastName:'Uwimana', dob:'1990-05-12', nationality:'RW', passport:'PC123456', seat:'14A', meal:'Standard' },
+    { title:'Mrs', firstName:'Marie', lastName:'Uwimana', dob:'1992-08-20', nationality:'RW', passport:'PC654321', seat:'14B', meal:'Vegetarian' }
+  ],
+  contact: { email:'demo@rwandair.com', phone:'+250788123456' },
+  cabin: 'Economy Classic',
+  fare: { base:360000, tax:57000, total:417000, totalAllPax:417000, currency:'RWF', labelTotal:'RWF 417,000' },
+  etickets: [
+    { number:'232-80421350', passenger:'Jean Uwimana', status:'issued', seat:'14A' },
+    { number:'232-80421351', passenger:'Marie Uwimana', status:'issued', seat:'14B' }
+  ],
+  ancillaries: [
+    { type:'extra-baggage', name:'Extra Baggage (10kg)', price:35000, addedAt:'2026-03-10T09:00:00Z' }
+  ],
+  dreamMilesEarned: 263,
+  paymentStatus: 'settled',
+  paymentMethod: 'Mobile Money (MTN)',
+  createdAt: '2026-03-08T14:30:00Z',
+});
+bookings.set('WB-2026-DXB-20085', {
+  bookingRef: 'WB-2026-DXB-20085', pnr: 'WB-2026-DXB-20085',
+  status: 'confirmed',
+  outboundFlight: {
+    origin:'KGL', destination:'DXB', flightNumber:'WB 600',
+    date:'2026-04-15', departure:'23:45', arrival:'06:30',
+    duration:'5h 45m', cabin:'Business', aircraft:'A330',
+    fare:{ base:950000, tax:145000, total:1095000, currency:'RWF', label:'RWF 1,095,000', totalAllPax:1095000, labelTotal:'RWF 1,095,000' }
+  },
+  inboundFlight: null,
+  passengers: [
+    { title:'Mr', firstName:'Jean', lastName:'Uwimana', dob:'1990-05-12', nationality:'RW', passport:'PC123456', seat:'2A', meal:'Halal' }
+  ],
+  contact: { email:'demo@rwandair.com', phone:'+250788123456' },
+  cabin: 'Business',
+  fare: { base:950000, tax:145000, total:1095000, totalAllPax:1095000, currency:'RWF', labelTotal:'RWF 1,095,000' },
+  etickets: [
+    { number:'232-80512470', passenger:'Jean Uwimana', status:'issued', seat:'2A' }
+  ],
+  ancillaries: [],
+  dreamMilesEarned: 693,
+  paymentStatus: 'settled',
+  paymentMethod: 'Credit Card (Visa ****6411)',
+  createdAt: '2026-03-01T10:15:00Z',
+});
+bookings.set('WB-2026-LHR-30012', {
+  bookingRef: 'WB-2026-LHR-30012', pnr: 'WB-2026-LHR-30012',
+  status: 'cancelled',
+  outboundFlight: {
+    origin:'KGL', destination:'LHR', flightNumber:'WB 200',
+    date:'2026-02-20', departure:'22:00', arrival:'05:30',
+    duration:'8h 30m', cabin:'Economy', aircraft:'A330',
+    fare:{ base:520000, tax:78000, total:598000, currency:'RWF', label:'RWF 598,000', totalAllPax:598000, labelTotal:'RWF 598,000' }
+  },
+  inboundFlight: null,
+  passengers: [
+    { title:'Mr', firstName:'Jean', lastName:'Uwimana', dob:'1990-05-12', nationality:'RW', passport:'PC123456', seat:'32F', meal:'Standard' }
+  ],
+  contact: { email:'demo@rwandair.com', phone:'+250788123456' },
+  cabin: 'Economy Lite',
+  fare: { base:520000, tax:78000, total:598000, totalAllPax:598000, currency:'RWF', labelTotal:'RWF 598,000' },
+  etickets: [{ number:'232-80198765', passenger:'Jean Uwimana', status:'voided', seat:'32F' }],
+  ancillaries: [],
+  cancelledAt: '2026-02-18T11:00:00Z',
+  cancellationReason: 'Schedule conflict',
+  refundStatus: 'completed',
+  refundAmount: 508300,
+  refundMethod: 'wallet',
+  refundNote: 'Refund of RWF 508,300 (85%) credited to wallet on 20 Feb 2026.',
+  createdAt: '2026-02-05T16:45:00Z',
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -714,6 +801,54 @@ app.post('/api/bookings/cancel', (req, res) => {
     refundNote: b.refundNote,
     cancelledAt: b.cancelledAt,
   }), 600);
+});
+
+/* POST /api/bookings/cancel-to-wallet — cancel and refund to wallet */
+app.post('/api/bookings/cancel-to-wallet', authMiddleware, (req, res) => {
+  const { bookingRef, lastName, reason } = req.body;
+  if (!bookingRef || !lastName)
+    return res.status(400).json({ error:'Booking reference and last name required' });
+  const b = bookings.get(bookingRef.toUpperCase().trim());
+  if (!b) return res.status(404).json({ error:'Booking not found.' });
+  const match = b.passengers?.some(p =>
+    p.lastName?.toLowerCase() === lastName.toLowerCase().trim()
+  );
+  if (!match) return res.status(401).json({ error:'Last name does not match this booking.' });
+  if (b.status === 'cancelled')
+    return res.status(400).json({ error:'This booking has already been cancelled.' });
+
+  const refundAmount = Math.round(b.outboundFlight.fare.total * (b.passengers||[]).length * 0.85);
+  b.status = 'cancelled';
+  b.cancelledAt = new Date().toISOString();
+  b.cancellationReason = reason || 'Requested by passenger';
+  b.refundStatus = 'completed';
+  b.refundAmount = refundAmount;
+  b.refundMethod = 'wallet';
+  b.refundNote = `Refund of ${fmtMoney(refundAmount)} (85%) credited to your wallet instantly.`;
+
+  // Credit wallet
+  if (!req.user.wallet) req.user.wallet = { balance:0, currency:'RWF', transactions:[] };
+  const txn = {
+    id:'TXN'+Date.now().toString(36),
+    type:'credit', amount:refundAmount, currency:'RWF',
+    reason:`Cancellation refund for booking ${bookingRef}`,
+    bookingRef, date:new Date().toISOString()
+  };
+  req.user.wallet.balance += refundAmount;
+  req.user.wallet.transactions.unshift(txn);
+
+  setTimeout(() => res.json({
+    bookingRef: b.bookingRef,
+    status: 'cancelled',
+    refundAmount,
+    refundAmountLabel: fmtMoney(refundAmount),
+    refundMethod: 'wallet',
+    newWalletBalance: req.user.wallet.balance,
+    newWalletBalanceLabel: fmtMoney(req.user.wallet.balance),
+    transaction: txn,
+    refundNote: b.refundNote,
+    cancelledAt: b.cancelledAt,
+  }), 800);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1553,6 +1688,10 @@ app.listen(PORT, '0.0.0.0', async () => {
   console.log(`\n  Back Office:   /admin.html`);
   console.log(`  CMS:           /cms.html`);
   console.log(`  Audit hub:     /audit.html`);
+  console.log(`\n  Booking Refs (Manage Booking demo):`);
+  console.log(`    WB-2026-NBO-10042  /  Uwimana  — Confirmed, KGL→NBO round-trip`);
+  console.log(`    WB-2026-DXB-20085  /  Uwimana  — Confirmed, KGL→DXB one-way Business`);
+  console.log(`    WB-2026-LHR-30012  /  Uwimana  — Cancelled, refund to wallet`);
 
   // ── Public tunnel (internet access) ──────────────────────────────
   try {
