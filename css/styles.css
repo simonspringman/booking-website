@@ -2489,21 +2489,26 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 
 /* Services Grid */
 .cargo-services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.cargo-service-card { text-align: center; }
-.cargo-service-img { height: 160px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
-.cargo-service-card span { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.cargo-service-card { text-align: center; position: relative; }
+.cargo-service-img { height: 180px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; margin-bottom: 8px; overflow: hidden; position: relative; }
+.cargo-service-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; }
+.cargo-service-card span { font-size: 14px; font-weight: 600; color: #fff; position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
 
 /* Recommencement */
-.cargo-recom { padding: 32px 24px; }
+.cargo-recom { padding: 48px 24px; }
+.cargo-recom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
 .cargo-recom-content h3 { font-size: 18px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
-.cargo-recom-content p { font-size: 14px; color: var(--gray-600); line-height: 1.7; max-width: 500px; }
-.cargo-recom-content a { font-size: 13px; color: var(--blue); font-weight: 600; }
+.cargo-recom-content p { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
+.cargo-recom-content a { font-size: 13px; color: var(--blue); font-weight: 600; display: inline-block; margin-top: 12px; }
+.cargo-recom-img img { width: 100%; border-radius: var(--radius); object-fit: cover; }
 
 /* Partners */
-.cargo-partners { text-align: center; padding: 48px 24px; }
-.cargo-partners h3 { font-size: 20px; font-weight: 300; color: var(--gray-700); margin-bottom: 16px; text-decoration: underline; letter-spacing: 2px; }
-.cargo-partners p { font-size: 14px; color: var(--gray-600); line-height: 1.7; max-width: 700px; margin: 0 auto 16px; }
-.cargo-partners a { color: var(--blue); font-weight: 600; font-size: 13px; }
+.cargo-partners { padding: 48px 24px; }
+.cargo-partners-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+.cargo-partners-img img { width: 100%; border-radius: var(--radius); object-fit: cover; }
+.cargo-partners-content h3 { font-size: 20px; font-weight: 300; color: var(--gray-700); margin-bottom: 16px; text-decoration: underline; letter-spacing: 2px; }
+.cargo-partners-content p { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 16px; }
+.cargo-partners-content a { color: var(--blue); font-weight: 600; font-size: 13px; }
 
 /* Discover More */
 .cargo-discover { padding: 48px 24px; background: var(--gray-50); }
@@ -2517,7 +2522,7 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 
 /* Fleet Section */
 .cargo-fleet-section { background: linear-gradient(135deg, #00529b, #003d75); display: flex; align-items: center; min-height: 300px; }
-.cargo-fleet-map { flex: 1; min-height: 300px; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"><rect fill="%2300529b"/></svg>') center/cover; opacity: 0.5; }
+.cargo-fleet-map { flex: 1; min-height: 300px; opacity: 0.7; }
 .cargo-fleet-info { padding: 40px; color: #fff; max-width: 400px; }
 .cargo-fleet-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
 .cargo-fleet-info p { font-size: 14px; opacity: 0.85; line-height: 1.7; margin-bottom: 20px; }
@@ -2674,6 +2679,8 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
   .dash-booking-card { grid-template-columns: 1fr; gap: 8px; }
   .cargo-goodhands-grid { grid-template-columns: 1fr; }
   .cargo-services-grid { grid-template-columns: repeat(2, 1fr); }
+  .cargo-recom-grid { grid-template-columns: 1fr; }
+  .cargo-partners-grid { grid-template-columns: 1fr; }
   .cargo-nav-links { display: none; }
   .cargo-footer-grid { grid-template-columns: repeat(2, 1fr); }
   .cargo-action-tabs { flex-wrap: wrap; }
