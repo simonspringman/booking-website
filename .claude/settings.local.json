@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__mcp-registry__search_mcp_registry",
+      "Bash(gh auth status)",
+      "Bash(git --version)",
+      "Bash(winget install --id GitHub.cli)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git clone -b main https://github.com/simonspringman/booking-website.git \"C:\\\\Users\\\\umwali.mwiza\\\\Desktop\\\\newfiles\")"
+    ]
+  }
+}
