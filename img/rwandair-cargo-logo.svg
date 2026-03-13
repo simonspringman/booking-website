@@ -39,8 +39,6 @@
       <polygon points="38,24 46,20 38,21.5"/>
     </g>
   </g>
-  <!-- RwandAir text -->
-  <text x="62" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" font-style="italic" fill="#00529b" letter-spacing="-0.5">RwandAir</text>
-  <!-- CARGO text -->
-  <text x="228" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="700" font-style="italic" fill="#005fa3" letter-spacing="0.5">CARGO</text>
+  <!-- RwandAirCARGO text -->
+  <text x="62" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic" fill="#00529b" letter-spacing="-0.5"><tspan font-weight="600">RwandAir</tspan><tspan font-weight="700" fill="#005fa3">CARGO</tspan></text>
 </svg>
