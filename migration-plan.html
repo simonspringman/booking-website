@@ -246,7 +246,7 @@
       <ul class="bullet-list">
         <li><strong>Replace mock endpoints</strong> with real Amadeus Digital API calls via wb-api.rwandair.com</li>
         <li><strong>Handle real PNR lifecycle</strong> &mdash; creation, ticketing, modification, cancellation</li>
-        <li><strong>Payment gateway integration</strong> &mdash; MTN MoMo, card processors, IATA Pay</li>
+        <li><strong>Payment gateway integration</strong> &mdash; Outpace, Bank of Kigali, DPO, MTN MoMo</li>
         <li><strong>Data mapping layer</strong> to transform Amadeus response structures to our UI models</li>
         <li><strong>Production hardening</strong> &mdash; error handling, retry logic, monitoring, security audit</li>
       </ul>
@@ -274,9 +274,9 @@
       <span class="arch-arrow">&rarr;</span>
       <span class="arch-box arch-internal">Wallet Service</span>
       &nbsp;&nbsp;
-      <span class="arch-box arch-internal">DreamMiles API</span>
+      <span class="arch-box arch-amadeus">Amadeus ALLMS<br/>(DreamMiles Loyalty)</span>
       &nbsp;&nbsp;
-      <span class="arch-box arch-internal">Payment Gateway</span>
+      <span class="arch-box arch-internal">Payment Gateways<br/>(Outpace / BK / DPO)</span>
       &nbsp;&nbsp;
       <span class="arch-box arch-internal">CMS / Admin DB</span>
     </div>
@@ -293,7 +293,7 @@
     </div>
     <div class="info-card">
       <h4>Internal Services (Keep As-Is)</h4>
-      <p>Wallet, DreamMiles, CMS, Admin dashboard, chat assistant &mdash; these stay on your own infrastructure, no Amadeus dependency.</p>
+      <p>Wallet, CMS, Admin dashboard, chat assistant &mdash; stay on your own infrastructure. DreamMiles loyalty migrates to Amadeus ALLMS. Payments via Outpace, Bank of Kigali &amp; DPO.</p>
     </div>
   </div>
   <div class="slide-number">3 / 12</div>
@@ -452,16 +452,28 @@
       <td><strong>Key risk:</strong> Amadeus deadlines are set by fare rules, not always 24/48/72h. May need airline config override. T2T fee handled on your side.</td>
     </tr>
     <tr>
-      <td><strong>Payment: MTN MoMo</strong></td>
-      <td>MTN MoMo API (Collections)</td>
+      <td><strong>Payment: Outpace</strong></td>
+      <td>Outpace Payment Gateway API</td>
       <td><span class="effort med">2 weeks</span></td>
-      <td>Async payment flow. Callback handling, timeout/retry, reconciliation. Irembo PSP as fallback.</td>
+      <td>Primary payment orchestrator. Card processing (Visa/MC), 3DS2 compliance, tokenization, PCI-DSS scope. Webhook callbacks for async settlement.</td>
     </tr>
     <tr>
-      <td><strong>Payment: Card (Visa/MC)</strong></td>
-      <td>Existing payment processor</td>
+      <td><strong>Payment: Bank of Kigali</strong></td>
+      <td>BK Direct Integration / Open Banking</td>
       <td><span class="effort med">1&ndash;2 weeks</span></td>
-      <td>3DS2 compliance, tokenization, PCI-DSS scope. May reuse existing gateway.</td>
+      <td>Direct bank transfer &amp; mobile banking. RWF settlement, instant confirmation via BK API. Local currency advantage &mdash; no FX conversion.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment: DPO (Network Intl)</strong></td>
+      <td>DPO Group Payment API</td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td>Multi-currency card processing for international routes. Supports Visa, Mastercard, Amex. Used for non-RWF transactions and global card acceptance.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment: MTN MoMo</strong></td>
+      <td>MTN MoMo API (Collections)</td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td>Async mobile money flow. Callback handling, timeout/retry, reconciliation. Primary payment method for domestic travelers.</td>
     </tr>
     <tr>
       <td><strong>Payment: Wallet</strong></td>
@@ -470,10 +482,10 @@
       <td>Already built. Wire debit call at payment step. Handle partial wallet + card split.</td>
     </tr>
     <tr>
-      <td><strong>Payment: DreamMiles</strong></td>
-      <td>Internal loyalty service</td>
-      <td><span class="effort low">1 week</span></td>
-      <td>Miles-to-currency conversion, partial miles redemption, earn-on-fly accrual post-flight.</td>
+      <td><strong>Loyalty: DreamMiles</strong></td>
+      <td>Amadeus ALLMS (Altea Loyalty)</td>
+      <td><span class="effort med">2&ndash;3 weeks</span></td>
+      <td>Migrate from internal mock to Amadeus ALLMS. Miles accrual, redemption, tier management, burn rules. Miles+Cash via ALLMS pricing engine. Earn-on-fly accrual post-flight via Amadeus.</td>
     </tr>
   </table>
   <div class="slide-number">6 / 12</div>
@@ -578,12 +590,13 @@
     <div class="timeline-phase p3">
       <h4>Phase 3</h4>
       <div class="weeks">4 wks</div>
-      <div class="desc">Ancillaries &amp; Pay</div>
+      <div class="desc">Ancillaries, Pay &amp; Loyalty</div>
       <ul>
         <li>Seat selection</li>
         <li>Baggage &amp; meals</li>
         <li>T2T holds</li>
-        <li>Payment gateways</li>
+        <li>Outpace / BK / DPO / MoMo</li>
+        <li>ALLMS loyalty</li>
       </ul>
     </div>
     <div class="timeline-phase p4">
@@ -643,7 +656,7 @@
     </tr>
     <tr>
       <td><strong>Backend Engineer</strong></td>
-      <td>Payment gateways (MTN MoMo, card), wallet/loyalty services, admin dashboard data, CMS backend.</td>
+      <td>Payment gateways (Outpace, Bank of Kigali, DPO, MTN MoMo), wallet service, Amadeus ALLMS loyalty integration, admin dashboard data, CMS backend.</td>
       <td>Payment APIs, webhook handling, database design, security (PCI-DSS awareness)</td>
       <td>100% &mdash; Weeks 4&ndash;16</td>
     </tr>
@@ -691,7 +704,7 @@
     </tr>
     <tr>
       <td>3</td>
-      <td><strong>Payment gateway delays</strong> (MTN MoMo callback failures, card 3DS timeouts)</td>
+      <td><strong>Payment gateway delays</strong> (Outpace/DPO settlement, BK API timeouts, MTN MoMo callback failures)</td>
       <td><span class="risk-high">HIGH</span></td>
       <td><span class="risk-med">MED</span></td>
       <td>Implement pending payment queue with automatic retry. Hold PNR until payment confirmed. Add manual resolution queue for stuck payments in admin dashboard.</td>
