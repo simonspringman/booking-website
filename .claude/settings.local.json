@@ -6,7 +6,17 @@
       "Bash(git --version)",
       "Bash(winget install --id GitHub.cli)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(git clone -b main https://github.com/simonspringman/booking-website.git \"C:\\\\Users\\\\umwali.mwiza\\\\Desktop\\\\newfiles\")"
+      "Bash(git clone -b main https://github.com/simonspringman/booking-website.git \"C:\\\\Users\\\\umwali.mwiza\\\\Desktop\\\\newfiles\")",
+      "Bash(ls /Users/drsim/Documents/Software/RwandAir/img/stopover*)",
+      "Bash(rsync -a /Users/drsim/Documents/Software/RwandAir/ /tmp/rwandair-site/ --exclude=.git)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
