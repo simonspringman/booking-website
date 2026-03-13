@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RwandAir Digital Platform — Migration Plan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rw-blue: #00529b;
+    --rw-sky: #1ea2dc;
+    --rw-yellow: #fee014;
+    --rw-green: #94c943;
+    --dark: #0f172a;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+  }
+
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .logo-bar {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .logo-bar .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--rw-blue); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; }
+
+  /* Cover */
+  .slide.cover {
+    background: linear-gradient(135deg, var(--rw-blue) 0%, #003366 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .cover h1 { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -1px; }
+  .cover .subtitle { font-size: 22px; font-weight: 300; opacity: 0.85; margin-bottom: 40px; }
+  .cover .meta { font-size: 15px; opacity: 0.6; }
+  .cover .meta span { margin: 0 16px; }
+  .cover .badge { display: inline-block; background: var(--rw-yellow); color: var(--dark); font-weight: 700; padding: 8px 24px; border-radius: 8px; font-size: 14px; margin-bottom: 40px; }
+
+  /* Section headers */
+  h2 { font-size: 36px; font-weight: 800; color: var(--rw-blue); margin-bottom: 8px; letter-spacing: -0.5px; }
+  h3 { font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--gray); margin-bottom: 32px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { text-align: left; padding: 12px 16px; background: var(--rw-blue); color: #fff; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: top; }
+  tr:hover td { background: #f1f5f9; }
+  .effort { display: inline-block; background: #dbeafe; color: var(--rw-blue); font-weight: 700; padding: 3px 10px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
+  .effort.high { background: #fee2e2; color: #dc2626; }
+  .effort.med { background: #fef3c7; color: #92400e; }
+  .effort.low { background: #dcfce7; color: #16a34a; }
+  .risk-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .risk-high { background: #fee2e2; color: #dc2626; }
+  .risk-med { background: #fef3c7; color: #92400e; }
+  .risk-low { background: #dcfce7; color: #16a34a; }
+
+  /* Timeline */
+  .timeline { display: flex; gap: 0; margin: 30px 0; }
+  .timeline-phase {
+    flex: 1;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 0 6px;
+    position: relative;
+  }
+  .timeline-phase.p1 { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid #93c5fd; }
+  .timeline-phase.p2 { background: linear-gradient(135deg, #fefce8, #fef3c7); border: 2px solid #fcd34d; }
+  .timeline-phase.p3 { background: linear-gradient(135deg, #fdf2f8, #fce7f3); border: 2px solid #f9a8d4; }
+  .timeline-phase.p4 { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 2px solid #6ee7b7; }
+  .timeline-phase.p5 { background: linear-gradient(135deg, #f5f3ff, #ede9fe); border: 2px solid #c4b5fd; }
+  .timeline-phase h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .timeline-phase .weeks { font-size: 24px; font-weight: 900; color: var(--rw-blue); }
+  .timeline-phase .desc { font-size: 12px; color: var(--gray); margin-top: 6px; }
+  .timeline-phase ul { margin-top: 8px; padding-left: 16px; font-size: 12px; color: #475569; }
+  .timeline-phase li { margin: 3px 0; }
+
+  /* Architecture */
+  .arch-diagram {
+    background: var(--light);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 2;
+    text-align: center;
+  }
+  .arch-box {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    margin: 4px;
+  }
+  .arch-browser { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
+  .arch-middleware { background: var(--rw-blue); color: #fff; }
+  .arch-amadeus { background: #1e293b; color: #fff; }
+  .arch-internal { background: #dcfce7; color: #166534; border: 2px solid #86efac; }
+  .arch-arrow { font-size: 20px; color: var(--gray); margin: 0 8px; vertical-align: middle; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .info-card {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .info-card p { font-size: 13px; color: var(--gray); }
+  .info-card .number { font-size: 32px; font-weight: 900; color: var(--rw-blue); }
+
+  /* Summary boxes */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+  .summary-box { background: var(--light); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+  .summary-box .num { font-size: 36px; font-weight: 900; color: var(--rw-blue); }
+  .summary-box .label { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+  /* Bullet list */
+  .bullet-list { list-style: none; padding: 0; }
+  .bullet-list li { padding: 10px 0 10px 28px; border-bottom: 1px solid var(--border); font-size: 14px; position: relative; }
+  .bullet-list li::before { content: ''; position: absolute; left: 0; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--rw-blue); }
+  .bullet-list li:last-child { border-bottom: none; }
+  .bullet-list li strong { color: var(--dark); }
+
+  /* Two columns */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 20px 0; }
+
+  /* Print */
+  @media print {
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+    body { font-size: 12px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .slide { padding: 30px 20px; }
+    .cover h1 { font-size: 28px; }
+    .timeline { flex-direction: column; }
+    .card-grid, .summary-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    table { font-size: 12px; }
+    td, th { padding: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: COVER ==================== -->
+<div class="slide cover">
+  <div>
+    <div class="badge">CONFIDENTIAL &mdash; INTERNAL USE ONLY</div>
+    <h1>RwandAir Digital Platform<br/>Production Migration Plan</h1>
+    <p class="subtitle">Prototype &rarr; Amadeus Digital APIs via wb-api.rwandair.com</p>
+    <p class="meta">
+      <span>March 2026</span>
+      <span>|</span>
+      <span>Estimated: 14&ndash;18 Weeks</span>
+      <span>|</span>
+      <span>Team: 3&ndash;4 Engineers</span>
+    </p>
+  </div>
+  <div class="slide-number" style="color:rgba(255,255,255,0.4)">1 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 2: EXECUTIVE SUMMARY ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Executive Summary</h2>
+  <p class="section-sub">What we built, where we're going, and what it takes to get there.</p>
+
+  <div class="summary-grid">
+    <div class="summary-box">
+      <div class="num">22</div>
+      <div class="label">Mock API Endpoints</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">14&ndash;18</div>
+      <div class="label">Weeks to Production</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">3&ndash;4</div>
+      <div class="label">Engineers Required</div>
+    </div>
+    <div class="summary-box">
+      <div class="num">60%</div>
+      <div class="label">Frontend Reuse (unchanged)</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3>What We Have (Prototype)</h3>
+      <ul class="bullet-list">
+        <li><strong>Complete SPA</strong> with booking flow, destinations, manage booking, check-in, loyalty</li>
+        <li><strong>Admin Back Office</strong> with chatbot reports, funnel dashboard, T2T holds, CMS</li>
+        <li><strong>22 mock API endpoints</strong> in Express.js returning realistic simulated data</li>
+        <li><strong>3 demo bookings</strong> with full passenger, ticket, and refund-to-wallet data</li>
+        <li><strong>AI chat assistant</strong> with context awareness and multi-language support</li>
+      </ul>
+    </div>
+    <div>
+      <h3>What We Need (Production)</h3>
+      <ul class="bullet-list">
+        <li><strong>Replace mock endpoints</strong> with real Amadeus Digital API calls via wb-api.rwandair.com</li>
+        <li><strong>Handle real PNR lifecycle</strong> &mdash; creation, ticketing, modification, cancellation</li>
+        <li><strong>Payment gateway integration</strong> &mdash; MTN MoMo, card processors, IATA Pay</li>
+        <li><strong>Data mapping layer</strong> to transform Amadeus response structures to our UI models</li>
+        <li><strong>Production hardening</strong> &mdash; error handling, retry logic, monitoring, security audit</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-number">2 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 3: ARCHITECTURE ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Target Architecture</h2>
+  <p class="section-sub">The middleware at wb-api.rwandair.com owns all Amadeus communication. The frontend barely changes.</p>
+
+  <div class="arch-diagram">
+    <div style="margin-bottom: 20px;">
+      <span class="arch-box arch-browser">Browser SPA<br/>(index.html + app.js)</span>
+      <span class="arch-arrow">&rarr;</span>
+      <span class="arch-box arch-middleware">wb-api.rwandair.com<br/>(Middleware / BFF)</span>
+      <span class="arch-arrow">&rarr;</span>
+      <span class="arch-box arch-amadeus">Amadeus Digital APIs<br/>(GDS / NDC)</span>
+    </div>
+    <div style="margin-top: 16px;">
+      <span class="arch-box arch-middleware">wb-api.rwandair.com</span>
+      <span class="arch-arrow">&rarr;</span>
+      <span class="arch-box arch-internal">Wallet Service</span>
+      &nbsp;&nbsp;
+      <span class="arch-box arch-internal">DreamMiles API</span>
+      &nbsp;&nbsp;
+      <span class="arch-box arch-internal">Payment Gateway</span>
+      &nbsp;&nbsp;
+      <span class="arch-box arch-internal">CMS / Admin DB</span>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="info-card">
+      <h4>Frontend (Minimal Changes)</h4>
+      <p>Swap <code>fetch('/api/...')</code> base URL to <code>wb-api.rwandair.com</code>. Keep same request/response shapes. Add auth token headers.</p>
+    </div>
+    <div class="info-card">
+      <h4>Middleware (Heavy Lift)</h4>
+      <p>Transform Amadeus EDIFACT/JSON responses into our UI contract. Handle session management, caching, error translation, rate limits.</p>
+    </div>
+    <div class="info-card">
+      <h4>Internal Services (Keep As-Is)</h4>
+      <p>Wallet, DreamMiles, CMS, Admin dashboard, chat assistant &mdash; these stay on your own infrastructure, no Amadeus dependency.</p>
+    </div>
+  </div>
+  <div class="slide-number">3 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 4: PHASE 1 ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Phase 1 &mdash; Core Booking Engine</h2>
+  <p class="section-sub">Weeks 1&ndash;6 &bull; The foundation. Flight search, pricing, PNR creation, and ticketing.</p>
+
+  <table>
+    <tr>
+      <th style="width:18%">Module</th>
+      <th style="width:18%">Current Mock</th>
+      <th style="width:24%">Amadeus API</th>
+      <th style="width:10%">Effort</th>
+      <th style="width:8%">Risk</th>
+      <th style="width:22%">Key Challenges</th>
+    </tr>
+    <tr>
+      <td><strong>Flight Search</strong></td>
+      <td><code>/api/search</code><br/>Random fares from ROUTES</td>
+      <td>Flight Offers Search<br/><code>GET /shopping/flight-offers</code></td>
+      <td><span class="effort high">2&ndash;3 weeks</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Branded fare mapping (Lite/Classic/Business), multi-city, calendar pricing, fare rules display</td>
+    </tr>
+    <tr>
+      <td><strong>Fare Pricing</strong></td>
+      <td>Included in search mock</td>
+      <td>Flight Offers Price<br/><code>POST /shopping/flight-offers/pricing</code></td>
+      <td><span class="effort med">1 week</span></td>
+      <td><span class="risk-med">MED</span></td>
+      <td>Real-time price verification before booking, handling price changes between search and book</td>
+    </tr>
+    <tr>
+      <td><strong>PNR Creation</strong></td>
+      <td><code>/api/bookings/hold</code><br/>In-memory hold, 15 min</td>
+      <td>Flight Orders<br/><code>POST /booking/flight-orders</code></td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Passenger data validation (APIS), contact info, SSR codes, frequent flyer, payment deadline handling</td>
+    </tr>
+    <tr>
+      <td><strong>Ticketing</strong></td>
+      <td><code>/api/bookings/confirm</code><br/>Fake e-ticket numbers</td>
+      <td>Flight Order Management<br/>+ Payment via gateway</td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Payment settlement, e-ticket issuance, handling partial failures, void/reissue scenarios</td>
+    </tr>
+  </table>
+
+  <div style="background:#fef2f2;border-radius:10px;padding:16px;margin-top:16px">
+    <strong style="color:#dc2626">&#9888; Critical Risk:</strong>
+    <span style="font-size:14px;color:#475569">Amadeus branded fares structure (<code>fareDetailsBySegment</code>) differs significantly from our Lite/Classic/Business model. Expect 1&ndash;2 weeks just for fare family mapping, cabin-class fallback logic, and baggage rule extraction.</span>
+  </div>
+  <div class="slide-number">4 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 5: PHASE 2 ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Phase 2 &mdash; Post-Booking Services</h2>
+  <p class="section-sub">Weeks 5&ndash;9 &bull; Manage booking, cancellation, refunds, and check-in. Can overlap with Phase 1.</p>
+
+  <table>
+    <tr>
+      <th style="width:18%">Module</th>
+      <th style="width:18%">Current Mock</th>
+      <th style="width:24%">Amadeus API</th>
+      <th style="width:10%">Effort</th>
+      <th style="width:8%">Risk</th>
+      <th style="width:22%">Key Challenges</th>
+    </tr>
+    <tr>
+      <td><strong>Retrieve Booking</strong></td>
+      <td><code>/api/manage</code><br/>Map lookup by ref + name</td>
+      <td>Flight Order GET<br/><code>GET /booking/flight-orders/{id}</code></td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td><span class="risk-med">MED</span></td>
+      <td>PNR data mapping to our UI model, handling codeshare flights, multiple segments</td>
+    </tr>
+    <tr>
+      <td><strong>Cancel &amp; Refund</strong></td>
+      <td><code>/api/bookings/cancel</code><br/>85% refund rule</td>
+      <td>Flight Order Cancel<br/><code>DELETE /booking/flight-orders/{id}</code></td>
+      <td><span class="effort high">2&ndash;3 weeks</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Fare rule-based refund eligibility, partial refunds, void vs refund logic, refund-to-wallet flow needs two-step (Amadeus refund &rarr; wallet credit)</td>
+    </tr>
+    <tr>
+      <td><strong>Change / Rebook</strong></td>
+      <td><code>/api/bookings/change</code><br/>Date swap + fee</td>
+      <td>Flight Order Change<br/>(Exchange flow)</td>
+      <td><span class="effort high">2&ndash;3 weeks</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Rebooking availability search, fare difference calculation, ADM/ACM processing, residual value handling</td>
+    </tr>
+    <tr>
+      <td><strong>Online Check-in</strong></td>
+      <td><code>/api/checkin/lookup</code><br/>Fake boarding passes</td>
+      <td>Amadeus Check-in API<br/>or WB DCS integration</td>
+      <td><span class="effort med">2 weeks</span></td>
+      <td><span class="risk-med">MED</span></td>
+      <td>Departure Control System integration, seat map from Amadeus, boarding pass PDF generation, BCBP barcode</td>
+    </tr>
+    <tr>
+      <td><strong>Flight Status</strong></td>
+      <td><code>/api/flightstatus</code><br/>Simulated statuses</td>
+      <td>Flight Status API<br/><code>GET /schedule/flights</code></td>
+      <td><span class="effort low">3&ndash;5 days</span></td>
+      <td><span class="risk-low">LOW</span></td>
+      <td>Straightforward mapping. Add push notifications for delays.</td>
+    </tr>
+  </table>
+  <div class="slide-number">5 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 6: PHASE 3 ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Phase 3 &mdash; Ancillaries &amp; Payments</h2>
+  <p class="section-sub">Weeks 8&ndash;12 &bull; Revenue-generating extras and payment gateway wiring.</p>
+
+  <table>
+    <tr>
+      <th>Module</th>
+      <th>Amadeus API / Integration</th>
+      <th>Effort</th>
+      <th>Notes</th>
+    </tr>
+    <tr>
+      <td><strong>Seat Selection</strong></td>
+      <td>Seatmap Display API <code>/shopping/seatmaps</code></td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td>Interactive seat map with real availability, pricing per seat, cabin layout from aircraft config</td>
+    </tr>
+    <tr>
+      <td><strong>Extra Baggage</strong></td>
+      <td>Branded Fares / Service List</td>
+      <td><span class="effort low">1 week</span></td>
+      <td>Pull from fare rules, offer as add-on. Different rules per route/class.</td>
+    </tr>
+    <tr>
+      <td><strong>Meals / Special Requests</strong></td>
+      <td>SSR Codes via PNR update</td>
+      <td><span class="effort low">3&ndash;5 days</span></td>
+      <td>SPML, VGML, MOML etc. Map to user-friendly names.</td>
+    </tr>
+    <tr>
+      <td><strong>Time-to-Think (T2T)</strong></td>
+      <td>Amadeus Payment Deadline + custom logic</td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td><strong>Key risk:</strong> Amadeus deadlines are set by fare rules, not always 24/48/72h. May need airline config override. T2T fee handled on your side.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment: MTN MoMo</strong></td>
+      <td>MTN MoMo API (Collections)</td>
+      <td><span class="effort med">2 weeks</span></td>
+      <td>Async payment flow. Callback handling, timeout/retry, reconciliation. Irembo PSP as fallback.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment: Card (Visa/MC)</strong></td>
+      <td>Existing payment processor</td>
+      <td><span class="effort med">1&ndash;2 weeks</span></td>
+      <td>3DS2 compliance, tokenization, PCI-DSS scope. May reuse existing gateway.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment: Wallet</strong></td>
+      <td>Internal wallet service</td>
+      <td><span class="effort low">3&ndash;5 days</span></td>
+      <td>Already built. Wire debit call at payment step. Handle partial wallet + card split.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment: DreamMiles</strong></td>
+      <td>Internal loyalty service</td>
+      <td><span class="effort low">1 week</span></td>
+      <td>Miles-to-currency conversion, partial miles redemption, earn-on-fly accrual post-flight.</td>
+    </tr>
+  </table>
+  <div class="slide-number">6 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 7: PHASE 4 ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Phase 4 &mdash; Hardening &amp; QA</h2>
+  <p class="section-sub">Weeks 12&ndash;16 &bull; Production readiness. Error handling, security, performance, and testing.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Technical Hardening</h3>
+      <table>
+        <tr><th>Task</th><th>Effort</th></tr>
+        <tr><td>GDS timeout &amp; retry logic (Amadeus can be slow on complex routings)</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>Amadeus OAuth2 token refresh + session management</td><td><span class="effort low">3 days</span></td></tr>
+        <tr><td>Response caching (search results, seat maps, fare rules)</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>Currency handling (Amadeus returns USD/EUR, display in RWF)</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>Rate limiting &amp; request throttling</td><td><span class="effort low">3 days</span></td></tr>
+        <tr><td>Logging, monitoring, alerting (Datadog/CloudWatch)</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>Security audit (OWASP, PCI-DSS for payments, GDPR for PII)</td><td><span class="effort med">1&ndash;2 weeks</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Testing &amp; QA</h3>
+      <table>
+        <tr><th>Task</th><th>Effort</th></tr>
+        <tr><td>End-to-end booking flow testing (Amadeus sandbox)</td><td><span class="effort med">2 weeks</span></td></tr>
+        <tr><td>Edge cases: sold-out fares, price changes, double-booking</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>Payment failure scenarios (timeout, insufficient funds, 3DS fail)</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>Multi-currency / multi-language testing</td><td><span class="effort low">3&ndash;5 days</span></td></tr>
+        <tr><td>Mobile responsive &amp; browser compatibility</td><td><span class="effort low">3 days</span></td></tr>
+        <tr><td>Load testing (concurrent searches, booking spikes)</td><td><span class="effort med">1 week</span></td></tr>
+        <tr><td>UAT with RwandAir operations team</td><td><span class="effort med">2 weeks</span></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="slide-number">7 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 8: PHASE 5 ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Phase 5 &mdash; Deployment &amp; Go-Live</h2>
+  <p class="section-sub">Weeks 16&ndash;18 &bull; Staged rollout with canary deployment and monitoring.</p>
+
+  <div class="card-grid">
+    <div class="info-card" style="border-left:4px solid #3b82f6">
+      <h4>Week 16: Soft Launch</h4>
+      <p>Deploy to production behind feature flag. Internal team + select travel agents only. Monitor Amadeus API response times, error rates, booking success rate.</p>
+    </div>
+    <div class="info-card" style="border-left:4px solid #f59e0b">
+      <h4>Week 17: Canary (10% Traffic)</h4>
+      <p>Route 10% of public traffic to new platform. Compare conversion rates with existing booking.rwandair.com. Fix any production-only issues.</p>
+    </div>
+    <div class="info-card" style="border-left:4px solid #22c55e">
+      <h4>Week 18: Full Rollout</h4>
+      <p>100% traffic migration. Old system on standby for 2 weeks. Monitor booking volumes, revenue, support tickets. Post-launch hotfix sprint.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px">Rollback Plan</h3>
+  <ul class="bullet-list">
+    <li><strong>Instant rollback</strong> via DNS/load balancer switch back to current booking.rwandair.com</li>
+    <li><strong>Data sync</strong> &mdash; any bookings created on new platform are in Amadeus PNR, accessible from both systems</li>
+    <li><strong>Feature flags</strong> &mdash; individual modules (T2T, wallet payment, check-in) can be toggled off independently</li>
+  </ul>
+  <div class="slide-number">8 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 9: TIMELINE ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Full Timeline Overview</h2>
+  <p class="section-sub">14&ndash;18 weeks total with a team of 3&ndash;4 engineers. Phases overlap where possible.</p>
+
+  <div class="timeline">
+    <div class="timeline-phase p1">
+      <h4>Phase 1</h4>
+      <div class="weeks">6 wks</div>
+      <div class="desc">Core Booking Engine</div>
+      <ul>
+        <li>Flight search</li>
+        <li>Fare pricing</li>
+        <li>PNR creation</li>
+        <li>Ticketing</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p2">
+      <h4>Phase 2</h4>
+      <div class="weeks">5 wks</div>
+      <div class="desc">Post-Booking</div>
+      <ul>
+        <li>Manage booking</li>
+        <li>Cancel &amp; refund</li>
+        <li>Change / rebook</li>
+        <li>Check-in</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p3">
+      <h4>Phase 3</h4>
+      <div class="weeks">4 wks</div>
+      <div class="desc">Ancillaries &amp; Pay</div>
+      <ul>
+        <li>Seat selection</li>
+        <li>Baggage &amp; meals</li>
+        <li>T2T holds</li>
+        <li>Payment gateways</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p4">
+      <h4>Phase 4</h4>
+      <div class="weeks">4 wks</div>
+      <div class="desc">Harden &amp; QA</div>
+      <ul>
+        <li>Error handling</li>
+        <li>Security audit</li>
+        <li>Load testing</li>
+        <li>UAT</li>
+      </ul>
+    </div>
+    <div class="timeline-phase p5">
+      <h4>Phase 5</h4>
+      <div class="weeks">2 wks</div>
+      <div class="desc">Deploy &amp; Go-Live</div>
+      <ul>
+        <li>Soft launch</li>
+        <li>Canary 10%</li>
+        <li>Full rollout</li>
+        <li>Monitoring</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:#eff6ff;border-radius:10px;padding:16px;margin-top:20px;font-size:14px">
+    <strong style="color:var(--rw-blue)">Note:</strong> Phases 2 and 3 can overlap with Phase 1 once the search/booking foundation is stable. With 4 engineers, the backend middleware developer starts Phase 2 while the frontend developer completes Phase 1 integration.
+  </div>
+  <div class="slide-number">9 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 10: TEAM ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Recommended Team</h2>
+  <p class="section-sub">Minimum 3 engineers + 1 QA. Amadeus experience is critical for the backend role.</p>
+
+  <table>
+    <tr>
+      <th>Role</th>
+      <th>Focus</th>
+      <th>Must-Have Skills</th>
+      <th>Allocation</th>
+    </tr>
+    <tr>
+      <td><strong>Senior Backend Engineer</strong><br/>(Amadeus specialist)</td>
+      <td>wb-api.rwandair.com middleware. Amadeus API integration, data mapping, PNR lifecycle, fare rules engine.</td>
+      <td>Amadeus Web Services / Digital APIs, GDS concepts (PNR, TST, SSR), Node.js or Java, airline domain knowledge</td>
+      <td>100% &mdash; Weeks 1&ndash;18</td>
+    </tr>
+    <tr>
+      <td><strong>Full-Stack Engineer</strong></td>
+      <td>Frontend integration, API contract alignment, booking flow UX, error states, payment UI flows.</td>
+      <td>JavaScript/SPA, REST APIs, responsive CSS, payment integration experience</td>
+      <td>100% &mdash; Weeks 1&ndash;16</td>
+    </tr>
+    <tr>
+      <td><strong>Backend Engineer</strong></td>
+      <td>Payment gateways (MTN MoMo, card), wallet/loyalty services, admin dashboard data, CMS backend.</td>
+      <td>Payment APIs, webhook handling, database design, security (PCI-DSS awareness)</td>
+      <td>100% &mdash; Weeks 4&ndash;16</td>
+    </tr>
+    <tr>
+      <td><strong>QA Engineer</strong></td>
+      <td>End-to-end testing, Amadeus sandbox testing, payment scenarios, regression, UAT coordination.</td>
+      <td>API testing (Postman), browser automation, airline booking flows, attention to edge cases</td>
+      <td>50% Weeks 6&ndash;12<br/>100% Weeks 12&ndash;18</td>
+    </tr>
+  </table>
+
+  <div style="background:#fefce8;border-radius:10px;padding:16px;margin-top:20px;font-size:14px">
+    <strong style="color:#92400e">&#9888; Hiring Note:</strong> The <strong>Senior Backend Engineer must have prior Amadeus Digital API experience</strong>. Without this, add 4&ndash;6 weeks for learning curve. GDS integration has many undocumented edge cases that only come with experience (e.g., married segment logic, fare construction rules, EMD handling).
+  </div>
+  <div class="slide-number">10 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 11: RISKS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>Key Risks &amp; Mitigations</h2>
+  <p class="section-sub">What could delay us, and how we plan to handle it.</p>
+
+  <table>
+    <tr>
+      <th style="width:5%">#</th>
+      <th style="width:25%">Risk</th>
+      <th style="width:8%">Impact</th>
+      <th style="width:8%">Likelihood</th>
+      <th style="width:54%">Mitigation</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong>Amadeus branded fare mapping</strong> doesn't match our Lite/Classic/Business model</td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Start with a 1-week discovery sprint mapping WB fare families in Amadeus. Build a configurable fare-family engine that can be updated without code changes. Involve revenue management team early.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>T2T hold durations</strong> not supported by Amadeus fare rules (payment deadlines may be shorter)</td>
+      <td><span class="risk-med">MED</span></td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td>Implement T2T as a "shadow hold" &mdash; create the PNR in Amadeus with standard deadline, extend on your side with a background job that re-books if needed. T2T fee covers rebooking risk.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Payment gateway delays</strong> (MTN MoMo callback failures, card 3DS timeouts)</td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td><span class="risk-med">MED</span></td>
+      <td>Implement pending payment queue with automatic retry. Hold PNR until payment confirmed. Add manual resolution queue for stuck payments in admin dashboard.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Amadeus API rate limits</strong> or downtime during peak booking periods</td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td><span class="risk-low">LOW</span></td>
+      <td>Cache search results (5-min TTL), implement circuit breaker pattern, show cached fares with "prices may vary" disclaimer during degraded mode.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>Refund-to-wallet</strong> requires two systems to agree (Amadeus void/refund + internal wallet credit)</td>
+      <td><span class="risk-med">MED</span></td>
+      <td><span class="risk-med">MED</span></td>
+      <td>Use saga pattern: (1) Cancel in Amadeus (2) On success, credit wallet. If step 2 fails, queue for retry. Never credit wallet without confirmed Amadeus cancellation.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><strong>No Amadeus-experienced developer</strong> available in time</td>
+      <td><span class="risk-high">HIGH</span></td>
+      <td><span class="risk-med">MED</span></td>
+      <td>Engage Amadeus professional services or a certified integration partner for the first 4&ndash;6 weeks. Knowledge transfer to internal team during Phase 2.</td>
+    </tr>
+  </table>
+  <div class="slide-number">11 / 12</div>
+</div>
+
+<!-- ==================== SLIDE 12: WHAT STAYS ==================== -->
+<div class="slide">
+  <div class="logo-bar"><div class="dot">WB</div> RwandAir &mdash; Migration Plan</div>
+  <h2>What Stays Unchanged (Zero Migration Effort)</h2>
+  <p class="section-sub">~60% of the prototype carries directly into production with no changes.</p>
+
+  <div class="card-grid">
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <h4>All CSS &amp; Styling</h4>
+      <p>3,000+ lines of responsive styles, animations, dark mode prep. Brand-compliant design system.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <h4>18 Destination Pages</h4>
+      <p>SEO-optimized city pages with AI content, attractions, cuisine, travel tips. Rich hero banners.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <h4>Admin Back Office</h4>
+      <p>Chatbot reports, booking funnel, T2T dashboard, channels, ancillaries, user management.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <h4>CMS &amp; Audit Hub</h4>
+      <p>Content management for banners, FAQs, careers, offices. Full audit trail with compliance.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <h4>AI Chat Assistant</h4>
+      <p>Context-aware chatbot with booking flow, FAQ, 3 languages. Intent detection and guided actions.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #22c55e">
+      <h4>UI Components</h4>
+      <p>Booking flow stepper, seat map, payment forms, promo codes, cart, retargeting, T2T modal.</p>
+    </div>
+  </div>
+
+  <div style="background:#ecfdf5;border-radius:12px;padding:24px;margin-top:24px;text-align:center">
+    <div style="font-size:48px;font-weight:900;color:#16a34a">14&ndash;18 Weeks</div>
+    <div style="font-size:18px;color:#475569;margin-top:8px">From prototype to production with Amadeus Digital APIs</div>
+    <div style="font-size:14px;color:#94a3b8;margin-top:8px">3&ndash;4 engineers &bull; 5 phases &bull; Staged rollout with rollback capability</div>
+  </div>
+  <div class="slide-number">12 / 12</div>
+</div>
+
+</body>
+</html>
