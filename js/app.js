@@ -165,6 +165,21 @@ function navigateTo(pageId) {
     target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  // Show/hide main topbar depending on page
+  const cargoPages = ['cargo', 'cargo-booking', 'cargo-track', 'cargo-schedule', 'dashboard'];
+  const topbar = document.getElementById('topbar');
+  const chatFab = document.getElementById('chatFab');
+  const chatWindow = document.getElementById('chatWindow');
+  if (cargoPages.includes(pageId)) {
+    topbar.style.display = 'none';
+    if (chatFab) chatFab.style.display = 'none';
+    if (chatWindow) chatWindow.classList.add('hidden');
+  } else {
+    topbar.style.display = '';
+    if (chatFab) chatFab.style.display = '';
+  }
+
   // Update active nav link
   const label = NAV_MAP[pageId];
   document.querySelectorAll('.topbar-nav .nav-link').forEach(link => {
@@ -2452,6 +2467,145 @@ function toggleLoginModal() {
 document.getElementById('loginModal').addEventListener('click', function(e) {
   if (e.target === this) toggleLoginModal();
 });
+
+// ---- CARGO & DASHBOARD ----
+
+// Switch dashboard sidebar tabs
+function switchDashboardTab(tab) {
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  const target = document.getElementById('dash-' + tab);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.classList.remove('active');
+  });
+  event.currentTarget.classList.add('active');
+}
+
+// Switch cargo hero action tabs
+function switchCargoTab(tab, btn) {
+  document.querySelectorAll('.cargo-action-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cargo-tab-content').forEach(c => c.classList.remove('active'));
+  const target = document.getElementById('cargo-tab-' + tab);
+  if (target) target.classList.add('active');
+}
+
+// Switch cargo login/register tabs
+function switchCargoLoginTab(tab, btn) {
+  document.querySelectorAll('.cargo-login-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const loginForm = document.getElementById('cargo-login-form');
+  const regForm = document.getElementById('cargo-register-form');
+  if (tab === 'login') {
+    loginForm.classList.remove('hidden');
+    regForm.classList.add('hidden');
+  } else {
+    loginForm.classList.add('hidden');
+    regForm.classList.remove('hidden');
+  }
+}
+
+// Cargo booking wizard navigation
+var cargoCurrentStep = 1;
+var cargoSubStep = false;
+
+function cargoWizardNext(step) {
+  if (step === 1) {
+    // Show search destination sub-step
+    var searchDest = document.getElementById('cargoSearchDest');
+    if (searchDest.classList.contains('hidden')) {
+      searchDest.classList.remove('hidden');
+      return;
+    }
+  }
+  if (step === 1.5) {
+    // Move from step 1 substep to step 2 (show flight results first)
+    cargoGoToStep(2);
+    return;
+  }
+  if (step === 2) {
+    cargoGoToStep(3);
+    return;
+  }
+  if (step === 3) {
+    cargoGoToStep(4);
+    return;
+  }
+}
+
+function cargoWizardPrev(step) {
+  if (step === 2) cargoGoToStep(1);
+  if (step === 3) cargoGoToStep(2);
+  if (step === 4) cargoGoToStep(3);
+}
+
+function cargoWizardBack(step) {
+  if (step === 1) {
+    var searchDest = document.getElementById('cargoSearchDest');
+    searchDest.classList.add('hidden');
+  }
+}
+
+function cargoGoToStep(step) {
+  cargoCurrentStep = step;
+  // Update stepper
+  document.querySelectorAll('.cargo-step').forEach(s => {
+    var sStep = parseInt(s.getAttribute('data-step'));
+    s.classList.remove('active', 'completed');
+    if (sStep === step) s.classList.add('active');
+    if (sStep < step) s.classList.add('completed');
+  });
+  // Show step content
+  document.querySelectorAll('.cargo-wizard-step').forEach(ws => ws.classList.remove('active'));
+  var target = document.getElementById('cargo-wizard-' + step);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function cargoBookingComplete() {
+  alert('Booking submitted successfully! Your AWB number will be sent to your email.');
+  navigateTo('dashboard');
+}
+
+// Show cargo tracking result
+function showCargoTrackResult() {
+  var result = document.getElementById('cargoTrackResult');
+  if (result) result.style.display = 'block';
+}
+
+// Dashboard tracking
+function dashboardTrackShipment() {
+  var awb = document.getElementById('dashTrackAwb').value;
+  var resultDiv = document.getElementById('dashTrackResult');
+  if (!awb) {
+    resultDiv.innerHTML = '<p style="color: var(--error); padding: 12px;">Please enter an AWB number.</p>';
+    return;
+  }
+  resultDiv.innerHTML = '<div style="background:#fff;border:1px solid var(--gray-200);border-radius:12px;padding:24px;margin-top:16px">' +
+    '<h3 style="color:var(--blue);margin-bottom:16px">Track Details for ' + awb + '</h3>' +
+    '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px">' +
+    '<span>Total Pieces: <strong>4</strong></span>' +
+    '<span>Origin: <strong>KGL</strong></span>' +
+    '<span>Destination: <strong>DXB</strong></span>' +
+    '<span>Status: <span style="background:#dcfce7;color:#16a34a;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600">Delivered</span></span>' +
+    '</div>' +
+    '<div style="border-left:2px solid var(--blue);padding-left:16px">' +
+    '<div style="padding:8px 0"><strong>Booked</strong> — 17 Dec 2023, 06:20</div>' +
+    '<div style="padding:8px 0"><strong>Received From Shipper</strong> — 20 Dec 2023, 08:30</div>' +
+    '<div style="padding:8px 0"><strong>Manifested on Flight</strong> — 24 Dec 2023, 08:30 — WB304</div>' +
+    '<div style="padding:8px 0"><strong>Departed on Flight</strong> — 24 Dec 2023, 08:30 — WB304</div>' +
+    '<div style="padding:8px 0"><strong>Arrived</strong> — 27 Dec 2023, 08:30 — WB304</div>' +
+    '</div></div>';
+}
+
+// Toggle cargo login dropdown (used on cargo landing page when not logged in)
+function toggleCargoLoginDropdown(e) {
+  e.preventDefault();
+  switchCargoTab('book', document.querySelectorAll('.cargo-action-tab')[1]);
+}
 
 // ---- INIT ----
 initNLF();

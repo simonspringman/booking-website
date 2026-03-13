@@ -211,7 +211,7 @@
           </div>
           <span>Baggage Tracking</span>
         </div>
-        <div class="quick-action">
+        <div class="quick-action" onclick="navigateTo('cargo')">
           <div class="qa-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
@@ -2063,6 +2063,1040 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- ============ PAGE: USER DASHBOARD ============ -->
+  <section class="page" id="page-dashboard">
+    <div class="cargo-topbar">
+      <div class="cargo-topbar-inner">
+        <div class="cargo-logo" onclick="navigateTo('cargo')">
+          <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" class="logo-img"/>
+          <span class="cargo-logo-text">CARGO</span>
+        </div>
+        <div class="cargo-search-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search by AWB number" class="cargo-search-input"/>
+        </div>
+        <div class="cargo-user-info">
+          <div class="cargo-notif-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="cargo-notif-dot"></span>
+          </div>
+          <div class="cargo-user-avatar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <span class="cargo-user-name">Landry Gahizi</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,4 6,8 10,4"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-layout">
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-section-label">Main Menu</div>
+        <nav class="sidebar-nav">
+          <a href="#" class="sidebar-link active" onclick="switchDashboardTab('overview');return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a>
+          <a href="#" class="sidebar-link" onclick="switchDashboardTab('bookings');return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            My booking
+          </a>
+          <a href="#" class="sidebar-link" onclick="switchDashboardTab('tracking');return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06"/></svg>
+            Tracking
+          </a>
+          <a href="#" class="sidebar-link" onclick="return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Reports
+          </a>
+          <a href="#" class="sidebar-link" onclick="return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Messages
+          </a>
+        </nav>
+      </aside>
+
+      <main class="dashboard-main">
+        <!-- Dashboard Overview Tab -->
+        <div class="dash-tab active" id="dash-overview">
+          <h1 class="dash-page-title">My dashboard</h1>
+          <div class="dash-stats-row">
+            <div class="dash-stat-card">
+              <div class="dash-stat-info">
+                <span class="dash-stat-label">Orders</span>
+                <span class="dash-stat-value">123</span>
+              </div>
+              <div class="dash-stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              </div>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-info">
+                <span class="dash-stat-label">Delivered</span>
+                <span class="dash-stat-value">77</span>
+              </div>
+              <div class="dash-stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-new-shipment" onclick="navigateTo('cargo-booking')">+ New shipment</button>
+
+          <div class="dash-bookings-section">
+            <div class="dash-bookings-header">
+              <h3 class="dash-bookings-tab active">My bookings</h3>
+              <button class="dash-filter-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+                Filter
+              </button>
+            </div>
+
+            <div class="dash-booking-list">
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-confirmed">Confirmed</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-onway">On the way</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-transit">In transit</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-confirmed">Confirmed</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Booking Tab -->
+        <div class="dash-tab" id="dash-bookings">
+          <h1 class="dash-page-title">My booking</h1>
+          <button class="btn-new-shipment" onclick="navigateTo('cargo-booking')">+ New shipment</button>
+          <div class="dash-bookings-section">
+            <div class="dash-bookings-header">
+              <h3 class="dash-bookings-tab active">My bookings</h3>
+              <button class="dash-filter-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+                Filter
+              </button>
+            </div>
+            <div class="dash-booking-list">
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-confirmed">Confirmed</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-onway">On the way</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-transit">In transit</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+              <div class="dash-booking-card">
+                <div class="dash-booking-id">
+                  <strong>ADG-00340T94B45</strong>
+                  <span class="dash-status dash-status-confirmed">Confirmed</span>
+                  <span class="dash-last-update">Last update: Oct 12 2024 08:45 pm</span>
+                  <span class="dash-yard">Container Yard</span>
+                </div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Loading origin</span><span>Kigali City, Rwanda</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Destination</span><span>Felixstowe, United Kingdom</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">ETD</span><span>28 Sep 2023</span></div>
+                <div class="dash-booking-detail"><span class="dash-detail-label">Category</span><span>Export</span></div>
+                <button class="dash-view-btn" onclick="alert('Shipment details coming soon')">View details &rsaquo;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tracking Tab -->
+        <div class="dash-tab" id="dash-tracking">
+          <h1 class="dash-page-title">Tracking</h1>
+          <div class="cargo-track-input-row">
+            <div class="cargo-track-field">
+              <label>AWB Number</label>
+              <input type="text" id="dashTrackAwb" placeholder="Enter AWB number..."/>
+            </div>
+            <button class="btn-primary" onclick="dashboardTrackShipment()">Track your shipment</button>
+          </div>
+          <div id="dashTrackResult"></div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: CARGO LANDING ============ -->
+  <section class="page" id="page-cargo">
+    <nav class="cargo-nav">
+      <div class="cargo-nav-inner">
+        <div class="cargo-logo" onclick="navigateTo('cargo')">
+          <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" class="logo-img"/>
+          <span class="cargo-logo-text">CARGO</span>
+        </div>
+        <div class="cargo-nav-links">
+          <a href="#" onclick="return false">ABOUT</a>
+          <a href="#" onclick="return false">TRACK</a>
+          <a href="#" onclick="return false">NETWORK</a>
+          <a href="#" onclick="return false">PRODUCT/SERVICES</a>
+          <a href="#" onclick="return false">CONTACT US</a>
+        </div>
+        <div class="cargo-nav-actions">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <a href="#" class="cargo-login-link" onclick="toggleCargoLoginDropdown(event);return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            LOGIN
+          </a>
+          <span class="cargo-lang">EN</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cargo Hero with Action Tabs -->
+    <div class="cargo-hero">
+      <div class="cargo-action-tabs">
+        <button class="cargo-action-tab active" onclick="switchCargoTab('track', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Track your shipment
+        </button>
+        <button class="cargo-action-tab" onclick="switchCargoTab('book', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          Book a cargo shipment
+        </button>
+        <button class="cargo-action-tab" onclick="switchCargoTab('schedule', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Schedules and routes
+        </button>
+        <button class="cargo-action-tab" onclick="switchCargoTab('contact', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact Us
+        </button>
+      </div>
+
+      <!-- Track Dropdown -->
+      <div class="cargo-tab-content active" id="cargo-tab-track">
+        <div class="cargo-dropdown-panel">
+          <h4>Check The Status Of Your Shipment.</h4>
+          <div class="cargo-track-form">
+            <div class="cargo-track-inline">
+              <label>AWB Number</label>
+              <div class="cargo-track-inputs">
+                <input type="text" value="459" class="cargo-awb-prefix" maxlength="3"/>
+                <input type="text" placeholder="Enter your AWB number" class="cargo-awb-number" id="cargoTrackAwb"/>
+              </div>
+            </div>
+            <button class="cargo-btn-track" onclick="navigateTo('cargo-track')">Track Shipment &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book Dropdown -->
+      <div class="cargo-tab-content" id="cargo-tab-book">
+        <div class="cargo-dropdown-panel cargo-login-panel">
+          <div class="cargo-login-tabs">
+            <button class="cargo-login-tab active" onclick="switchCargoLoginTab('login', this)">Log in</button>
+            <button class="cargo-login-tab" onclick="switchCargoLoginTab('register', this)">Register</button>
+          </div>
+          <div class="cargo-login-form" id="cargo-login-form">
+            <div class="cargo-form-field">
+              <label>Username or ID</label>
+              <input type="text" placeholder="Username or ID"/>
+            </div>
+            <div class="cargo-form-field">
+              <label>Password</label>
+              <input type="password" placeholder="Password"/>
+            </div>
+            <div class="cargo-login-actions">
+              <a href="#">Forgot password?</a>
+              <button class="cargo-btn-signin" onclick="navigateTo('dashboard')">Sign In</button>
+            </div>
+          </div>
+          <div class="cargo-register-form hidden" id="cargo-register-form">
+            <div class="cargo-reg-grid">
+              <div class="cargo-form-field"><label>First Name</label><input type="text" placeholder="Enter your first name"/></div>
+              <div class="cargo-form-field"><label>Last Name</label><input type="text" placeholder="Enter your last name"/></div>
+              <div class="cargo-form-field"><label>Company Email Address</label><input type="email" placeholder="Enter Email Address"/></div>
+              <div class="cargo-form-field"><label>Gender</label><select><option>Select</option><option>Male</option><option>Female</option></select></div>
+              <div class="cargo-form-field"><label>Select country</label><select><option>Select country</option><option>Rwanda</option><option>Kenya</option><option>Uganda</option></select></div>
+              <div class="cargo-form-field"><label>Select city</label><select><option>Select city</option><option>Kigali</option><option>Nairobi</option></select></div>
+              <div class="cargo-form-field"><label>Enter Default Airport</label><input type="text"/></div>
+              <div class="cargo-form-field"><label>Company Name</label><input type="text" placeholder="Enter Company Name"/></div>
+              <div class="cargo-form-field"><label>Account Number</label><input type="text" placeholder="Enter Account Number"/></div>
+              <div class="cargo-form-field"><label>IATA Number</label><input type="text" placeholder="Enter IATA Number"/></div>
+              <div class="cargo-form-field"><label>CASS Code</label><input type="text" placeholder="Enter a digits"/></div>
+            </div>
+            <div class="cargo-form-field">
+              <label>Company Mobile Number</label>
+              <input type="tel" placeholder="+250 000000000"/>
+            </div>
+            <div class="cargo-terms">
+              <label><input type="checkbox"/> By selecting this box, I affirm my agreement to the terms and conditions and the privacy policy of RwandAir Cargo</label>
+            </div>
+            <div class="cargo-reg-actions">
+              <button class="cargo-btn-reset">Reset</button>
+              <button class="cargo-btn-register" onclick="navigateTo('dashboard')">Register</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule Dropdown -->
+      <div class="cargo-tab-content" id="cargo-tab-schedule">
+        <div class="cargo-dropdown-panel">
+          <h4>Our Flights</h4>
+          <div class="cargo-schedule-form">
+            <div class="cargo-form-field">
+              <label>Origin</label>
+              <input type="text" placeholder="Origin" id="cargoSchedOrigin"/>
+            </div>
+            <div class="cargo-form-field">
+              <label>Destination</label>
+              <input type="text" placeholder="Destination" id="cargoSchedDest"/>
+            </div>
+            <div class="cargo-form-field">
+              <label>Date</label>
+              <input type="date" id="cargoSchedDate"/>
+            </div>
+            <button class="cargo-btn-schedule" onclick="navigateTo('cargo-schedule')">Schedule Flight</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Dropdown -->
+      <div class="cargo-tab-content" id="cargo-tab-contact">
+        <div class="cargo-dropdown-panel">
+          <h4>Station</h4>
+          <div class="cargo-form-field">
+            <select id="cargoContactStation">
+              <option>Select a station...</option>
+              <option>Kigali (KGL)</option>
+              <option>Nairobi (NBO)</option>
+              <option>Dubai (DXB)</option>
+              <option>London (LHR)</option>
+            </select>
+          </div>
+          <button class="cargo-btn-viewdetails" onclick="alert('Station details coming soon')">View Details</button>
+        </div>
+      </div>
+
+      <div class="cargo-hero-bg">
+        <div class="cargo-hero-overlay"></div>
+        <div class="cargo-hero-text">
+          <h1>YOU DROP IT, WE LIFT IT FOR YOU</h1>
+          <p>At the World Wide Network, we understand the significance of seamless connectivity and efficient logistics services.</p>
+        </div>
+      </div>
+      <div class="cargo-hero-dots">
+        <span class="cargo-dot active"></span>
+        <span class="cargo-dot"></span>
+        <span class="cargo-dot"></span>
+      </div>
+    </div>
+
+    <!-- You Are In Good Hands -->
+    <div class="cargo-section cargo-goodhands">
+      <h2 class="cargo-section-title">YOU ARE IN GOOD HANDS WITH US.</h2>
+      <div class="cargo-goodhands-grid">
+        <div class="cargo-goodhands-img">
+          <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/cargo-plane.jpg" alt="RwandAir Cargo" onerror="this.style.background='linear-gradient(135deg,#00529b,#003d75)';this.style.height='300px'"/>
+        </div>
+        <div class="cargo-goodhands-info">
+          <div class="cargo-info-block">
+            <h3>OUR NETWORK</h3>
+            <p>Using our hub and base in RwandAir, we link our customers to multiple destinations across Europe, Asia, the Middle East, East Africa, and the Americas. Our wide-ranging global partnerships enable us to provide rapid, ongoing cargo flights to even more...</p>
+            <a href="#">Continue &rarr;</a>
+          </div>
+          <div class="cargo-info-block">
+            <h3>OUR SERVICES</h3>
+            <p>We provide a wide range of services and personalized solutions to fulfill our customers' air freight requirements and distinct preferences. Whether it involves the swift delivery of recently harvested seafood from sea to market...</p>
+            <a href="#">Continue &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unleashing Excellence -->
+    <div class="cargo-section">
+      <h2 class="cargo-section-title">UNLEASHING EXCELLENCE IN AIR CARGO SERVICES</h2>
+      <div class="cargo-services-grid">
+        <div class="cargo-service-card">
+          <div class="cargo-service-img" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+          <span>Dangerous Goods</span>
+        </div>
+        <div class="cargo-service-card">
+          <div class="cargo-service-img" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
+          <span>Pharmaceutical</span>
+        </div>
+        <div class="cargo-service-card">
+          <div class="cargo-service-img" style="background: linear-gradient(135deg, #22c55e, #16a34a);"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+          <span>Live Animals</span>
+        </div>
+        <div class="cargo-service-card">
+          <div class="cargo-service-img" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Human Remain</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommencement -->
+    <div class="cargo-section cargo-recom">
+      <div class="cargo-recom-content">
+        <h3>RECOMMENCEMENT OF FLIGHTS TO NICE, FRANCE</h3>
+        <p>Presently providing over 20 tonnes of belly cargo capacity to Nice every week, and operating five weekly flights with B777 freighters to Ethiopia, offering a substantial cargo capacity of over 300 tonnes in each direction every week.</p>
+        <a href="#">EXPLORE ALL &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Our Partners -->
+    <div class="cargo-section cargo-partners">
+      <h3>OUR PARTNERS</h3>
+      <p>We're thrilled to share our global partnership with Qatar Airways Cargo. This collaboration marks a significant milestone, amplifying the capabilities of our real-time digital booking platform. By joining forces with Qatar Cargo, we're poised to offer an unparalleled level of service and efficiency in the realm of cargo logistics.</p>
+      <a href="#">EXPLORE ALL &rarr;</a>
+    </div>
+
+    <!-- Discover More -->
+    <div class="cargo-section cargo-discover">
+      <div class="cargo-discover-grid">
+        <div class="cargo-discover-text">
+          <h3>Eager to discover more?</h3>
+          <p>Explore our diverse, meticulously crafted solutions for your curious journey into boundless possibilities.</p>
+          <button class="cargo-btn-explore">EXPLORE ALL</button>
+        </div>
+        <div class="cargo-discover-cards">
+          <div class="cargo-discover-card">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span>SUPPORT</span>
+          </div>
+          <div class="cargo-discover-card">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+            <span>CLAIMS</span>
+          </div>
+          <div class="cargo-discover-card">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>FAQ'S</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fleet and Network -->
+    <div class="cargo-fleet-section">
+      <div class="cargo-fleet-map"></div>
+      <div class="cargo-fleet-info">
+        <h3>Our Fleet And Network</h3>
+        <p>Our Dedicated International Teams Are Ready To Help. Contact The Nearest RwandAir Cargo Office Listed Below To Get In Touch.</p>
+        <div class="cargo-fleet-form">
+          <label>Choose Your Local Sales Agent</label>
+          <select><option>Enter Destination</option><option>Kigali</option><option>Nairobi</option><option>London</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cargo Footer -->
+    <footer class="cargo-footer">
+      <div class="cargo-footer-grid">
+        <div>
+          <h4>About Us</h4>
+          <a href="#">Who we are</a>
+          <a href="#">Our team</a>
+          <a href="#">Fleet</a>
+        </div>
+        <div>
+          <h4>Media Center</h4>
+          <a href="#">Inzozi</a>
+          <a href="#">News & Press releases</a>
+          <a href="#">Gallery</a>
+          <a href="#">Travel alerts</a>
+        </div>
+        <div>
+          <h4>Connect with us</h4>
+          <a href="#">Careers</a>
+          <a href="#">Contact us</a>
+          <a href="#">Tenders</a>
+        </div>
+        <div>
+          <h4>Let's be connected</h4>
+          <div class="cargo-social-links">
+            <a href="#" class="cargo-social fb">f</a>
+            <a href="#" class="cargo-social tw">t</a>
+            <a href="#" class="cargo-social yt">y</a>
+            <a href="#" class="cargo-social ig">i</a>
+            <a href="#" class="cargo-social li">in</a>
+          </div>
+        </div>
+      </div>
+      <div class="cargo-footer-awards">
+        <span>SkyTrax's Best airline staff in Africa</span>
+        <span>APEX Diamond Award Health Safety, powered by SimpliFlying</span>
+      </div>
+      <div class="cargo-footer-bottom">
+        <span>Copyright &copy; RwandAir. All rights reserved</span>
+        <span>RwandAir Cargo Website 2025</span>
+        <span>Developed by RwandAir IT</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ PAGE: CARGO BOOKING ============ -->
+  <section class="page" id="page-cargo-booking">
+    <div class="cargo-booking-topbar">
+      <div class="cargo-logo" onclick="navigateTo('cargo')">
+        <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" class="logo-img"/>
+        <span class="cargo-logo-text">CARGO</span>
+      </div>
+    </div>
+
+    <!-- Stepper -->
+    <div class="cargo-stepper">
+      <div class="cargo-step active" data-step="1">
+        <div class="cargo-step-circle">1</div>
+        <span>Booking</span>
+      </div>
+      <div class="cargo-step-line"></div>
+      <div class="cargo-step" data-step="2">
+        <div class="cargo-step-circle">2</div>
+        <span>Shipment</span>
+      </div>
+      <div class="cargo-step-line"></div>
+      <div class="cargo-step" data-step="3">
+        <div class="cargo-step-circle">3</div>
+        <span>Routing</span>
+      </div>
+      <div class="cargo-step-line"></div>
+      <div class="cargo-step" data-step="4">
+        <div class="cargo-step-circle">4</div>
+        <span>Contact details</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Booking (AWB + Search) -->
+    <div class="cargo-wizard-step active" id="cargo-wizard-1">
+      <div class="cargo-wizard-card">
+        <h2 class="cargo-wizard-title">BOOK YOUR CARGO</h2>
+        <p class="cargo-wizard-subtitle">Please make sure that you fill the proper required info</p>
+        <div class="cargo-form-field" style="margin-top:24px">
+          <label>AWB Number</label>
+          <input type="text" placeholder="Enter AWB number..." id="cargoAwbInput"/>
+        </div>
+        <div class="cargo-wizard-actions">
+          <button class="cargo-btn-next" onclick="cargoWizardNext(1)">Next</button>
+        </div>
+      </div>
+
+      <!-- Search Destination sub-step (shown after AWB) -->
+      <div class="cargo-wizard-card hidden" id="cargoSearchDest">
+        <h2 class="cargo-wizard-title">SEARCH DESTINATION</h2>
+        <p class="cargo-wizard-subtitle">Please make sure that you fill the proper required info</p>
+        <div class="cargo-form-field"><label>DATE</label><input type="date" id="cargoBookDate"/></div>
+        <div class="cargo-form-field"><label>ORIGIN</label><input type="text" placeholder="Origin" id="cargoBookOrigin"/></div>
+        <div class="cargo-form-field"><label>DESTINATION</label><input type="text" placeholder="Destination" id="cargoBookDest"/></div>
+        <div class="cargo-wizard-actions-duo">
+          <button class="cargo-btn-back" onclick="cargoWizardBack(1)">BACK</button>
+          <button class="cargo-btn-next" onclick="cargoWizardNext(1.5)">SEARCH FLIGHT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Shipment Details -->
+    <div class="cargo-wizard-step" id="cargo-wizard-2">
+      <div class="cargo-wizard-card">
+        <h2 class="cargo-wizard-title">SHIPMENT DETAILS</h2>
+        <p class="cargo-wizard-subtitle">Please make sure that you fill the proper required info</p>
+        <div class="cargo-form-field"><label>PRODUCT</label><select id="cargoProduct"><option>Select product</option><option>General Cargo</option><option>Perishable</option><option>Dangerous Goods</option><option>Live Animals</option><option>Pharmaceutical</option></select></div>
+        <div class="cargo-form-field"><label>COMMODITY</label><input type="text" id="cargoCommodity" placeholder="Enter commodity"/></div>
+        <div class="cargo-form-field">
+          <label>Load Type</label>
+          <div class="cargo-radio-row">
+            <label class="cargo-radio-option"><input type="radio" name="loadType" value="loose" checked/> LOOSE</label>
+            <label class="cargo-radio-option"><input type="radio" name="loadType" value="unitised"/> UNITISED</label>
+          </div>
+        </div>
+        <div class="cargo-form-field">
+          <label>TEMPErature</label>
+          <div class="cargo-radio-row">
+            <label class="cargo-radio-option"><input type="radio" name="temp" value="2-8" checked/> +2 TO +8 &deg;C</label>
+            <label class="cargo-radio-option"><input type="radio" name="temp" value="15-25"/> +15 TO +25 &deg;C</label>
+          </div>
+        </div>
+        <div class="cargo-dimensions-grid">
+          <div class="cargo-form-field"><label>NO Of PIECES</label><input type="number" placeholder="0"/></div>
+          <div class="cargo-form-field"><label>LENGTH</label><div class="cargo-input-unit"><input type="number" placeholder="0"/><span>cm</span></div></div>
+          <div class="cargo-form-field"><label>WIDTH</label><div class="cargo-input-unit"><input type="number" placeholder="0"/><span>cm</span></div></div>
+          <div class="cargo-form-field"><label>HEIGHT</label><div class="cargo-input-unit"><input type="number" placeholder="0"/><span>cm</span></div></div>
+          <div class="cargo-form-field"><label>WEIGHT PER PIECE</label><div class="cargo-input-unit"><input type="number" placeholder="0"/><span>kg</span></div></div>
+          <div class="cargo-form-field"><label>CHARGEABLE</label><div class="cargo-input-unit"><input type="number" placeholder="0"/><span>kg</span></div></div>
+        </div>
+        <div class="cargo-wizard-actions-duo">
+          <button class="cargo-btn-back" onclick="cargoWizardPrev(2)">BACK</button>
+          <button class="cargo-btn-next" onclick="cargoWizardNext(2)">Choose routing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Routing (Flight Selection) -->
+    <div class="cargo-wizard-step" id="cargo-wizard-3">
+      <div class="cargo-wizard-card" style="max-width:1000px">
+        <div class="cargo-date-picker">
+          <span class="cargo-selected-date">Tuesday, 21 June 2024</span>
+          <div class="cargo-date-strip">
+            <button class="cargo-date-nav">&lsaquo;</button>
+            <button class="cargo-date-btn">Sat Jan 10</button>
+            <button class="cargo-date-btn">Sun Jan 11</button>
+            <button class="cargo-date-btn">Mon Jan 12</button>
+            <button class="cargo-date-btn active">Tue Jan 13</button>
+            <button class="cargo-date-btn">Wen Jan 14</button>
+            <button class="cargo-date-btn">Thu Jan 15</button>
+            <button class="cargo-date-btn">Sat Jan 16</button>
+            <button class="cargo-date-nav">&rsaquo;</button>
+          </div>
+        </div>
+        <div class="cargo-filter-row">
+          <span class="cargo-filter-label">Filter flights</span>
+        </div>
+        <div class="cargo-route-header">
+          <span>Search <strong>KGL</strong> <span class="cargo-plane-icon">&#9992;</span> <strong>LHR</strong> Tuesday, 21 June 2024</span>
+          <div class="cargo-route-types">
+            <div class="cargo-route-type active">Constant Climate Passive</div>
+            <div class="cargo-route-type">Critical</div>
+          </div>
+        </div>
+        <div class="cargo-flights-list">
+          <div class="cargo-flight-row">
+            <div class="cargo-flight-airline"><img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" style="width:40px"/></div>
+            <div class="cargo-flight-route"><span class="cargo-flight-code">KGL</span><div class="cargo-flight-line"><span class="cargo-flight-dot"></span><span class="cargo-flight-connector"></span><span class="cargo-flight-plane">&#9992;</span><span class="cargo-flight-connector"></span><span class="cargo-flight-dot"></span></div><span class="cargo-flight-code">LHR</span></div>
+            <div class="cargo-flight-time"><span>Mon 13 Mar 09:15</span><span>Mon 13 Mar 09:15</span></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlight" checked/></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlightType"/></div>
+          </div>
+          <div class="cargo-flight-row">
+            <div class="cargo-flight-airline"><span style="color:#e02020;font-weight:700">QANTAS</span></div>
+            <div class="cargo-flight-route"><span class="cargo-flight-code">KGL</span><div class="cargo-flight-line"><span class="cargo-flight-dot"></span><span class="cargo-flight-connector"></span><span class="cargo-flight-plane">&#9992;</span><span class="cargo-flight-connector"></span><span class="cargo-flight-dot"></span></div><span class="cargo-flight-code">LHR</span></div>
+            <div class="cargo-flight-time"><span>Mon 13 Mar 09:15</span><span>Mon 13 Mar 09:15</span></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlight"/></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlightType"/></div>
+          </div>
+          <div class="cargo-flight-row">
+            <div class="cargo-flight-airline"><span style="color:#c4262e;font-weight:700;font-style:italic">Emirates</span></div>
+            <div class="cargo-flight-route"><span class="cargo-flight-code">KGL</span><div class="cargo-flight-line"><span class="cargo-flight-dot"></span><span class="cargo-flight-connector"></span><span class="cargo-flight-plane">&#9992;</span><span class="cargo-flight-connector"></span><span class="cargo-flight-dot"></span></div><span class="cargo-flight-code">LHR</span></div>
+            <div class="cargo-flight-time"><span>Mon 13 Mar 09:15</span><span>Mon 13 Mar 09:15</span></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlight"/></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlightType"/></div>
+          </div>
+          <div class="cargo-flight-row">
+            <div class="cargo-flight-airline"><img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" style="width:40px"/></div>
+            <div class="cargo-flight-route"><span class="cargo-flight-code">KGL</span><div class="cargo-flight-line"><span class="cargo-flight-dot"></span><span class="cargo-flight-connector"></span><span class="cargo-flight-plane">&#9992;</span><span class="cargo-flight-connector"></span><span class="cargo-flight-dot"></span></div><span class="cargo-flight-code">LHR</span></div>
+            <div class="cargo-flight-time"><span>Mon 13 Mar 09:15</span><span>Mon 13 Mar 09:15</span></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlight"/></div>
+            <div class="cargo-flight-select"><input type="radio" name="cargoFlightType"/></div>
+          </div>
+        </div>
+        <div class="cargo-wizard-actions-duo" style="margin-top:24px">
+          <button class="cargo-btn-back" onclick="cargoWizardPrev(3)">BACK</button>
+          <button class="cargo-btn-next" onclick="cargoWizardNext(3)">Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Contact Details -->
+    <div class="cargo-wizard-step" id="cargo-wizard-4">
+      <div class="cargo-wizard-card">
+        <h2 class="cargo-wizard-title">CONTACT DETAILS</h2>
+        <p class="cargo-wizard-subtitle">Please make sure that you fill the proper required info</p>
+        <div class="cargo-contact-grid">
+          <div class="cargo-form-field"><label>Shipper Name</label><input type="text" placeholder="Full name"/></div>
+          <div class="cargo-form-field"><label>Shipper Address</label><input type="text" placeholder="Address"/></div>
+          <div class="cargo-form-field"><label>Shipper Phone</label><input type="tel" placeholder="+250..."/></div>
+          <div class="cargo-form-field"><label>Shipper Email</label><input type="email" placeholder="email@example.com"/></div>
+          <div class="cargo-form-field"><label>Consignee Name</label><input type="text" placeholder="Full name"/></div>
+          <div class="cargo-form-field"><label>Consignee Address</label><input type="text" placeholder="Address"/></div>
+          <div class="cargo-form-field"><label>Consignee Phone</label><input type="tel" placeholder="+44..."/></div>
+          <div class="cargo-form-field"><label>Consignee Email</label><input type="email" placeholder="email@example.com"/></div>
+        </div>
+        <div class="cargo-wizard-actions-duo" style="margin-top:24px">
+          <button class="cargo-btn-back" onclick="cargoWizardPrev(4)">BACK</button>
+          <button class="cargo-btn-next" onclick="cargoBookingComplete()">Submit Booking</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cargo Booking Footer -->
+    <footer class="cargo-footer" style="margin-top:40px">
+      <div class="cargo-footer-grid">
+        <div><h4>About Us</h4><a href="#">Who we are</a><a href="#">Our team</a><a href="#">Fleet</a></div>
+        <div><h4>Media Center</h4><a href="#">Inzozi</a><a href="#">News & Press releases</a><a href="#">Gallery</a><a href="#">Travel alerts</a></div>
+        <div><h4>Connect with us</h4><a href="#">Careers</a><a href="#">Contact us</a><a href="#">Tenders</a></div>
+        <div><h4>Let's be connected</h4><div class="cargo-social-links"><a href="#" class="cargo-social fb">f</a><a href="#" class="cargo-social tw">t</a><a href="#" class="cargo-social yt">y</a><a href="#" class="cargo-social ig">i</a><a href="#" class="cargo-social li">in</a></div></div>
+      </div>
+      <div class="cargo-footer-bottom">
+        <span>Copyright &copy; RwandAir. All rights reserved</span>
+        <span>RwandAir Cargo Website 2025</span>
+        <span>Developed by RwandAir IT</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ PAGE: CARGO TRACKING ============ -->
+  <section class="page" id="page-cargo-track">
+    <nav class="cargo-nav">
+      <div class="cargo-nav-inner">
+        <div class="cargo-logo" onclick="navigateTo('cargo')">
+          <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" class="logo-img"/>
+          <span class="cargo-logo-text">CARGO</span>
+        </div>
+        <div class="cargo-nav-links">
+          <a href="#" onclick="return false">ABOUT</a>
+          <a href="#" onclick="return false">TRACK</a>
+          <a href="#" onclick="return false">NETWORK</a>
+          <a href="#" onclick="return false">PRODUCT/SERVICES</a>
+          <a href="#" onclick="return false">CONTACT US</a>
+        </div>
+        <div class="cargo-nav-actions">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <a href="#" onclick="navigateTo('cargo');return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            LOGIN
+          </a>
+          <span class="cargo-lang">EN</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="cargo-track-page">
+      <h1 class="cargo-track-title">TRACK SHIPMENT</h1>
+      <div class="cargo-track-awb-row">
+        <span class="cargo-track-badge">AWB</span>
+        <div class="cargo-track-input-group">
+          <label>Prefix</label><input type="text" value="459" class="cargo-awb-prefix" maxlength="3"/>
+          <label>AWB number(s)</label><input type="text" value="459-9010-1723" class="cargo-awb-full"/>
+        </div>
+        <button class="cargo-btn-track" onclick="showCargoTrackResult()">Track your shipment</button>
+      </div>
+
+      <div class="cargo-track-result" id="cargoTrackResult">
+        <div class="cargo-track-summary">
+          <div class="cargo-track-summary-id"><strong>A52154985</strong></div>
+          <div class="cargo-track-summary-detail">Total Pieces: <strong>4 Pieces</strong></div>
+          <div class="cargo-track-summary-detail">Origin: <strong>KGL</strong></div>
+          <div class="cargo-track-summary-detail">Total Weight: <strong>1984.0 m2</strong></div>
+          <div class="cargo-track-summary-detail">Destination: <strong>DXB</strong></div>
+          <div class="cargo-track-actions">
+            <a href="#">Download</a>
+            <a href="#">Send Email</a>
+          </div>
+        </div>
+
+        <h2 class="cargo-track-details-title">TRACK DETAILS</h2>
+        <div class="cargo-track-timeline">
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Booked</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">17 Dec 2023<br/>06:20</div>
+            <div class="cargo-timeline-flight"></div>
+          </div>
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Booked</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">17 Dec 2023<br/>06:20</div>
+            <div class="cargo-timeline-flight">WB304<br/>27Nov 2023</div>
+          </div>
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Received From Shipper</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">20 Dec 2023<br/>08:30</div>
+            <div class="cargo-timeline-flight">WB304<br/>27Nov 2023</div>
+          </div>
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Received From Shipper</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">22 Dec 2023<br/>08:30</div>
+            <div class="cargo-timeline-flight">WB304<br/>27Nov 2023</div>
+          </div>
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Manifested on Flight</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">24 Dec 2023<br/>08:30</div>
+            <div class="cargo-timeline-flight">WB304<br/>25Nov 2023</div>
+          </div>
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Departed on Flight</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">24 Dec 2023<br/>08:30</div>
+            <div class="cargo-timeline-flight">WB304<br/>25Nov 2023</div>
+          </div>
+          <div class="cargo-timeline-item">
+            <div class="cargo-timeline-dot"></div>
+            <div class="cargo-timeline-content">
+              <strong>Departed on Flight</strong>
+              <span>1932.0 m2 / 4 Pieces</span>
+            </div>
+            <div class="cargo-timeline-date">27 Dec 2023<br/>08:30</div>
+            <div class="cargo-timeline-flight">WB304<br/>25Nov 2023</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discover More -->
+    <div class="cargo-section cargo-discover">
+      <div class="cargo-discover-grid">
+        <div class="cargo-discover-text">
+          <h3>Eager to discover more?</h3>
+          <p>Explore our diverse, meticulously crafted solutions for your curious journey into boundless possibilities.</p>
+          <button class="cargo-btn-explore">EXPLORE ALL</button>
+        </div>
+        <div class="cargo-discover-cards">
+          <div class="cargo-discover-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span>SUPPORT</span></div>
+          <div class="cargo-discover-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>CLAIMS</span></div>
+          <div class="cargo-discover-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ'S</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fleet and Network -->
+    <div class="cargo-fleet-section">
+      <div class="cargo-fleet-map"></div>
+      <div class="cargo-fleet-info">
+        <h3>Our Fleet And Network</h3>
+        <p>Our Dedicated International Teams Are Ready To Help. Contact The Nearest RwandAir Cargo Office Listed Below To Get In Touch.</p>
+        <div class="cargo-fleet-form">
+          <label>Choose Your Local Sales Agent</label>
+          <select><option>Enter Destination</option><option>Kigali</option><option>Nairobi</option></select>
+        </div>
+      </div>
+    </div>
+
+    <footer class="cargo-footer">
+      <div class="cargo-footer-grid">
+        <div><h4>About Us</h4><a href="#">Who we are</a><a href="#">Our team</a><a href="#">Fleet</a></div>
+        <div><h4>Media Center</h4><a href="#">Inzozi</a><a href="#">News & Press releases</a><a href="#">Gallery</a><a href="#">Travel alerts</a></div>
+        <div><h4>Connect with us</h4><a href="#">Careers</a><a href="#">Contact us</a><a href="#">Tenders</a></div>
+        <div><h4>Let's be connected</h4><div class="cargo-social-links"><a href="#" class="cargo-social fb">f</a><a href="#" class="cargo-social tw">t</a><a href="#" class="cargo-social yt">y</a><a href="#" class="cargo-social ig">i</a><a href="#" class="cargo-social li">in</a></div></div>
+      </div>
+      <div class="cargo-footer-bottom">
+        <span>Copyright &copy; RwandAir. All rights reserved</span>
+        <span>RwandAir Cargo Website 2025</span>
+        <span>Developed by RwandAir IT</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ PAGE: CARGO SCHEDULE ============ -->
+  <section class="page" id="page-cargo-schedule">
+    <nav class="cargo-nav">
+      <div class="cargo-nav-inner">
+        <div class="cargo-logo" onclick="navigateTo('cargo')">
+          <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir" class="logo-img"/>
+          <span class="cargo-logo-text">CARGO</span>
+        </div>
+        <div class="cargo-nav-links">
+          <a href="#" onclick="return false">ABOUT</a>
+          <a href="#" onclick="return false">TRACK</a>
+          <a href="#" onclick="return false">NETWORK</a>
+          <a href="#" onclick="return false">PRODUCT/SERVICES</a>
+          <a href="#" onclick="return false">CONTACT US</a>
+        </div>
+        <div class="cargo-nav-actions">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <a href="#" onclick="navigateTo('cargo');return false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            LOGIN
+          </a>
+          <span class="cargo-lang">EN</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="cargo-schedule-page">
+      <h1 class="cargo-schedule-title">SCHEDULE &amp; ROUTING</h1>
+      <div class="cargo-schedule-search">
+        <div class="cargo-schedule-info">
+          <strong>Flight Schedule (December 12, 2023)</strong>
+          <span>From Wed 16 Nov 2023 (KGL) &rarr; (NBO) Fri 25 Nov 2023<br/>Kigali International Airport &nbsp;&nbsp;&nbsp; Jomo Kenyatta International Airport</span>
+        </div>
+        <div class="cargo-schedule-form-row">
+          <div class="cargo-form-field"><label>Origin</label><input type="text" value="KGL"/></div>
+          <span class="cargo-schedule-arrow">&#9992;</span>
+          <div class="cargo-form-field"><label>Destination</label><input type="text" value="NBO"/></div>
+          <div class="cargo-form-field"><label>Departure date</label><input type="text" value="Tue - 25 Dec 2023"/></div>
+          <button class="cargo-btn-schedule-search">SEARCH ROUTES</button>
+        </div>
+      </div>
+
+      <div class="cargo-schedule-nav">
+        <a href="#">&lsaquo; PREV 7 DAYS</a>
+        <a href="#">NEXT 7 DAYS &rsaquo;</a>
+      </div>
+
+      <div class="cargo-schedule-table">
+        <div class="cargo-schedule-header">
+          <span>Flight number</span>
+          <span>Departure</span>
+          <span>Arrival</span>
+          <span>Sat<br/>12</span>
+          <span>Sun<br/>13</span>
+          <span>Mon<br/>14</span>
+          <span>Tue<br/>15</span>
+          <span>Wed<br/>16</span>
+          <span>Thu<br/>17</span>
+          <span>Fri<br/>18</span>
+        </div>
+        <div class="cargo-schedule-row highlight">
+          <span><img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="WB" style="width:24px"/></span>
+          <span></span><span></span>
+          <span>&#9992;</span><span></span><span></span><span>&#9992;</span><span>&#9992;</span><span></span><span>&#9992;</span>
+        </div>
+        <div class="cargo-schedule-row">
+          <span>WB440</span><span>08:05 hrs</span><span>23:40 hrs</span>
+          <span></span><span></span><span>&#9992;</span><span></span><span></span><span>&#9992;</span><span>&#9992;</span>
+        </div>
+        <div class="cargo-schedule-row">
+          <span>WB440</span><span>08:05 hrs</span><span>23:40 hrs</span>
+          <span>&#9992;</span><span></span><span></span><span></span><span>&#9992;</span><span>&#9992;</span><span></span>
+        </div>
+        <div class="cargo-schedule-row">
+          <span>WB440</span><span>08:05 hrs</span><span>23:40 hrs</span>
+          <span></span><span>&#9992;</span><span>&#9992;</span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="cargo-schedule-row">
+          <span>WB440</span><span>08:05 hrs</span><span>23:40 hrs</span>
+          <span>&#9992;</span><span></span><span></span><span>&#9992;</span><span></span><span>&#9992;</span><span></span>
+        </div>
+        <div class="cargo-schedule-row">
+          <span>WB440</span><span>08:05 hrs</span><span>23:40 hrs</span>
+          <span>&#9992;</span><span></span><span>&#9992;</span><span></span><span>&#9992;</span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discover More -->
+    <div class="cargo-section cargo-discover">
+      <div class="cargo-discover-grid">
+        <div class="cargo-discover-text">
+          <h3>Eager to discover more?</h3>
+          <p>Explore our diverse, meticulously crafted solutions for your curious journey into boundless possibilities.</p>
+          <button class="cargo-btn-explore">EXPLORE ALL</button>
+        </div>
+        <div class="cargo-discover-cards">
+          <div class="cargo-discover-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><span>SUPPORT</span></div>
+          <div class="cargo-discover-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span>CLAIMS</span></div>
+          <div class="cargo-discover-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>FAQ'S</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cargo-fleet-section">
+      <div class="cargo-fleet-map"></div>
+      <div class="cargo-fleet-info">
+        <h3>Our Fleet And Network</h3>
+        <p>Our Dedicated International Teams Are Ready To Help. Contact The Nearest RwandAir Cargo Office Listed Below To Get In Touch.</p>
+        <div class="cargo-fleet-form"><label>Choose Your Local Sales Agent</label><select><option>Enter Destination</option><option>Kigali</option><option>Nairobi</option></select></div>
+      </div>
+    </div>
+
+    <footer class="cargo-footer">
+      <div class="cargo-footer-grid">
+        <div><h4>About Us</h4><a href="#">Who we are</a><a href="#">Our team</a><a href="#">Fleet</a></div>
+        <div><h4>Media Center</h4><a href="#">Inzozi</a><a href="#">News & Press releases</a><a href="#">Gallery</a><a href="#">Travel alerts</a></div>
+        <div><h4>Connect with us</h4><a href="#">Careers</a><a href="#">Contact us</a><a href="#">Tenders</a></div>
+        <div><h4>Let's be connected</h4><div class="cargo-social-links"><a href="#" class="cargo-social fb">f</a><a href="#" class="cargo-social tw">t</a><a href="#" class="cargo-social yt">y</a><a href="#" class="cargo-social ig">i</a><a href="#" class="cargo-social li">in</a></div></div>
+      </div>
+      <div class="cargo-footer-bottom">
+        <span>Copyright &copy; RwandAir. All rights reserved</span>
+        <span>RwandAir Cargo Website 2025</span>
+        <span>Developed by RwandAir IT</span>
+      </div>
+    </footer>
   </section>
 
   <!-- ============ CHAT WIDGET ============ -->
