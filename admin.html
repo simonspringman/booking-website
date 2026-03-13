@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RwandAir — Back Office Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div class="admin-login" id="adminLogin">
+    <div class="admin-login-card">
+      <div class="admin-logo">✈ RwandAir</div>
+      <h1>Back Office</h1>
+      <p>Sign in with your admin credentials</p>
+      <div class="admin-form-group">
+        <label>Email</label>
+        <input type="email" id="adminEmail" placeholder="admin@rwandair.com" value="admin@rwandair.com"/>
+      </div>
+      <div class="admin-form-group">
+        <label>Password</label>
+        <input type="password" id="adminPassword" placeholder="Password" value="admin123"/>
+      </div>
+      <button class="admin-btn-primary" onclick="adminLogin()">Sign In</button>
+      <p class="admin-login-error hidden" id="adminLoginError"></p>
+      <p class="admin-login-hint">Demo: admin@rwandair.com / admin123</p>
+    </div>
+  </div>
+
+  <!-- Dashboard Shell -->
+  <div class="admin-shell hidden" id="adminShell">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <span class="admin-sidebar-logo">✈ RwandAir</span>
+        <span class="admin-sidebar-label">BACK OFFICE</span>
+      </div>
+      <nav class="admin-nav">
+        <a class="admin-nav-item active" data-panel="chatbot" onclick="showPanel('chatbot')">
+          <span class="admin-nav-icon">🤖</span> Chatbot Reports
+        </a>
+        <a class="admin-nav-item" data-panel="funnel" onclick="showPanel('funnel')">
+          <span class="admin-nav-icon">📈</span> Funnel
+        </a>
+        <a class="admin-nav-item" data-panel="orders" onclick="showPanel('orders')">
+          <span class="admin-nav-icon">📋</span> Orders
+        </a>
+        <a class="admin-nav-item" data-panel="passengers" onclick="showPanel('passengers')">
+          <span class="admin-nav-icon">👥</span> Passengers
+        </a>
+        <a class="admin-nav-item" data-panel="ancillaries" onclick="showPanel('ancillaries')">
+          <span class="admin-nav-icon">🧳</span> Ancillaries
+        </a>
+        <a class="admin-nav-item" data-panel="holds" onclick="showPanel('holds')">
+          <span class="admin-nav-icon">⏳</span> Time-to-Think
+        </a>
+        <a class="admin-nav-item" data-panel="channels" onclick="showPanel('channels')">
+          <span class="admin-nav-icon">📊</span> Channels
+        </a>
+        <a class="admin-nav-item" data-panel="offices" onclick="showPanel('offices')">
+          <span class="admin-nav-icon">🏢</span> Office IDs
+        </a>
+        <a class="admin-nav-item" data-panel="payments" onclick="showPanel('payments')">
+          <span class="admin-nav-icon">💳</span> Payments
+        </a>
+        <div class="admin-nav-divider"></div>
+        <a class="admin-nav-item" data-panel="users" onclick="showPanel('users')">
+          <span class="admin-nav-icon">⚙</span> User Management
+        </a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <div class="admin-user-badge">
+          <span class="admin-user-avatar" id="adminAvatar">AM</span>
+          <div>
+            <strong id="adminName">Alice Mukamana</strong>
+            <span id="adminRole" class="admin-role-badge">Super Admin</span>
+          </div>
+        </div>
+        <button class="admin-logout-btn" onclick="adminLogout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <!-- Top Bar -->
+      <div class="admin-topbar">
+        <h2 id="panelTitle">Chatbot Reports</h2>
+        <div class="admin-topbar-actions">
+          <input type="date" id="filterDate" value="" onchange="refreshCurrentPanel()"/>
+          <button class="admin-btn-outline" onclick="exportCSV()">📥 Export CSV</button>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="admin-summary" id="adminSummary"></div>
+
+      <!-- Data Table -->
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="adminTable">
+          <thead id="adminTableHead"></thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

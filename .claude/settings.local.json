@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where node)",
+      "Bash(where npx)",
+      "WebFetch(domain:booking.rwandair.com)",
+      "WebFetch(domain:www.rwandair.com)",
+      "WebSearch",
+      "WebFetch(domain:flights.rwandair.com)",
+      "WebFetch(domain:www.alternativeairlines.com)",
+      "WebFetch(domain:www.trustpilot.com)",
+      "WebFetch(domain:www.flyertalk.com)",
+      "Bash(cp \"C:/Users/Olivier.Komeza/Desktop/lunchlabs/index.html\" \"C:/Users/Olivier.Komeza/Desktop/lunchlabs/audit.html\")",
+      "Bash(cp \"C:/Users/Olivier.Komeza/Desktop/lunchlabs/style.css\" \"C:/Users/Olivier.Komeza/Desktop/lunchlabs/audit.css\")",
+      "Bash(npm install)",
+      "WebFetch(domain:fastidious-pie-f007bd.netlify.app)",
+      "Bash(curl -s -o /c/Users/Olivier.Komeza/Desktop/lunchlabs/css/styles.css \"https://fastidious-pie-f007bd.netlify.app/css/styles.css\" -u \":My-Drop-Site\")",
+      "Bash(curl -s -o /c/Users/Olivier.Komeza/Desktop/lunchlabs/js/app.js \"https://fastidious-pie-f007bd.netlify.app/js/app.js\" -u \":My-Drop-Site\")",
+      "Bash(git checkout:*)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //PID 22428 //F)",
+      "Bash(npx kill-port:*)"
+    ]
+  }
+}

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RwandAir — Fly the Dream of Africa</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a1628;
+  --blue:#1a3a6e;
+  --accent:#c8102e;
+  --gold:#f0a500;
+  --text:#1a202c;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --bg:#f8f9fc;
+  --surface:#fff;
+  --radius:12px;
+  --shadow:0 2px 16px rgba(0,0,0,.08);
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── COOKIE BANNER ── */
+#cookie-banner{position:fixed;bottom:0;left:0;right:0;background:var(--navy);color:#e2e8f0;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;z-index:1000;border-top:3px solid var(--accent)}
+#cookie-banner p{font-size:.82rem;line-height:1.5;max-width:640px}
+#cookie-banner a{color:#93c5fd;text-decoration:underline}
+.cookie-btns{display:flex;gap:.6rem;flex-shrink:0}
+.cookie-btns button{font-size:.78rem;font-weight:600;padding:.4rem .9rem;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:opacity .15s}
+.btn-accept{background:var(--accent);color:#fff}
+.btn-reject{background:transparent;color:#e2e8f0;border-color:#475569}
+.btn-manage{background:transparent;color:#94a3b8;border-color:#334155}
+.cookie-btns button:hover{opacity:.85}
+
+/* ── UTILITY BAR ── */
+.utility-bar{background:#f1f5f9;border-bottom:1px solid var(--border);padding:.4rem 2rem;display:flex;justify-content:flex-end;gap:1.5rem}
+.utility-bar a{font-size:.75rem;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:color .15s}
+.utility-bar a:hover{color:var(--accent)}
+
+/* ── NAV ── */
+nav{background:var(--navy);padding:.9rem 2rem;display:flex;align-items:center;gap:2rem}
+.nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;font-weight:900}
+.nav-logo-text{color:#fff;font-size:1rem;font-weight:700;letter-spacing:-.3px}
+.nav-logo-text span{color:#f0a500}
+.nav-links{display:flex;gap:.25rem;margin-left:.5rem}
+.nav-links a{color:#94a3b8;text-decoration:none;font-size:.85rem;padding:.4rem .75rem;border-radius:8px;transition:all .15s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:.75rem}
+.nav-login{color:#e2e8f0;font-size:.82rem;text-decoration:none;padding:.4rem .9rem;border:1px solid #334155;border-radius:8px;transition:all .15s}
+.nav-login:hover{border-color:#64748b;color:#fff}
+.nav-dreammiles{background:var(--gold);color:var(--navy);font-size:.78rem;font-weight:700;padding:.4rem .9rem;border-radius:8px;text-decoration:none;transition:opacity .15s}
+.nav-dreammiles:hover{opacity:.9}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:3.5rem 2rem 0;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:var(--bg);border-radius:24px 24px 0 0}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;z-index:1}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:2rem}
+.hero-copy h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.15;margin-bottom:.5rem}
+.hero-copy p{color:#94a3b8;font-size:.9rem;max-width:380px}
+.awards{display:flex;gap:.75rem;flex-wrap:wrap}
+.award{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.5rem .9rem;display:flex;align-items:center;gap:.5rem}
+.award-icon{font-size:1.1rem}
+.award-text{font-size:.68rem;color:#e2e8f0;line-height:1.3}
+.award-text strong{display:block;font-weight:700}
+
+/* ── SEARCH WIDGET ── */
+.search-widget{background:#fff;border-radius:20px 20px 0 0;padding:1.75rem 2rem 2rem;box-shadow:0 -4px 32px rgba(0,0,0,.15);position:relative;z-index:2}
+.search-tabs{display:flex;gap:.25rem;margin-bottom:1.25rem;border-bottom:2px solid var(--border);padding-bottom:0}
+.search-tab{font-size:.82rem;font-weight:600;padding:.5rem 1rem;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.search-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.search-form{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:.75rem;align-items:end}
+.field{display:flex;flex-direction:column;gap:.3rem}
+.field label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.field-inner{position:relative}
+.field-inner input,.field-inner select{width:100%;padding:.65rem .75rem .65rem 2.2rem;border:1.5px solid var(--border);border-radius:10px;font-size:.88rem;color:var(--text);background:#fff;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field-inner input:focus,.field-inner select:focus{border-color:var(--accent)}
+.field-inner input.error,.field-inner select.error{border-color:#ef4444}
+.field-error{font-size:.7rem;color:#ef4444;margin-top:.2rem;display:none}
+.field-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:.95rem;pointer-events:none}
+.swap-btn{position:absolute;right:-1.1rem;top:50%;transform:translateY(-50%);width:26px;height:26px;background:#fff;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.75rem;z-index:1;transition:border-color .15s}
+.swap-btn:hover{border-color:var(--accent)}
+.origin-wrap{position:relative}
+.search-btn{background:var(--accent);color:#fff;border:none;padding:.7rem 1.75rem;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .15s;height:42px}
+.search-btn:hover{opacity:.9}
+.trust-strip{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.trust-item{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.3rem}
+.trust-item span{color:#22c55e}
+
+/* ── DESTINATIONS ── */
+.section{padding:2.5rem 2rem;max-width:960px;margin:0 auto}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.25rem}
+.section-header h2{font-size:1.1rem;font-weight:800;letter-spacing:-.3px}
+.section-header a{font-size:.78rem;color:var(--accent);text-decoration:none}
+.dest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.dest-card{border-radius:var(--radius);overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:transform .15s,box-shadow .15s;text-decoration:none;color:inherit}
+.dest-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.dest-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:800;color:#fff}
+.dest-info{padding:.75rem}
+.dest-city{font-size:.88rem;font-weight:700}
+.dest-price{font-size:.78rem;color:var(--muted);margin-top:.15rem}
+.dest-price strong{color:var(--accent)}
+.dest-badge{display:inline-block;font-size:.62rem;background:#fef9c3;color:#a16207;padding:.15rem .45rem;border-radius:4px;font-weight:600;margin-top:.35rem}
+
+/* ── RESULTS PAGE ── */
+#results-page{display:none}
+.results-header{background:var(--navy);padding:1.25rem 2rem;color:#fff}
+.results-header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.results-route{font-size:1.1rem;font-weight:800}
+.results-meta{font-size:.78rem;color:#94a3b8;margin-left:.5rem}
+.results-modify{font-size:.75rem;color:#93c5fd;text-decoration:underline;cursor:pointer;margin-left:auto}
+
+/* progress bar */
+.progress-bar{background:#f1f5f9;border-bottom:1px solid var(--border);padding:.6rem 2rem}
+.progress-bar-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:0}
+.step{display:flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:600;color:var(--muted)}
+.step.active{color:var(--accent)}
+.step.done{color:#22c55e}
+.step-num{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700}
+.step.done .step-num{background:#22c55e;border-color:#22c55e;color:#fff}
+.step.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 .5rem;max-width:60px}
+.step-line.done{background:#22c55e}
+
+.results-body{max-width:960px;margin:0 auto;padding:1.5rem 2rem}
+.results-count{font-size:.8rem;color:var(--muted);margin-bottom:1rem}
+.flight-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:.75rem;display:grid;grid-template-columns:1fr auto auto;gap:1rem;align-items:center;transition:border-color .15s}
+.flight-card:hover{border-color:var(--accent)}
+.flight-route{display:flex;align-items:center;gap:1rem}
+.flight-time{font-size:1.2rem;font-weight:800;color:var(--text)}
+.flight-arrow{color:var(--muted);font-size:.85rem;display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.flight-arrow span{font-size:.65rem;color:var(--muted)}
+.flight-duration{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.flight-stops{font-size:.68rem;padding:.15rem .5rem;border-radius:4px;background:#f0fdf4;color:#16a34a;font-weight:600}
+.flight-stops.stops1{background:#fef9c3;color:#a16207}
+.flight-airline{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+.flight-urgency{font-size:.68rem;color:#dc2626;font-weight:600;background:#fef2f2;padding:.2rem .5rem;border-radius:4px}
+.flight-price-block{text-align:right}
+.flight-price{font-size:1.4rem;font-weight:800;color:var(--text)}
+.flight-price-label{font-size:.68rem;color:var(--muted)}
+.flight-price-taxes{font-size:.68rem;color:#22c55e}
+.select-btn{background:var(--accent);color:#fff;border:none;padding:.6rem 1.25rem;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;transition:opacity .15s}
+.select-btn:hover{opacity:.9}
+.best-value{border-color:var(--accent);position:relative}
+.best-value-tag{position:absolute;top:-11px;left:1.25rem;background:var(--accent);color:#fff;font-size:.65rem;font-weight:700;padding:.15rem .6rem;border-radius:4px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── CONFIRMATION PAGE ── */
+#confirm-page{display:none}
+.confirm-header{background:linear-gradient(135deg,#15803d,#166534);padding:2rem;color:#fff;text-align:center}
+.confirm-header h2{font-size:1.6rem;font-weight:800;margin:.5rem 0 .25rem}
+.confirm-header p{font-size:.88rem;opacity:.85}
+.confirm-body{max-width:640px;margin:0 auto;padding:2rem}
+.confirm-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem}
+.confirm-card h3{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.75rem}
+.confirm-row{display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid #f8fafc}
+.confirm-row:last-child{border-bottom:none}
+.confirm-row strong{font-weight:700}
+.payment-notice{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius);padding:1rem 1.25rem;display:flex;gap:.75rem;margin-bottom:1rem}
+.payment-notice-icon{font-size:1.2rem;flex-shrink:0}
+.payment-notice-text{font-size:.8rem;color:#92400e;line-height:1.5}
+.payment-notice-text strong{display:block;margin-bottom:.2rem}
+.whatsapp-support{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius);padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem}
+.whatsapp-support-icon{font-size:1.4rem}
+.whatsapp-support-text{font-size:.8rem;color:#15803d}
+.whatsapp-support-text strong{display:block;margin-bottom:.1rem}
+.whatsapp-btn{margin-left:auto;background:#22c55e;color:#fff;border:none;padding:.45rem .9rem;border-radius:8px;font-size:.75rem;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .search-form{grid-template-columns:1fr 1fr}
+  .search-btn{grid-column:span 2}
+  .hero-top{flex-direction:column;gap:1rem}
+  .awards{display:none}
+  nav{padding:.75rem 1rem;gap:.75rem}
+  .nav-links{display:none}
+  .section{padding:2rem 1rem}
+  .flight-card{grid-template-columns:1fr}
+  .flight-price-block{text-align:left;display:flex;align-items:center;gap:1rem}
+  .select-btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <p>We use cookies to improve your experience and to measure performance. See our <a href="#">Cookie Policy</a> for details.</p>
+  <div class="cookie-btns">
+    <button class="btn-manage" onclick="closeCookie()">Manage Preferences</button>
+    <button class="btn-reject" onclick="closeCookie()">Reject All</button>
+    <button class="btn-accept" onclick="closeCookie()">Accept All</button>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div id="home-page">
+
+  <!-- UTILITY BAR -->
+  <div class="utility-bar">
+    <a href="#" onclick="return false">✈️ Check-In</a>
+    <a href="#" onclick="return false">📋 Manage Booking</a>
+    <a href="#" onclick="return false">🔍 Flight Status</a>
+    <a href="#" onclick="return false">📞 +250 788 177 000</a>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#" onclick="return false">
+      <div class="nav-logo-icon">R</div>
+      <div class="nav-logo-text">Rwand<span>Air</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#" onclick="return false">Book & Travel</a>
+      <a href="#" onclick="return false">Destinations</a>
+      <a href="#" onclick="return false">Travel Info</a>
+      <a href="#" onclick="return false">Loyalty</a>
+      <a href="#" onclick="return false">Holidays</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-login" href="#" onclick="return false">Log in</a>
+      <a class="nav-dreammiles" href="#" onclick="return false">✨ DreamMiles</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <h1>Fly the Dream<br>of Africa</h1>
+          <p>Africa's fastest-growing airline. 30+ destinations. Book direct for the best price.</p>
+        </div>
+        <div class="awards">
+          <div class="award">
+            <div class="award-icon">🏆</div>
+            <div class="award-text"><strong>Africa's Best Airline</strong>Skytrax 2024</div>
+          </div>
+          <div class="award">
+            <div class="award-icon">💎</div>
+            <div class="award-text"><strong>APEX Diamond</strong>5-Star Safety</div>
+          </div>
+          <div class="award">
+            <div class="award-icon">⭐</div>
+            <div class="award-text"><strong>Best Airline Staff</strong>Africa 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEARCH WIDGET -->
+      <div class="search-widget">
+        <div class="search-tabs">
+          <button class="search-tab active" onclick="setTab(this,'roundtrip')">Round Trip</button>
+          <button class="search-tab" onclick="setTab(this,'oneway')">One Way</button>
+          <button class="search-tab" onclick="setTab(this,'multicity')">Multi-City</button>
+          <button class="search-tab" onclick="setTab(this,'miles')">Book with Miles</button>
+        </div>
+        <form class="search-form" onsubmit="doSearch(event)">
+          <div class="field">
+            <label>From</label>
+            <div class="field-inner origin-wrap">
+              <span class="field-icon">📍</span>
+              <input id="f-from" type="text" placeholder="City or airport" value="Kigali (KGL)"/>
+              <div class="swap-btn" onclick="swapAirports()" title="Swap">⇄</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>To</label>
+            <div class="field-inner">
+              <span class="field-icon">🛬</span>
+              <input id="f-to" type="text" placeholder="Where to?"/>
+              <div class="field-error" id="err-to">Please enter a destination</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Depart</label>
+            <div class="field-inner">
+              <span class="field-icon">📅</span>
+              <input id="f-depart" type="date" value="2026-03-20"/>
+            </div>
+          </div>
+          <div class="field">
+            <label>Passengers · Class</label>
+            <div class="field-inner">
+              <span class="field-icon">👤</span>
+              <select id="f-pax">
+                <option>1 Adult · Economy</option>
+                <option>2 Adults · Economy</option>
+                <option>1 Adult · Business</option>
+                <option>2 Adults · Business</option>
+              </select>
+            </div>
+          </div>
+          <button class="search-btn" type="submit">Search Flights</button>
+        </form>
+        <div class="trust-strip">
+          <div class="trust-item"><span>✓</span> Best price guaranteed when booking direct</div>
+          <div class="trust-item"><span>✓</span> Free 24-hour hold on all fares</div>
+          <div class="trust-item"><span>✓</span> No booking fee</div>
+          <div class="trust-item"><span>✓</span> PCI DSS secure payment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPULAR DESTINATIONS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Popular Destinations</h2>
+      <a href="#" onclick="return false">View all routes →</a>
+    </div>
+    <div class="dest-grid">
+      <a class="dest-card" href="#" onclick="pickDest('London (LHR)');return false">
+        <div class="dest-img" style="background:linear-gradient(135deg,#1a3a6e,#2563eb)">🇬🇧</div>
+        <div class="dest-info">
+          <div class="dest-city">London</div>
+          <div class="dest-price">From <strong>RWF 1,240,000</strong></div>
+          <div class="dest-badge">🔥 Trending</div>
+        </div>
+      </a>
+      <a class="dest-card" href="#" onclick="pickDest('Dubai (DXB)');return false">
+        <div class="dest-img" style="background:linear-gradient(135deg,#b45309,#f59e0b)">🇦🇪</div>
+        <div class="dest-info">
+          <div class="dest-city">Dubai</div>
+          <div class="dest-price">From <strong>RWF 780,000</strong></div>
+          <div class="dest-badge">⚡ 3 seats left</div>
+        </div>
+      </a>
+      <a class="dest-card" href="#" onclick="pickDest('Nairobi (NBO)');return false">
+        <div class="dest-img" style="background:linear-gradient(135deg,#15803d,#22c55e)">🇰🇪</div>
+        <div class="dest-info">
+          <div class="dest-city">Nairobi</div>
+          <div class="dest-price">From <strong>RWF 210,000</strong></div>
+          <div class="dest-badge">✓ Daily flights</div>
+        </div>
+      </a>
+      <a class="dest-card" href="#" onclick="pickDest('Brussels (BRU)');return false">
+        <div class="dest-img" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">🇧🇪</div>
+        <div class="dest-info">
+          <div class="dest-city">Brussels</div>
+          <div class="dest-price">From <strong>RWF 1,090,000</strong></div>
+        </div>
+      </a>
+      <a class="dest-card" href="#" onclick="pickDest('Johannesburg (JNB)');return false">
+        <div class="dest-img" style="background:linear-gradient(135deg,#0f172a,#334155)">🇿🇦</div>
+        <div class="dest-info">
+          <div class="dest-city">Johannesburg</div>
+          <div class="dest-price">From <strong>RWF 480,000</strong></div>
+        </div>
+      </a>
+      <a class="dest-card" href="#" onclick="pickDest('Mumbai (BOM)');return false">
+        <div class="dest-img" style="background:linear-gradient(135deg,#c8102e,#f87171)">🇮🇳</div>
+        <div class="dest-info">
+          <div class="dest-city">Mumbai</div>
+          <div class="dest-price">From <strong>RWF 870,000</strong></div>
+          <div class="dest-badge">🆕 New route</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div><!-- end home-page -->
+
+
+<!-- RESULTS PAGE -->
+<div id="results-page">
+
+  <div class="utility-bar">
+    <a href="#" onclick="return false">✈️ Check-In</a>
+    <a href="#" onclick="return false">📋 Manage Booking</a>
+    <a href="#" onclick="return false">🔍 Flight Status</a>
+    <a href="#" onclick="return false">📞 +250 788 177 000</a>
+  </div>
+
+  <nav>
+    <a class="nav-logo" href="#" onclick="showPage('home')">
+      <div class="nav-logo-icon">R</div>
+      <div class="nav-logo-text">Rwand<span>Air</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#" onclick="return false">Book & Travel</a>
+      <a href="#" onclick="return false">Destinations</a>
+      <a href="#" onclick="return false">Travel Info</a>
+      <a href="#" onclick="return false">Loyalty</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-login" href="#" onclick="return false">Log in</a>
+      <a class="nav-dreammiles" href="#" onclick="return false">✨ DreamMiles</a>
+    </div>
+  </nav>
+
+  <div class="results-header">
+    <div class="results-header-inner">
+      <div>
+        <div class="results-route" id="results-title">Kigali → London</div>
+        <div class="results-meta" id="results-meta">20 Mar 2026 · 1 Adult · Economy</div>
+      </div>
+      <div class="results-modify" onclick="showPage('home')">← Modify search</div>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-bar-inner">
+      <div class="step active"><div class="step-num">1</div> Select Flight</div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-num">2</div> Passengers</div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-num">3</div> Payment</div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-num">4</div> Confirm</div>
+    </div>
+  </div>
+
+  <div class="results-body">
+    <div class="results-count" id="results-count">Showing 4 flights · Prices include all taxes &amp; fees</div>
+
+    <div class="flight-card best-value">
+      <div class="best-value-tag">Best Value</div>
+      <div class="flight-route">
+        <div>
+          <div class="flight-time">06:30</div>
+          <div style="font-size:.7rem;color:var(--muted)">KGL</div>
+        </div>
+        <div class="flight-arrow">
+          <span>──────</span>
+          <span id="r-duration-1">8h 45m · Direct</span>
+        </div>
+        <div>
+          <div class="flight-time">15:15</div>
+          <div style="font-size:.7rem;color:var(--muted)" id="r-dest-code-1">LHR</div>
+        </div>
+        <div style="margin-left:.5rem">
+          <div class="flight-stops">✓ Direct</div>
+          <div class="flight-airline" style="margin-top:.3rem">WB 101 · Boeing 737 MAX</div>
+        </div>
+      </div>
+      <div>
+        <div class="flight-urgency">⚡ Only 4 seats left</div>
+      </div>
+      <div class="flight-price-block">
+        <div class="flight-price" id="r-price-1">RWF 1,240,000</div>
+        <div class="flight-price-label">per person</div>
+        <div class="flight-price-taxes">✓ Taxes &amp; fees included</div>
+      </div>
+      <button class="select-btn" onclick="showConfirm()">Select →</button>
+    </div>
+
+    <div class="flight-card">
+      <div class="flight-route">
+        <div>
+          <div class="flight-time">10:00</div>
+          <div style="font-size:.7rem;color:var(--muted)">KGL</div>
+        </div>
+        <div class="flight-arrow">
+          <span>──────</span>
+          <span id="r-duration-2">11h 20m · 1 stop</span>
+        </div>
+        <div>
+          <div class="flight-time">21:20</div>
+          <div style="font-size:.7rem;color:var(--muted)" id="r-dest-code-2">LHR</div>
+        </div>
+        <div style="margin-left:.5rem">
+          <div class="flight-stops stops1">1 stop · NBO</div>
+          <div class="flight-airline" style="margin-top:.3rem">WB 205 · Airbus A330</div>
+        </div>
+      </div>
+      <div></div>
+      <div class="flight-price-block">
+        <div class="flight-price" id="r-price-2">RWF 980,000</div>
+        <div class="flight-price-label">per person</div>
+        <div class="flight-price-taxes">✓ Taxes &amp; fees included</div>
+      </div>
+      <button class="select-btn" onclick="showConfirm()">Select →</button>
+    </div>
+
+    <div class="flight-card">
+      <div class="flight-route">
+        <div>
+          <div class="flight-time">14:45</div>
+          <div style="font-size:.7rem;color:var(--muted)">KGL</div>
+        </div>
+        <div class="flight-arrow">
+          <span>──────</span>
+          <span id="r-duration-3">9h 30m · Direct</span>
+        </div>
+        <div>
+          <div class="flight-time">00:15</div>
+          <div style="font-size:.7rem;color:var(--muted)" id="r-dest-code-3">LHR</div>
+        </div>
+        <div style="margin-left:.5rem">
+          <div class="flight-stops">✓ Direct</div>
+          <div class="flight-airline" style="margin-top:.3rem">WB 103 · Boeing 787</div>
+        </div>
+      </div>
+      <div></div>
+      <div class="flight-price-block">
+        <div class="flight-price" id="r-price-3">RWF 1,380,000</div>
+        <div class="flight-price-label">per person</div>
+        <div class="flight-price-taxes">✓ Taxes &amp; fees included</div>
+      </div>
+      <button class="select-btn" onclick="showConfirm()">Select →</button>
+    </div>
+
+    <div class="flight-card">
+      <div class="flight-route">
+        <div>
+          <div class="flight-time">19:15</div>
+          <div style="font-size:.7rem;color:var(--muted)">KGL</div>
+        </div>
+        <div class="flight-arrow">
+          <span>──────</span>
+          <span id="r-duration-4">13h 05m · 1 stop</span>
+        </div>
+        <div>
+          <div class="flight-time">08:20<span style="font-size:.6rem;vertical-align:super">+1</span></div>
+          <div style="font-size:.7rem;color:var(--muted)" id="r-dest-code-4">LHR</div>
+        </div>
+        <div style="margin-left:.5rem">
+          <div class="flight-stops stops1">1 stop · DXB</div>
+          <div class="flight-airline" style="margin-top:.3rem">WB 401 · Boeing 737</div>
+        </div>
+      </div>
+      <div></div>
+      <div class="flight-price-block">
+        <div class="flight-price" id="r-price-4">RWF 870,000</div>
+        <div class="flight-price-label">per person</div>
+        <div class="flight-price-taxes">✓ Taxes &amp; fees included</div>
+      </div>
+      <button class="select-btn" onclick="showConfirm()">Select →</button>
+    </div>
+
+  </div>
+</div><!-- end results-page -->
+
+
+<!-- CONFIRM PAGE -->
+<div id="confirm-page">
+
+  <div class="utility-bar">
+    <a href="#" onclick="return false">✈️ Check-In</a>
+    <a href="#" onclick="return false">📋 Manage Booking</a>
+    <a href="#" onclick="return false">📞 +250 788 177 000</a>
+  </div>
+
+  <nav>
+    <a class="nav-logo" href="#" onclick="showPage('home')">
+      <div class="nav-logo-icon">R</div>
+      <div class="nav-logo-text">Rwand<span>Air</span></div>
+    </a>
+    <div class="nav-right">
+      <a class="nav-login" href="#" onclick="return false">Log in</a>
+      <a class="nav-dreammiles" href="#" onclick="return false">✨ DreamMiles</a>
+    </div>
+  </nav>
+
+  <div class="progress-bar">
+    <div class="progress-bar-inner">
+      <div class="step done"><div class="step-num">✓</div> Select Flight</div>
+      <div class="step-line done"></div>
+      <div class="step done"><div class="step-num">✓</div> Passengers</div>
+      <div class="step-line done"></div>
+      <div class="step done"><div class="step-num">✓</div> Payment</div>
+      <div class="step-line done"></div>
+      <div class="step active"><div class="step-num">4</div> Confirm</div>
+    </div>
+  </div>
+
+  <div class="confirm-header">
+    <div style="font-size:2.5rem">🎉</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Booking reference: <strong>WB-2026-84721</strong> · A confirmation has been sent to your email</p>
+  </div>
+
+  <div class="confirm-body">
+
+    <div class="payment-notice">
+      <div class="payment-notice-icon">ℹ️</div>
+      <div class="payment-notice-text">
+        <strong>About your payment</strong>
+        Your payment is being processed and may take 24–72 hours to appear on your bank statement. Your booking is confirmed — your e-ticket is valid regardless of when the charge appears.
+      </div>
+    </div>
+
+    <div class="confirm-card">
+      <h3>Flight Details</h3>
+      <div class="confirm-row"><span>Route</span><strong id="c-route">Kigali (KGL) → London (LHR)</strong></div>
+      <div class="confirm-row"><span>Date</span><strong>20 March 2026</strong></div>
+      <div class="confirm-row"><span>Flight</span><strong>WB 101 · Departs 06:30</strong></div>
+      <div class="confirm-row"><span>Passenger</span><strong>1 Adult · Economy</strong></div>
+      <div class="confirm-row"><span>Baggage</span><strong>23kg checked + 7kg cabin</strong></div>
+    </div>
+
+    <div class="confirm-card">
+      <h3>Price Breakdown</h3>
+      <div class="confirm-row"><span>Base fare</span><strong id="c-base">RWF 1,060,000</strong></div>
+      <div class="confirm-row"><span>Taxes &amp; fees</span><strong id="c-tax">RWF 180,000</strong></div>
+      <div class="confirm-row"><span style="font-weight:700">Total paid</span><strong id="c-total" style="color:var(--accent)">RWF 1,240,000</strong></div>
+    </div>
+
+    <div class="whatsapp-support">
+      <div class="whatsapp-support-icon">💬</div>
+      <div class="whatsapp-support-text">
+        <strong>Need help with your booking?</strong>
+        Chat with us on WhatsApp — available 24/7
+      </div>
+      <a class="whatsapp-btn" href="#" onclick="return false">WhatsApp →</a>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem">
+      <button onclick="showPage('home')" style="background:var(--accent);color:#fff;border:none;padding:.75rem 2rem;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer">Book Another Flight</button>
+    </div>
+  </div>
+
+</div><!-- end confirm-page -->
+
+
+<script>
+// ── Pages ──
+function showPage(p){
+  document.getElementById('home-page').style.display    = p==='home'    ? 'block' : 'none';
+  document.getElementById('results-page').style.display = p==='results' ? 'block' : 'none';
+  document.getElementById('confirm-page').style.display = p==='confirm' ? 'block' : 'none';
+  window.scrollTo(0,0);
+}
+
+// ── Cookie ──
+function closeCookie(){document.getElementById('cookie-banner').style.display='none'}
+
+// ── Search tabs ──
+function setTab(el){
+  document.querySelectorAll('.search-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Swap airports ──
+function swapAirports(){
+  const a=document.getElementById('f-from'),b=document.getElementById('f-to');
+  [a.value,b.value]=[b.value,a.value];
+}
+
+// ── Pick destination from card ──
+function pickDest(dest){
+  document.getElementById('f-to').value=dest;
+  document.getElementById('f-to').classList.remove('error');
+  document.getElementById('err-to').style.display='none';
+  document.getElementById('f-to').focus();
+}
+
+// ── Search ──
+function doSearch(e){
+  e.preventDefault();
+  const from=document.getElementById('f-from').value.trim();
+  const to=document.getElementById('f-to').value.trim();
+  const err=document.getElementById('err-to');
+  const toInput=document.getElementById('f-to');
+  if(!to){
+    toInput.classList.add('error');
+    err.style.display='block';
+    toInput.focus();
+    return;
+  }
+  toInput.classList.remove('error');
+  err.style.display='none';
+
+  // Parse destination code
+  const codeMatch=to.match(/\(([A-Z]{3})\)/);
+  const code=codeMatch?codeMatch[1]:to.substring(0,3).toUpperCase();
+  const city=to.replace(/\s*\([^)]+\)/,'');
+
+  // Update results page
+  document.getElementById('results-title').textContent=(from||'Kigali')+' → '+city;
+  const dateVal=document.getElementById('f-depart').value;
+  const pax=document.getElementById('f-pax').value;
+  document.getElementById('results-meta').textContent=formatDate(dateVal)+' · '+pax;
+  ['1','2','3','4'].forEach(n=>{document.getElementById('r-dest-code-'+n).textContent=code});
+
+  // Set prices based on destination
+  const prices={LHR:['1,240,000','980,000','1,380,000','870,000'],DXB:['780,000','620,000','840,000','590,000'],NBO:['210,000','180,000','240,000','160,000'],BRU:['1,090,000','920,000','1,200,000','800,000'],JNB:['480,000','390,000','520,000','350,000'],BOM:['870,000','720,000','950,000','680,000']};
+  const p=prices[code]||['950,000','780,000','1,050,000','710,000'];
+  p.forEach((price,i)=>{document.getElementById('r-price-'+(i+1)).textContent='RWF '+price});
+
+  document.getElementById('c-route').textContent=(from||'Kigali (KGL)')+' → '+to;
+  document.getElementById('c-total').textContent='RWF '+p[0];
+  showPage('results');
+}
+
+function formatDate(d){
+  if(!d)return '';
+  const [y,m,day]=d.split('-');
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return parseInt(day)+' '+months[parseInt(m)-1]+' '+y;
+}
+
+function showConfirm(){showPage('confirm')}
+</script>
+</body>
+</html>

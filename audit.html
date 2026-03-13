@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LunchLabs — RwandAir UX Audit</title>
+  <link rel="stylesheet" href="audit.css" />
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">LunchLabs</div>
+      <div class="nav-meta">RwandAir UX Audit · Ongoing</div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-label">Active Engagement</div>
+      <h1>RwandAir Digital Experience Audit</h1>
+      <p>
+        A live UX audit of <a href="https://www.rwandair.com" target="_blank" rel="noopener">rwandair.com</a>
+        and <a href="https://booking.rwandair.com" target="_blank" rel="noopener">booking.rwandair.com</a> —
+        covering flows, friction points, trust signals, and cross-industry opportunities.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hero-stat-n">24</span><span class="hero-stat-l">Issues Found</span></div>
+        <div class="hero-stat"><span class="hero-stat-n">10</span><span class="hero-stat-l">Quick Wins</span></div>
+        <div class="hero-stat"><span class="hero-stat-n">3</span><span class="hero-stat-l">Critical Fixes</span></div>
+        <div class="hero-stat"><span class="hero-stat-n">2</span><span class="hero-stat-l">Sites Audited</span></div>
+      </div>
+    </section>
+
+    <!-- CRITICAL ISSUES -->
+    <section class="section">
+      <h2 class="section-title">Critical Issues — Fix Now</h2>
+      <div class="issues">
+
+        <div class="issue issue--critical">
+          <div class="issue-header">
+            <span class="issue-tag tag--critical">Critical</span>
+            <span class="issue-site">rwandair.com + booking</span>
+          </div>
+          <div class="issue-title">Broken UI in production: currency selector shows "Please select a valid state"</div>
+          <div class="issue-body">A JavaScript validation error leaks into the default state of the currency dropdown before any user interaction. Every visitor sees a broken form element on page load.</div>
+          <div class="issue-fix">Fix: Correct the default placeholder value in the select element. Low effort, high visibility.</div>
+        </div>
+
+        <div class="issue issue--critical">
+          <div class="issue-header">
+            <span class="issue-tag tag--critical">Critical</span>
+            <span class="issue-site">booking.rwandair.com</span>
+          </div>
+          <div class="issue-title">Post-payment silence: confirmed bookings show no charge for 24–72hrs with no explanation</div>
+          <div class="issue-body">Users receive a valid e-ticket but no card charge confirmation for days. The site offers no explanation anywhere — not on the confirmation page, not in email, not in the booking FAQ. This is the #1 driver of support calls and negative reviews on Trustpilot and FlyerTalk.</div>
+          <div class="issue-fix">Fix: Add a single sentence to the confirmation screen: "Your payment is being processed and will appear on your statement within 72 hours."</div>
+        </div>
+
+        <div class="issue issue--critical">
+          <div class="issue-header">
+            <span class="issue-tag tag--critical">Legal</span>
+            <span class="issue-site">Both sites</span>
+          </div>
+          <div class="issue-title">GDPR-non-compliant cookie banner — no Reject or Manage option</div>
+          <div class="issue-body">The cookie banner reads "By browsing this website, you accept the use of cookies" with only an Accept button. No Reject or Manage Preferences option exists. Non-compliant for EU/UK markets (Brussels and London are key RwandAir routes).</div>
+          <div class="issue-fix">Fix: Add Reject All and Manage Preferences buttons to the cookie banner.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- QUICK WINS TABLE -->
+    <section class="section">
+      <h2 class="section-title">Prioritised Quick Wins</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Fix</th>
+              <th>Site</th>
+              <th>Effort</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Fix currency selector broken default state</td>
+              <td>Both</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Add inline field-level error messages to booking form</td>
+              <td>Booking</td>
+              <td><span class="pill pill-yellow">Medium</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>GDPR-compliant Reject / Manage Preferences on cookie banner</td>
+              <td>Both</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Add payment delay explanation to booking confirmation screen</td>
+              <td>Booking</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Move award badges (APEX Diamond, Skytrax) to hero / booking widget</td>
+              <td>rwandair.com</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-yellow">Medium</span></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Remove RISE recruitment countdown from homepage hero</td>
+              <td>rwandair.com</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-yellow">Medium</span></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Add WhatsApp support link + phone number to booking confirmation page</td>
+              <td>Booking</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Separate utility tabs (Check-In, Flight Status) from booking tabs</td>
+              <td>rwandair.com</td>
+              <td><span class="pill pill-yellow">Medium</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>Add booking progress indicator (Step 1 of 4) to booking engine</td>
+              <td>Booking</td>
+              <td><span class="pill pill-yellow">Medium</span></td>
+              <td><span class="pill pill-red">High</span></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>Rename "Experience &amp; Info" nav to task-based label; remove staff links from footer</td>
+              <td>rwandair.com</td>
+              <td><span class="pill pill-green">Low</span></td>
+              <td><span class="pill pill-yellow">Medium</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SCOPE CARDS -->
+    <section class="section">
+      <h2 class="section-title">Audit Scope</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>rwandair.com</h3>
+          <p>Marketing site — homepage CTA dilution, nav IA, loyalty visibility, trust signals, cookie compliance, and mobile performance.</p>
+          <div class="card-count">11 issues found</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">✈️</div>
+          <h3>booking.rwandair.com</h3>
+          <p>Booking engine (Amadeus platform) — search friction, payment anxiety, error handling, progress indicators, and post-booking communication.</p>
+          <div class="card-count">9 issues found</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔗</div>
+          <h3>Cross-site</h3>
+          <p>Split-domain trust gaps (rwandair.com → booking → dreammiles.frequentflyer.aero), no live chat in booking flow, post-booking communication silence.</p>
+          <div class="card-count">4 issues found</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DELIVERABLES -->
+    <section class="section">
+      <h2 class="section-title">Deliverables</h2>
+      <div class="deliverables">
+
+        <a href="rwandair-html.html" class="deliverable deliverable--ready">
+          <div class="deliverable-left">
+            <div class="deliverable-icon">📋</div>
+            <div>
+              <div class="deliverable-title">Cross-Industry UX Lessons</div>
+              <div class="deliverable-sub">8 patterns from Airbnb, PayPal, Uber, Apple &amp; others — translated into concrete actions for RwandAir</div>
+            </div>
+          </div>
+          <span class="status status--ready">Ready →</span>
+        </a>
+
+        <div class="deliverable deliverable--progress">
+          <div class="deliverable-left">
+            <div class="deliverable-icon">🔍</div>
+            <div>
+              <div class="deliverable-title">Full Flow Audit — Booking Engine</div>
+              <div class="deliverable-sub">Step-by-step breakdown: search → seat selection → payment → confirmation. Includes Amadeus platform constraint notes.</div>
+            </div>
+          </div>
+          <span class="status status--progress">In Progress</span>
+        </div>
+
+        <div class="deliverable deliverable--pending">
+          <div class="deliverable-left">
+            <div class="deliverable-icon">🗺️</div>
+            <div>
+              <div class="deliverable-title">User Journey Maps</div>
+              <div class="deliverable-sub">Annotated maps for the primary booking path and the cancellation/refund path — with friction heat-mapping</div>
+            </div>
+          </div>
+          <span class="status status--pending">Pending</span>
+        </div>
+
+        <div class="deliverable deliverable--pending">
+          <div class="deliverable-left">
+            <div class="deliverable-icon">⚡</div>
+            <div>
+              <div class="deliverable-title">Quick Wins Report</div>
+              <div class="deliverable-sub">10 zero-backend changes shippable in under 2 weeks, with annotated screenshots and implementation guidance</div>
+            </div>
+          </div>
+          <span class="status status--pending">Pending</span>
+        </div>
+
+        <div class="deliverable deliverable--pending">
+          <div class="deliverable-left">
+            <div class="deliverable-icon">📊</div>
+            <div>
+              <div class="deliverable-title">Final Audit Report</div>
+              <div class="deliverable-sub">All 24 findings with severity ratings, screenshots, root cause analysis, and a prioritised roadmap</div>
+            </div>
+          </div>
+          <span class="status status--pending">Pending</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOCUS AREAS -->
+    <section class="section">
+      <h2 class="section-title">Key Focus Areas</h2>
+      <div class="focus-grid">
+        <div class="focus-item">
+          <span class="focus-num">01</span>
+          <div>
+            <strong>Payment anxiety &amp; trust signals</strong>
+            <p>No security badges at checkout. Fees hidden until the final step. Charge delay unexplained. #1 driver of negative reviews.</p>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-num">02</span>
+          <div>
+            <strong>Booking widget decision paralysis</strong>
+            <p>10+ tabs at equal visual weight mix booking actions with utility tools (Check-In, Flight Status). Needs hierarchy.</p>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-num">03</span>
+          <div>
+            <strong>Error messages that teach, not punish</strong>
+            <p>Generic "Please correct above error(s)" used across all failure states. No field-level guidance on what went wrong.</p>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-num">04</span>
+          <div>
+            <strong>DreamMiles loyalty visibility</strong>
+            <p>Loyalty portal routes to a third-party domain (dreammiles.frequentflyer.aero) without warning. No balance shown in booking flow.</p>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-num">05</span>
+          <div>
+            <strong>Post-booking communication</strong>
+            <p>No proactive delay alerts, no baggage tracking, no WhatsApp support. Users discover changes only at check-in.</p>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-num">06</span>
+          <div>
+            <strong>Mobile &amp; low-bandwidth UX</strong>
+            <p>Two GTM containers, inline CSS/JS, and no effective lazy-loading on the destination grid. Critical for African mobile-first users.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>LunchLabs · RwandAir UX Audit · 2026 · Data sourced from live site analysis, Trustpilot, FlyerTalk, and ComplaintsBoard</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

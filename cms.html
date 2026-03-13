@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RwandAir — Content Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+  <style>
+    .cms-content-type-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .cms-type-card { background:#fff; border:1.5px solid var(--gray-200); border-radius:var(--radius); padding:16px; cursor:pointer; transition:all 0.15s; text-align:center; }
+    .cms-type-card:hover { border-color:var(--blue); box-shadow:0 4px 12px rgba(0,82,155,0.1); }
+    .cms-type-card.active { border-color:var(--blue); background:var(--blue); color:#fff; }
+    .cms-type-card .icon { font-size:24px; display:block; margin-bottom:6px; }
+    .cms-type-card .label { font-size:13px; font-weight:700; }
+    .cms-type-card .count { font-size:11px; opacity:0.7; }
+    .cms-editor { background:#fff; border-radius:var(--radius); padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.08); margin-bottom:16px; }
+    .cms-editor h3 { margin-bottom:16px; }
+    .cms-editor .form-row { display:flex; gap:12px; margin-bottom:12px; }
+    .cms-editor input, .cms-editor select, .cms-editor textarea {
+      flex:1; padding:8px 12px; border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); font-size:13px; font-family:inherit;
+    }
+    .cms-editor textarea { min-height:100px; resize:vertical; }
+    .cms-actions { display:flex; gap:8px; margin-top:12px; }
+    .cms-item-list { display:flex; flex-direction:column; gap:8px; }
+    .cms-item {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:12px 16px;
+    }
+    .cms-item:hover { background:#f8fafc; }
+    .cms-item .title { font-weight:700; font-size:14px; }
+    .cms-item .meta { font-size:12px; color:var(--gray); }
+    .cms-item-actions { display:flex; gap:6px; }
+    .cms-search { margin-bottom:16px; }
+    .cms-search input { width:100%; padding:10px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius-sm); font-size:14px; font-family:inherit; }
+  </style>
+</head>
+<body>
+  <!-- Login Screen (reuses admin login) -->
+  <div class="admin-login" id="cmsLogin">
+    <div class="admin-login-card">
+      <div class="admin-logo">✈ RwandAir</div>
+      <h1>Content Management</h1>
+      <p>Sign in with admin credentials</p>
+      <div class="admin-form-group">
+        <label>Email</label>
+        <input type="email" id="cmsEmail" value="admin@rwandair.com"/>
+      </div>
+      <div class="admin-form-group">
+        <label>Password</label>
+        <input type="password" id="cmsPassword" value="admin123"/>
+      </div>
+      <button class="admin-btn-primary" onclick="cmsLogin()">Sign In</button>
+      <p class="admin-login-error hidden" id="cmsLoginError"></p>
+      <p class="admin-login-hint">Demo: admin@rwandair.com / admin123</p>
+    </div>
+  </div>
+
+  <!-- CMS Shell -->
+  <div class="admin-shell hidden" id="cmsShell">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <span class="admin-sidebar-logo">✈ RwandAir</span>
+        <span class="admin-sidebar-label">CMS</span>
+      </div>
+      <nav class="admin-nav">
+        <a class="admin-nav-item active" data-type="text" onclick="selectType('text')"><span class="admin-nav-icon">📝</span> Text Content</a>
+        <a class="admin-nav-item" data-type="banners" onclick="selectType('banners')"><span class="admin-nav-icon">🖼</span> Banners</a>
+        <a class="admin-nav-item" data-type="menus" onclick="selectType('menus')"><span class="admin-nav-icon">📑</span> Menus</a>
+        <a class="admin-nav-item" data-type="careers" onclick="selectType('careers')"><span class="admin-nav-icon">💼</span> Careers</a>
+        <a class="admin-nav-item" data-type="faqs" onclick="selectType('faqs')"><span class="admin-nav-icon">❓</span> FAQs</a>
+        <a class="admin-nav-item" data-type="offices" onclick="selectType('offices')"><span class="admin-nav-icon">🏢</span> Offices</a>
+        <a class="admin-nav-item" data-type="payment-methods" onclick="selectType('payment-methods')"><span class="admin-nav-icon">💳</span> Payment Methods</a>
+        <a class="admin-nav-item" data-type="fare-matrix" onclick="selectType('fare-matrix')"><span class="admin-nav-icon">💰</span> Fare Matrix</a>
+        <a class="admin-nav-item" data-type="t2f" onclick="selectType('t2f')"><span class="admin-nav-icon">📋</span> T2F Content</a>
+        <div class="admin-nav-divider"></div>
+        <a class="admin-nav-item" onclick="syncAirports()"><span class="admin-nav-icon">🔄</span> Sync Airports</a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <button class="admin-logout-btn" onclick="cmsLogout()">Logout</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <h2 id="cmsTitle">Text Content</h2>
+        <button class="admin-btn-primary" style="padding:8px 20px;font-size:13px" onclick="showCreateForm()">+ New Item</button>
+      </div>
+
+      <!-- Create/Edit Form -->
+      <div class="cms-editor hidden" id="cmsEditor">
+        <h3 id="cmsEditorTitle">New Item</h3>
+        <div id="cmsFormFields"></div>
+        <div class="cms-actions">
+          <button class="admin-btn-sm primary" onclick="saveItem()">Save</button>
+          <button class="admin-btn-sm" style="background:var(--gray-200)" onclick="hideEditor()">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="cms-search">
+        <input type="text" id="cmsSearch" placeholder="Search..." oninput="debounceSearch()"/>
+      </div>
+
+      <!-- Items List -->
+      <div class="cms-item-list" id="cmsItems"></div>
+    </main>
+  </div>
+
+  <script>
+    var cmsToken = null;
+    var currentType = 'text';
+    var editingId = null;
+    var searchTimer = null;
+
+    function cmsLogin() {
+      var email = document.getElementById('cmsEmail').value;
+      var password = document.getElementById('cmsPassword').value;
+      fetch('/api/admin/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email:email, password:password })
+      }).then(function(r) { return r.json().then(function(d){ return {ok:r.ok, data:d}; }); })
+        .then(function(res) {
+          if (!res.ok) { document.getElementById('cmsLoginError').textContent = res.data.error; document.getElementById('cmsLoginError').classList.remove('hidden'); return; }
+          cmsToken = res.data.token;
+          localStorage.setItem('cmsToken', cmsToken);
+          document.getElementById('cmsLogin').classList.add('hidden');
+          document.getElementById('cmsShell').classList.remove('hidden');
+          loadItems();
+        });
+    }
+    function cmsLogout() {
+      cmsToken = null; localStorage.removeItem('cmsToken');
+      document.getElementById('cmsShell').classList.add('hidden');
+      document.getElementById('cmsLogin').classList.remove('hidden');
+    }
+
+    function selectType(type) {
+      currentType = type;
+      document.querySelectorAll('.admin-nav-item').forEach(function(el) {
+        el.classList.toggle('active', el.getAttribute('data-type') === type);
+      });
+      var titles = { text:'Text Content', banners:'Banners', menus:'Menus', careers:'Careers', faqs:'FAQs', offices:'Offices', 'payment-methods':'Payment Methods', 'fare-matrix':'Fare Matrix', t2f:'T2F Content' };
+      document.getElementById('cmsTitle').textContent = titles[type] || type;
+      hideEditor();
+      loadItems();
+    }
+
+    function loadItems(search) {
+      var url = '/api/cms/' + currentType + (search ? '?search=' + encodeURIComponent(search) : '');
+      fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+        renderItems(data.items || []);
+      });
+    }
+
+    function renderItems(items) {
+      var container = document.getElementById('cmsItems');
+      if (!items.length) { container.innerHTML = '<p style="text-align:center;padding:40px;color:var(--gray)">No items found. Click "+ New Item" to create one.</p>'; return; }
+      container.innerHTML = items.map(function(item) {
+        var title = item.title || item.name || item.question || item.label || item.route || item.id;
+        var meta = item.status || item.category || item.section || item.department || item.provider || '';
+        if (item.updatedAt) meta += ' · Updated ' + item.updatedAt;
+        return '<div class="cms-item">' +
+          '<div><div class="title">' + title + '</div><div class="meta">' + meta + '</div></div>' +
+          '<div class="cms-item-actions">' +
+            '<button class="admin-btn-sm primary" onclick="editItem(\'' + item.id + '\')">Edit</button>' +
+            '<button class="admin-btn-sm danger" onclick="deleteItem(\'' + item.id + '\')">Delete</button>' +
+          '</div></div>';
+      }).join('');
+    }
+
+    // Field schemas per type
+    var TYPE_FIELDS = {
+      text: [{ name:'title', label:'Title' }, { name:'section', label:'Section', type:'select', options:['about','travel-info','loyalty','help'] }, { name:'body', label:'Body', type:'textarea' }, { name:'status', label:'Status', type:'select', options:['published','draft'] }],
+      banners: [{ name:'title', label:'Title' }, { name:'imageUrl', label:'Image URL' }, { name:'link', label:'Link' }, { name:'position', label:'Position', type:'select', options:['hero','sidebar','footer'] }, { name:'status', label:'Status', type:'select', options:['active','inactive'] }],
+      menus: [{ name:'label', label:'Label' }, { name:'slug', label:'Slug' }, { name:'position', label:'Position', type:'number' }],
+      careers: [{ name:'title', label:'Title' }, { name:'department', label:'Department' }, { name:'location', label:'Location' }, { name:'type', label:'Type', type:'select', options:['Full-time','Part-time','Contract'] }, { name:'description', label:'Description', type:'textarea' }, { name:'deadline', label:'Deadline', type:'date' }, { name:'status', label:'Status', type:'select', options:['open','closed'] }],
+      faqs: [{ name:'question', label:'Question' }, { name:'answer', label:'Answer', type:'textarea' }, { name:'category', label:'Category', type:'select', options:['Booking','Baggage','Check-in','Loyalty','General'] }, { name:'order', label:'Order', type:'number' }],
+      offices: [{ name:'name', label:'Office Name' }, { name:'address', label:'Address' }, { name:'phone', label:'Phone' }, { name:'email', label:'Email' }, { name:'hours', label:'Hours' }],
+      'payment-methods': [{ name:'name', label:'Name' }, { name:'provider', label:'Provider' }, { name:'status', label:'Status', type:'select', options:['active','inactive'] }, { name:'icon', label:'Icon Emoji' }],
+      'fare-matrix': [{ name:'route', label:'Route (e.g. KGL-NBO)' }, { name:'lite', label:'Lite Price (RWF)', type:'number' }, { name:'classic', label:'Classic Price (RWF)', type:'number' }, { name:'business', label:'Business Price (RWF)', type:'number' }],
+      t2f: [{ name:'title', label:'Title' }, { name:'body', label:'Body', type:'textarea' }, { name:'order', label:'Order', type:'number' }]
+    };
+
+    function showCreateForm() {
+      editingId = null;
+      document.getElementById('cmsEditorTitle').textContent = 'New Item';
+      renderFormFields({});
+      document.getElementById('cmsEditor').classList.remove('hidden');
+    }
+
+    function editItem(id) {
+      fetch('/api/cms/' + currentType + '/' + id)
+        .then(function(r) { return r.json(); })
+        .then(function(item) {
+          editingId = id;
+          document.getElementById('cmsEditorTitle').textContent = 'Edit Item';
+          renderFormFields(item);
+          document.getElementById('cmsEditor').classList.remove('hidden');
+        });
+    }
+
+    function renderFormFields(item) {
+      var fields = TYPE_FIELDS[currentType] || [];
+      var html = '';
+      fields.forEach(function(f) {
+        var val = item[f.name] || '';
+        if (f.type === 'textarea') {
+          html += '<div class="form-row"><textarea id="cms_' + f.name + '" placeholder="' + f.label + '">' + val + '</textarea></div>';
+        } else if (f.type === 'select') {
+          html += '<div class="form-row"><select id="cms_' + f.name + '">' + (f.options||[]).map(function(o) { return '<option' + (val===o?' selected':'') + '>' + o + '</option>'; }).join('') + '</select></div>';
+        } else {
+          html += '<div class="form-row"><input id="cms_' + f.name + '" type="' + (f.type||'text') + '" placeholder="' + f.label + '" value="' + val + '"/></div>';
+        }
+      });
+      document.getElementById('cmsFormFields').innerHTML = html;
+    }
+
+    function saveItem() {
+      var fields = TYPE_FIELDS[currentType] || [];
+      var body = {};
+      fields.forEach(function(f) {
+        var el = document.getElementById('cms_' + f.name);
+        body[f.name] = el ? (f.type === 'number' ? Number(el.value) : el.value) : '';
+      });
+
+      var url = '/api/cms/' + currentType + (editingId ? '/' + editingId : '');
+      var method = editingId ? 'PUT' : 'POST';
+      fetch(url, {
+        method: method, headers: { 'Authorization': 'Bearer ' + cmsToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).then(function() { hideEditor(); loadItems(); });
+    }
+
+    function deleteItem(id) {
+      if (!confirm('Delete this item?')) return;
+      fetch('/api/cms/' + currentType + '/' + id, {
+        method: 'DELETE', headers: { 'Authorization': 'Bearer ' + cmsToken }
+      }).then(function() { loadItems(); });
+    }
+
+    function hideEditor() {
+      document.getElementById('cmsEditor').classList.add('hidden');
+      editingId = null;
+    }
+
+    function debounceSearch() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function() {
+        loadItems(document.getElementById('cmsSearch').value);
+      }, 300);
+    }
+
+    function syncAirports() {
+      fetch('/api/cms/airports/sync', { method:'POST', headers:{ 'Authorization':'Bearer '+cmsToken } })
+        .then(function(r) { return r.json(); })
+        .then(function(d) { alert(d.message || 'Synced!'); });
+    }
+
+    // Auto-login
+    (function() {
+      var saved = localStorage.getItem('cmsToken');
+      if (saved) {
+        cmsToken = saved;
+        fetch('/api/admin/me', { headers:{ 'Authorization':'Bearer '+saved } })
+          .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+          .then(function() {
+            document.getElementById('cmsLogin').classList.add('hidden');
+            document.getElementById('cmsShell').classList.remove('hidden');
+            loadItems();
+          }).catch(function() { localStorage.removeItem('cmsToken'); });
+      }
+    })();
+  </script>
+</body>
+</html>

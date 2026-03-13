@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RwandAir — Cross-Industry UX Lessons</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',sans-serif;background:#f8f9fc;min-height:100vh;padding:24px 16px}
+  .wrap{max-width:820px;margin:0 auto}
+  .header{background:#0f172a;border-radius:16px;padding:28px 32px;color:#fff;margin-bottom:24px}
+  .header-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#94a3b8;margin-bottom:8px}
+  .header-title{font-size:22px;font-weight:700;margin-bottom:6px}
+  .header-sub{font-size:13px;color:#cbd5e1;line-height:1.6;max-width:620px}
+  .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .stat{background:rgba(255,255,255,.08);border-radius:8px;padding:8px 16px;text-align:center}
+  .stat-n{font-size:20px;font-weight:800;color:#e2e8f0}
+  .stat-l{font-size:11px;color:#94a3b8}
+  .grid{display:grid;grid-template-columns:220px 1fr;gap:16px}
+  .sidebar{display:flex;flex-direction:column;gap:8px}
+  .tab{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 14px;text-align:left;cursor:pointer;transition:all .15s;width:100%}
+  .tab.active{background:#0f172a;color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+  .tab-emoji{font-size:18px;margin-bottom:2px}
+  .tab-name{font-size:13px;font-weight:700}
+  .tab-ind{font-size:11px;opacity:.6}
+  .card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #f1f5f9}
+  .card-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .card-emoji{font-size:36px}
+  .badges{display:flex;gap:8px;margin-bottom:4px}
+  .badge{border-radius:20px;padding:2px 10px;font-size:11px;font-weight:600}
+  .card-headline{font-size:18px;font-weight:800;color:#0f172a}
+  .box{border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:16px}
+  .box-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .box-text{font-size:13px;line-height:1.6}
+  .box-problem{background:#fef9ec;border-left:3px solid #f59e0b}
+  .box-problem .box-label{color:#92400e}
+  .box-problem .box-text{color:#78350f}
+  .box-lesson{background:#f0fdf4;border-left:3px solid #22c55e}
+  .box-lesson .box-label{color:#166534}
+  .box-lesson .box-text{color:#15803d}
+  .steal-label{font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .steal-list{display:flex;flex-direction:column;gap:8px}
+  .steal-item{display:flex;gap:10px;align-items:flex-start}
+  .steal-num{min-width:22px;height:22px;background:#0f172a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;margin-top:1px}
+  .steal-text{font-size:13px;color:#334155;line-height:1.6}
+  .footer{background:#0f172a;border-radius:16px;padding:20px 28px;margin-top:20px}
+  .footer-label{font-size:11px;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+  .footer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .footer-card{background:rgba(255,255,255,.05);border-radius:10px;padding:14px}
+  .footer-card-emoji{font-size:20px;margin-bottom:6px}
+  .footer-card-title{font-size:13px;font-weight:700;color:#e2e8f0;margin-bottom:4px}
+  .footer-card-text{font-size:12px;color:#94a3b8;line-height:1.5}
+  @media(max-width:600px){
+    .grid{grid-template-columns:1fr}
+    .sidebar{flex-direction:row;flex-wrap:wrap}
+    .tab{width:auto;flex:1;min-width:90px}
+    .footer-grid{grid-template-columns:1fr}
+    .stats{gap:8px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="header-label">Cross-Industry UX Intelligence</div>
+    <div class="header-title">What RwandAir Can Steal from World-Class Products</div>
+    <div class="header-sub">Eight proven UX patterns from Airbnb, PayPal, Uber, Apple and others — translated into concrete actions for RwandAir's website, all without changing backend infrastructure.</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">8</div><div class="stat-l">Lessons</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">Critical Impact</div></div>
+      <div class="stat"><div class="stat-n">4</div><div class="stat-l">Low Effort Wins</div></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="card" id="detail"></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-label">The Pattern Across All 8 Lessons</div>
+    <div class="footer-grid">
+      <div class="footer-card"><div class="footer-card-emoji">🎯</div><div class="footer-card-title">Reduce friction</div><div class="footer-card-text">Every extra step, field, or ambiguity costs RwandAir a conversion or a customer.</div></div>
+      <div class="footer-card"><div class="footer-card-emoji">📣</div><div class="footer-card-title">Communicate proactively</div><div class="footer-card-text">The #1 complaint across reviews is silence — on delays, errors, and refunds.</div></div>
+      <div class="footer-card"><div class="footer-card-emoji">🤝</div><div class="footer-card-title">Build trust visually</div><div class="footer-card-text">Price transparency, clear errors, and consistent design are trust signals, not nice-to-haves.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const lessons=[{company:"Airbnb",industry:"Travel Marketplace",emoji:"🏡",effort:"Medium",effortColor:"#f59e0b",impact:"High",impactColor:"#3b82f6",headline:"Make search feel like exploration, not a form",problem:"RwandAir's search widget is a cold, static form. Users don't feel inspired to travel.",lesson:"Airbnb turned search into a discovery experience — flexible dates, visual destination cards, and an 'I'm flexible' mode reduced search abandonment dramatically.",steal:["Add a 'Flexible dates' toggle showing cheapest fares across a calendar","Show destination cards with photos + price hints on the homepage","Replace empty 'From / To' fields with suggested popular routes"]},{company:"PayPal",industry:"Fintech",emoji:"💳",effort:"Low",effortColor:"#22c55e",impact:"Critical",impactColor:"#7c3aed",headline:"Eliminate payment anxiety at checkout",problem:"RwandAir's payment page shows no processing feedback, doesn't highlight trusted payment methods, and reveals fees only at the last step.",lesson:"PayPal built trust through real-time feedback, transparent fee display, and a single-screen summary before final confirmation. Their 'Review and Pay' screen reduced drop-off significantly.",steal:["Add a 'Processing — please don't close' spinner with progress %","Show total price (incl. taxes) from the first search results screen","Add a pre-payment summary screen: 'Here's exactly what you're paying for'"]},{company:"Duolingo",industry:"EdTech",emoji:"🦉",effort:"Low",effortColor:"#22c55e",impact:"High",impactColor:"#3b82f6",headline:"Use streaks and progress to drive loyalty engagement",problem:"RwandAir's DreamMiles program is buried, visually disconnected, and gives users no sense of progress or momentum.",lesson:"Duolingo made loyalty addictive through visible progress bars, streak counters, and micro-celebrations. Users check in daily not because they have to, but because it feels rewarding.",steal:["Show a 'Miles to next tier' progress bar on every logged-in page","Add a post-booking celebration: 'You just earned 1,200 miles! 🎉'","Send a monthly 'Your miles story' email with progress visualized"]},{company:"Uber",industry:"Mobility",emoji:"🚗",effort:"Medium",effortColor:"#f59e0b",impact:"Critical",impactColor:"#7c3aed",headline:"Real-time status updates eliminate customer service calls",problem:"RwandAir users flood reviews complaining about no communication on delays, cancellations, and baggage — all handled via calls to overloaded agents.",lesson:"Uber replaced all 'where is my ride?' calls with a real-time map and push notifications. Their support volume dropped ~25% after launch. The key: proactive beats reactive.",steal:["Add a flight status tracker page users can bookmark per booking","Send automatic WhatsApp/SMS/email alerts for gate changes and delays","Show a 'Baggage on its way' tracker post-landing (even basic status)"]},{company:"Booking.com",industry:"Travel OTA",emoji:"🏨",effort:"Low",effortColor:"#22c55e",impact:"High",impactColor:"#3b82f6",headline:"Urgency and social proof convert hesitant browsers",problem:"RwandAir's flight results page shows no context — no popularity signals, no urgency cues, no peer validation.",lesson:"Booking.com pioneered ethical urgency ('Only 2 rooms left!', '12 people looking at this') and social proof to convert browsers into bookers. When used honestly, these increase conversion 15–30%.",steal:["Show 'X seats left at this price' on flight results (if data available)","Add 'Most popular route this week' or 'Trending destination' labels","Display real traveler counts: 'Over 4,000 passengers flew this route last month'"]},{company:"Apple",industry:"Consumer Tech",emoji:"🍎",effort:"Medium",effortColor:"#f59e0b",impact:"High",impactColor:"#3b82f6",headline:"One task per screen. No cognitive overload.",problem:"RwandAir's homepage tries to do 15 things at once: sell flights, promote loyalty, advertise holidays, recruit graduates, push eSIMs — all on the same screen.",lesson:"Apple's design philosophy is ruthless focus. Every screen has one job. Their checkout (Apple Pay) is famously one tap. The result: less friction = more completions.",steal:["Redesign homepage with ONE primary CTA above the fold: 'Search Flights'","Move non-booking content (loyalty, holidays, cargo) to secondary pages","Reduce the booking flow to the fewest possible screens and inputs"]},{company:"WhatsApp",industry:"Messaging",emoji:"💬",effort:"Low",effortColor:"#22c55e",impact:"Critical",impactColor:"#7c3aed",headline:"Meet users where they already are — don't make them call",problem:"Users report that contacting RwandAir requires calling Kigali HQ. Emails go unanswered. There is no chat support on the website or booking engine.",lesson:"WhatsApp Business and tools like Intercom showed that a simple chat widget with fast responses (or a chatbot for common queries) can resolve 60–70% of support volume without human agents.",steal:["Add a WhatsApp Business button — especially for African market users","Deploy a basic AI chatbot for top 10 queries (refund status, baggage, check-in)","Add live chat within the booking engine specifically (highest-stress moment)"]},{company:"Stripe",industry:"Developer / Fintech",emoji:"⚡",effort:"Low",effortColor:"#22c55e",impact:"High",impactColor:"#3b82f6",headline:"Error messages should teach, not punish",problem:"RwandAir's forms show generic errors ('Please correct above error') with no guidance on what went wrong or how to fix it.",lesson:"Stripe is famous for the best error messages in tech — specific, friendly, and actionable. 'Your card's expiry year is in the past' vs. 'Invalid card.' One helps; one frustrates.",steal:["Rewrite every form error to specify the field and suggest the fix","Add inline validation (green check / red X) as users type, not after submit","On the name field: 'Make sure this matches your passport exactly'"]}];
+
+let active=0;
+
+function renderSidebar(){
+  const sb=document.getElementById('sidebar');
+  sb.innerHTML=lessons.map((l,i)=>`
+    <button class="tab${i===active?' active':''}" onclick="select(${i})">
+      <div class="tab-emoji">${l.emoji}</div>
+      <div class="tab-name">${l.company}</div>
+      <div class="tab-ind">${l.industry}</div>
+    </button>`).join('');
+}
+
+function renderDetail(){
+  const l=lessons[active];
+  document.getElementById('detail').innerHTML=`
+    <div class="card-top">
+      <div class="card-emoji">${l.emoji}</div>
+      <div>
+        <div class="badges">
+          <span class="badge" style="background:${l.effortColor}22;color:${l.effortColor}">${l.effort} Effort</span>
+          <span class="badge" style="background:${l.impactColor}22;color:${l.impactColor}">${l.impact} Impact</span>
+        </div>
+        <div class="card-headline">${l.headline}</div>
+      </div>
+    </div>
+    <div class="box box-problem">
+      <div class="box-label">RwandAir Problem</div>
+      <div class="box-text">${l.problem}</div>
+    </div>
+    <div class="box box-lesson">
+      <div class="box-label">What ${l.company} Proved</div>
+      <div class="box-text">${l.lesson}</div>
+    </div>
+    <div class="steal-label">✂️ Steal These 3 Ideas</div>
+    <div class="steal-list">${l.steal.map((s,i)=>`
+      <div class="steal-item">
+        <div class="steal-num">${i+1}</div>
+        <div class="steal-text">${s}</div>
+      </div>`).join('')}
+    </div>`;
+}
+
+function select(i){active=i;renderSidebar();renderDetail();}
+renderSidebar();renderDetail();
+</script>
+</body>
+</html>

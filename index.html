@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5BW2QJG');</script>
+  <!-- End Google Tag Manager -->
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RwandAir — Book Flights, Fly the Dream of Africa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5BW2QJG"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- ============ PERSISTENT TOP BAR ============ -->
+  <nav class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-logo" onclick="navigateTo('home')">
+        <img src="https://booking.rwandair.com/_next/static/media/header-logo.365a7f99.svg" alt="RwandAir — Fly the Dream of Africa" class="logo-img"/>
+      </div>
+
+      <div class="topbar-nav" id="topbar-nav">
+        <a href="#" class="nav-link active" onclick="navigateTo('home')">Book</a>
+        <a href="#" class="nav-link" onclick="navigateTo('destinations')">Destinations</a>
+        <a href="#" class="nav-link" onclick="navigateTo('travelinfo')">Travel Info</a>
+        <a href="#" class="nav-link" onclick="navigateTo('loyalty')">Loyalty</a>
+        <a href="#" class="nav-link" onclick="navigateTo('help')">Help</a>
+      </div>
+
+      <div class="topbar-actions">
+        <!-- Combined settings dropdown -->
+        <div class="topbar-dropdown" id="settingsDropdown">
+          <button class="topbar-setting" onclick="toggleTopbarDrop('settingsDropdown')" title="Currency, Country & Language">
+            <span class="setting-label" id="currencyLabel">RF RWF</span>
+            <span class="setting-divider">|</span>
+            <span class="setting-flag" id="regionFlag">🇷🇼</span>
+            <span class="setting-label" id="langLabel">RW-EN</span>
+            <span class="topbar-chevron">▾</span>
+          </button>
+          <div class="topbar-drop-panel topbar-drop-combined" id="settingsPanel">
+            <div class="topbar-drop-section-label">Currency</div>
+            <div class="topbar-drop-item active" data-group="currency" data-val="RWF" onclick="pickCurrency('RWF')">RF&ensp;RWF — Rwandan Franc</div>
+            <div class="topbar-drop-item" data-group="currency" data-val="USD" onclick="pickCurrency('USD')">$&ensp;USD — US Dollar</div>
+            <div class="topbar-drop-item" data-group="currency" data-val="EUR" onclick="pickCurrency('EUR')">€&ensp;EUR — Euro</div>
+            <div class="topbar-drop-item" data-group="currency" data-val="GBP" onclick="pickCurrency('GBP')">£&ensp;GBP — British Pound</div>
+            <div class="topbar-drop-item" data-group="currency" data-val="KES" onclick="pickCurrency('KES')">KSh&ensp;KES — Kenyan Shilling</div>
+            <div class="topbar-drop-item" data-group="currency" data-val="AED" onclick="pickCurrency('AED')">د.إ&ensp;AED — UAE Dirham</div>
+            <div class="topbar-drop-section-label" style="margin-top:4px">Country</div>
+            <div class="topbar-drop-select-wrap">
+              <select id="countryDropSelect" class="topbar-drop-select" onchange="pickCountryFromSelect(this)">
+                <option value="RW" data-flag="🇷🇼" selected>🇷🇼  Rwanda</option>
+                <option value="KE" data-flag="🇰🇪">🇰🇪  Kenya</option>
+                <option value="UG" data-flag="🇺🇬">🇺🇬  Uganda</option>
+                <option value="TZ" data-flag="🇹🇿">🇹🇿  Tanzania</option>
+                <option value="CD" data-flag="🇨🇩">🇨🇩  DR Congo</option>
+                <option value="ZA" data-flag="🇿🇦">🇿🇦  South Africa</option>
+                <option value="NG" data-flag="🇳🇬">🇳🇬  Nigeria</option>
+                <option value="GB" data-flag="🇬🇧">🇬🇧  United Kingdom</option>
+                <option value="AE" data-flag="🇦🇪">🇦🇪  UAE</option>
+                <option value="US" data-flag="🇺🇸">🇺🇸  United States</option>
+                <option value="IN" data-flag="🇮🇳">🇮🇳  India</option>
+                <option value="FR" data-flag="🇫🇷">🇫🇷  France</option>
+                <option value="BE" data-flag="🇧🇪">🇧🇪  Belgium</option>
+              </select>
+            </div>
+            <div class="topbar-drop-section-label" style="margin-top:4px">Language</div>
+            <div class="topbar-drop-item active" data-group="language" data-val="EN" onclick="pickLanguage('EN')">EN — English</div>
+            <div class="topbar-drop-item" data-group="language" data-val="FR" onclick="pickLanguage('FR')">FR — French</div>
+            <div class="topbar-drop-item" data-group="language" data-val="CN" onclick="pickLanguage('CN')">CN — Chinese</div>
+            <div class="topbar-drop-apply-wrap">
+              <button class="topbar-drop-apply" onclick="applyDropdownSettings()">Apply</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-outline-sm" onclick="navigateTo('manage')">Manage Booking</button>
+        <button class="btn-outline-sm" onclick="navigateTo('checkin')">Check-in</button>
+        <button class="btn-icon login-btn" id="loginBtn" onclick="toggleLoginModal()" title="Log in">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="login-text" id="loginText">Log in</span>
+        </button>
+        <button class="btn-icon cart-btn" id="cartBtn" onclick="toggleCart()" title="My Cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          <span class="cart-badge hidden" id="cartBadge">0</span>
+        </button>
+        <button class="btn-icon" id="menuToggle" onclick="toggleMobileMenu()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#" onclick="navigateTo('home');toggleMobileMenu()">Book a Flight</a>
+      <a href="#" onclick="navigateTo('manage');toggleMobileMenu()">Manage Booking</a>
+      <a href="#" onclick="navigateTo('checkin');toggleMobileMenu()">Check-in</a>
+      <a href="#" onclick="navigateTo('status');toggleMobileMenu()">Flight Status</a>
+      <hr/>
+      <a href="#" onclick="navigateTo('destinations');toggleMobileMenu()">Destinations</a>
+      <a href="#" onclick="navigateTo('travelinfo');toggleMobileMenu()">Travel Info</a>
+      <a href="#" onclick="navigateTo('loyalty');toggleMobileMenu()">Loyalty</a>
+      <a href="#" onclick="navigateTo('help');toggleMobileMenu()">Help & Contact</a>
+    </div>
+  </nav>
+
+  <!-- ============ PAGE: HOME ============ -->
+  <section class="page active" id="page-home">
+    <!-- Hero with Search -->
+    <div class="hero">
+      <div class="hero-bg" style="background: url('https://booking.rwandair.com/_next/static/media/ZANZIBAR.5a4bc6ab.png') center top / cover no-repeat, linear-gradient(135deg, #00529b 0%, #003d75 50%, #0f172a 100%);">
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-tagline">Fly the Dream of Africa</p>
+        <h1 class="hero-title">Where will you go next?</h1>
+
+        <!-- Natural Language Flight Search -->
+        <div class="nlf-card" id="nlfCard">
+          <div class="nlf-label">Fast Track Booking</div>
+          <div class="nlf-trip-toggle">
+            <button class="nlf-trip-btn active" data-trip="roundtrip">Round Trip</button>
+            <button class="nlf-trip-btn" data-trip="oneway">One Way</button>
+            <button class="nlf-trip-btn" data-trip="multicity">Multi-City</button>
+          </div>
+          <!-- Multi-City legs (hidden by default) -->
+          <div class="nlf-multicity hidden" id="nlfMulticity">
+            <div id="nlfMulticityLegs"></div>
+            <a href="#" class="multicity-add-btn" id="nlfAddLeg" onclick="addNlfMulticityLeg(event)">+ Add another flight</a>
+            <div class="nlf-multicity-pax">
+              for
+              <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfMcPax" contenteditable="true" data-placeholder="passengers" tabindex="20">1 adult</span></span>
+              in
+              <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfMcClass" contenteditable="true" data-placeholder="class" tabindex="21">Economy</span></span>
+            </div>
+          </div>
+          <!-- Standard single-route sentence -->
+          <p class="nlf-sentence" id="nlfSentence">I'd like to fly from
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapFrom" contenteditable="true" role="combobox" data-placeholder="type city" tabindex="1">Kigali (KGL)</span></span>
+            to
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapTo" contenteditable="true" role="combobox" data-placeholder="type destination" tabindex="2">type destination</span></span>
+            on
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapDepart" contenteditable="true" data-placeholder="type date" tabindex="3">type date</span></span><span id="nlfReturnClause">, returning
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--empty" id="nlfGapReturn" contenteditable="true" data-placeholder="type date" tabindex="4">type date</span></span></span>, for
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapPax" contenteditable="true" data-placeholder="type passengers" tabindex="5">1 adult</span></span>
+            in
+            <span class="nlf-gap-wrapper"><span class="nlf-gap nlf-gap--filled" id="nlfGapClass" contenteditable="true" data-placeholder="type class" tabindex="6">Economy</span></span>.
+          </p>
+          <input type="hidden" id="searchFrom" value="Kigali (KGL)"/>
+          <input type="hidden" id="searchTo" value=""/>
+          <input type="hidden" id="searchDepart" value=""/>
+          <input type="hidden" id="searchReturn" value=""/>
+          <input type="hidden" id="searchPax" value="1 adult"/>
+          <input type="hidden" id="searchClass" value="Economy"/>
+          <div class="nlf-actions">
+            <a href="#" class="nlf-advanced-link" onclick="toggleAdvancedSearch(event)">Classic Booking</a>
+            <button class="btn-primary btn-lg" onclick="searchFlights()" tabindex="7">
+              Search Flights
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Classic search form (hidden, accessible via Classic search link) -->
+        <div class="search-card hidden" id="searchCard">
+          <div class="nlf-back-link-wrapper">
+            <a href="#" onclick="toggleAdvancedSearch(event)">&larr; Back to Fast Track</a>
+          </div>
+          <div class="search-tabs">
+            <button class="search-tab active" data-tab="roundtrip">Round Trip</button>
+            <button class="search-tab" data-tab="oneway">One Way</button>
+            <button class="search-tab" data-tab="multicity">Multi-City</button>
+          </div>
+          <div class="search-form">
+            <!-- Standard fields (Round Trip / One Way) -->
+            <div id="classicStdFields">
+              <div class="search-row">
+                <div class="search-field search-field-route">
+                  <label>From</label>
+                  <input type="text" id="advSearchFrom" placeholder="City or airport" value="Kigali (KGL)" autocomplete="off"/>
+                </div>
+                <button class="swap-btn" onclick="swapCities()" title="Swap cities">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+                </button>
+                <div class="search-field search-field-route">
+                  <label>To</label>
+                  <input type="text" id="advSearchTo" placeholder="City or airport" autocomplete="off"/>
+                </div>
+              </div>
+              <div class="search-row">
+                <div class="search-field">
+                  <label>Depart</label>
+                  <input type="date" id="advSearchDepart"/>
+                </div>
+                <div class="search-field" id="returnField">
+                  <label>Return</label>
+                  <input type="date" id="advSearchReturn"/>
+                </div>
+                <div class="search-field search-field-pax">
+                  <label>Passengers</label>
+                  <select id="advSearchPax">
+                    <option>1 Adult</option><option>2 Adults</option><option>3 Adults</option>
+                    <option>1 Adult, 1 Child</option><option>2 Adults, 1 Child</option><option>2 Adults, 2 Children</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Multi-City fields (hidden by default) -->
+            <div id="classicMcFields" class="hidden">
+              <div id="classicMcLegs"></div>
+              <a href="#" class="multicity-add-btn" onclick="addClassicMulticityLeg(event)">+ Add another flight</a>
+              <div class="search-row" style="margin-top:12px">
+                <div class="search-field search-field-pax">
+                  <label>Passengers</label>
+                  <select id="advMcPax">
+                    <option>1 Adult</option><option>2 Adults</option><option>3 Adults</option>
+                    <option>1 Adult, 1 Child</option><option>2 Adults, 1 Child</option><option>2 Adults, 2 Children</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="search-row search-row-actions">
+              <label class="toggle-label">
+                <input type="checkbox" id="flexDates"/>
+                <span class="toggle-text">Flexible dates (show lowest fares)</span>
+              </label>
+              <button class="btn-primary btn-lg" onclick="searchFlights()">
+                Search Flights
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="container">
+      <div class="quick-actions">
+        <div class="quick-action" onclick="navigateTo('status')">
+          <div class="qa-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <span>Flight Status</span>
+        </div>
+        <div class="quick-action" onclick="navigateTo('checkin')">
+          <div class="qa-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+          </div>
+          <span>Online Check-in</span>
+        </div>
+        <div class="quick-action" onclick="navigateTo('manage')">
+          <div class="qa-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          </div>
+          <span>Manage Booking</span>
+        </div>
+        <div class="quick-action">
+          <div class="qa-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27,6.96 12,12.01 20.73,6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <span>Cargo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular Destinations -->
+    <div class="container section">
+      <div class="section-header">
+        <h2>Popular Destinations</h2>
+        <p class="section-sub">Discover where RwandAir flies from Kigali</p>
+      </div>
+      <div class="dest-grid">
+        <div class="dest-card" onclick="selectDestination('Nairobi')">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/NBO.jpg') center/cover no-repeat;">
+            <span class="dest-tag">Trending</span>
+          </div>
+          <div class="dest-info">
+            <h3>Nairobi</h3>
+            <p class="dest-route">KGL → NBO</p>
+            <p class="dest-price">From <strong class="dyn-price" data-rwf="246575"></strong> return</p>
+            <p class="dest-meta">4,200+ passengers last month</p>
+          </div>
+        </div>
+        <div class="dest-card" onclick="selectDestination('Dubai')">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/DXB.jpg') center/cover no-repeat;">
+            <span class="dest-tag">Popular</span>
+          </div>
+          <div class="dest-info">
+            <h3>Dubai</h3>
+            <p class="dest-route">KGL → DXB</p>
+            <p class="dest-price">From <strong class="dyn-price" data-rwf="575342"></strong> return</p>
+            <p class="dest-meta">3,800+ passengers last month</p>
+          </div>
+        </div>
+        <div class="dest-card" onclick="selectDestination('Lagos')">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/LOS.jpg') center/cover no-repeat;">
+          </div>
+          <div class="dest-info">
+            <h3>Lagos</h3>
+            <p class="dest-route">KGL → LOS</p>
+            <p class="dest-price">From <strong class="dyn-price" data-rwf="465753"></strong> return</p>
+            <p class="dest-meta">2,100+ passengers last month</p>
+          </div>
+        </div>
+        <div class="dest-card" onclick="selectDestination('London')">
+          <div class="dest-img" style="background: url('https://www.rwandair.com/dist/phoenix/V1.0/img/LHR.jpg') center/cover no-repeat;">
+          </div>
+          <div class="dest-info">
+            <h3>London</h3>
+            <p class="dest-route">KGL → LHR</p>
+            <p class="dest-price">From <strong class="dyn-price" data-rwf="849315"></strong> return</p>
+            <p class="dest-meta">1,500+ passengers last month</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+      <div class="container">
+        <div class="trust-items">
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <strong>Secure Booking</strong>
+              <span>256-bit SSL encrypted</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div>
+              <strong>Award-Winning</strong>
+              <span>Best Airline in Central Africa</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <strong>IATA Certified</strong>
+              <span>Global safety standards</span>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div>
+              <strong>Flexible Payment</strong>
+              <span>Cards, Mobile Money & more</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <h4>Fly With Us</h4>
+            <a href="#">Book a Flight</a>
+            <a href="#">Destinations</a>
+            <a href="#">Flight Schedule</a>
+            <a href="#">Fleet</a>
+          </div>
+          <div>
+            <h4>Travel Info</h4>
+            <a href="#">Baggage</a>
+            <a href="#">Special Assistance</a>
+            <a href="#">Travel Documents</a>
+            <a href="#">Airport Info</a>
+          </div>
+          <div>
+            <h4>Support</h4>
+            <a href="#">Contact Us</a>
+            <a href="#">FAQs</a>
+            <a href="#">Feedback</a>
+            <a href="#">Refunds</a>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <a href="#" onclick="navigateTo('about'); return false;">About RwandAir</a>
+            <a href="#">Careers</a>
+            <a href="#">News</a>
+            <a href="#">Partners</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 RwandAir Ltd. All rights reserved.</p>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Cookie Settings</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ PAGE: RESULTS ============ -->
+  <section class="page" id="page-results">
+    <div class="container">
+      <!-- Search Summary -->
+      <div class="results-summary">
+        <button class="btn-back" onclick="navigateTo('home')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Modify Search
+        </button>
+        <div class="route-summary">
+          <h2><span id="resultFrom">Kigali (KGL)</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> <span id="resultTo">Nairobi (NBO)</span></h2>
+          <p id="resultDate">Wed, 26 Mar 2025 &middot; 1 Adult &middot; Round Trip</p>
+        </div>
+      </div>
+
+      <!-- Date Selection -->
+      <div class="date-selection-bar" id="dateSelectionBar">
+        <button class="date-nav" onclick="shiftDateCarousel(-1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="date-carousel-track" id="dateCarousel"></div>
+        <button class="date-nav" onclick="shiftDateCarousel(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="date-nav cal-toggle" onclick="toggleResultsCalendar()" title="Calendar view" id="calToggleBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </button>
+      </div>
+      <div class="results-calendar hidden" id="resultsCalendar"></div>
+
+      <!-- Flight Results -->
+      <div class="flight-results" id="flightResults">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: BOOKING ============ -->
+  <section class="page" id="page-booking">
+    <div class="container">
+      <!-- Progress Steps -->
+      <div class="booking-progress">
+        <div class="progress-step active" data-step="1" onclick="goToCompletedStep(1)">
+          <div class="step-circle">1</div>
+          <span>Passengers</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2" onclick="goToCompletedStep(2)">
+          <div class="step-circle">2</div>
+          <span>Extras</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3" onclick="goToCompletedStep(3)">
+          <div class="step-circle">3</div>
+          <span>Payment</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="4">
+          <div class="step-circle">4</div>
+          <span>Confirmation</span>
+        </div>
+      </div>
+
+      <div class="booking-layout">
+        <!-- Step 1: Passenger Info -->
+        <div class="booking-main" id="bookingStep1">
+          <div class="card">
+            <h2>Passenger Details</h2>
+            <p class="card-sub">Please enter details exactly as they appear on your passport or ID.</p>
+            <p class="required-legend"><span class="required">*</span> Required field</p>
+
+            <div class="alert alert-info">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Name must match your travel document exactly. Corrections after booking may incur a fee.
+            </div>
+
+            <form id="passengerForm" onsubmit="return false;">
+              <h3 class="form-section-title">Adult 1 (Primary Contact)</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="paxTitle">Title <span class="required">*</span></label>
+                  <select id="paxTitle" required>
+                    <option value="">Select</option>
+                    <option>Mr</option>
+                    <option>Mrs</option>
+                    <option>Ms</option>
+                    <option>Dr</option>
+                  </select>
+                </div>
+                <div class="form-group form-group-wide">
+                  <label for="paxFirst">First Name <span class="required">*</span></label>
+                  <input type="text" id="paxFirst" placeholder="As shown on passport" required/>
+                  <span class="field-validation" id="valFirst"></span>
+                </div>
+                <div class="form-group">
+                  <label for="paxMiddle">Middle Name</label>
+                  <input type="text" id="paxMiddle" placeholder="Optional"/>
+                </div>
+                <div class="form-group form-group-wide">
+                  <label for="paxLast">Last Name <span class="required">*</span></label>
+                  <input type="text" id="paxLast" placeholder="As shown on passport" required/>
+                  <span class="field-validation" id="valLast"></span>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="paxDob">Date of Birth <span class="required">*</span></label>
+                  <input type="date" id="paxDob" required/>
+                </div>
+                <div class="form-group">
+                  <label for="paxNat">Nationality <span class="required">*</span></label>
+                  <select id="paxNat" required>
+                    <option value="">Select country</option>
+                    <optgroup label="East Africa">
+                      <option>Rwanda</option>
+                      <option>Kenya</option>
+                      <option>Uganda</option>
+                      <option>Tanzania</option>
+                      <option>Burundi</option>
+                      <option>DR Congo</option>
+                      <option>Ethiopia</option>
+                    </optgroup>
+                    <optgroup label="Africa">
+                      <option>Cameroon</option>
+                      <option>Ghana</option>
+                      <option>Nigeria</option>
+                      <option>South Africa</option>
+                      <option>Zambia</option>
+                      <option>Zimbabwe</option>
+                    </optgroup>
+                    <optgroup label="International">
+                      <option>Belgium</option>
+                      <option>China</option>
+                      <option>France</option>
+                      <option>Germany</option>
+                      <option>India</option>
+                      <option>Netherlands</option>
+                      <option>United Arab Emirates</option>
+                      <option>United Kingdom</option>
+                      <option>United States</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="paxPassport">Passport Number <span class="required">*</span></label>
+                  <input type="text" id="paxPassport" placeholder="e.g. AB1234567" required/>
+                </div>
+              </div>
+
+              <h3 class="form-section-title">Contact Information</h3>
+              <div class="form-grid">
+                <div class="form-group form-group-wide">
+                  <label for="paxEmail">Email <span class="required">*</span></label>
+                  <input type="email" id="paxEmail" placeholder="your@email.com" required/>
+                  <span class="field-hint">Booking confirmation will be sent here</span>
+                </div>
+                <div class="form-group">
+                  <label for="paxPhone">Phone <span class="required">*</span></label>
+                  <input type="tel" id="paxPhone" placeholder="+250 7XX XXX XXX" required/>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn-outline" onclick="navigateTo('results')">Back to Flights</button>
+                <button type="button" class="btn-primary btn-lg" onclick="goToStep(2)">
+                  Continue to Extras
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Step 2: Extras -->
+        <div class="booking-main hidden" id="bookingStep2">
+          <div class="card">
+            <h2>Choose Your Extras</h2>
+            <p class="card-sub">Personalize your journey with additional services.</p>
+
+            <!-- Seat Selection -->
+            <div class="extra-section">
+              <div class="extra-header">
+                <div>
+                  <h3>Seat Selection</h3>
+                  <p>Choose your preferred seat</p>
+                </div>
+                <span class="extra-price">From <span class="dyn-price" data-rwf="6849"></span></span>
+              </div>
+              <div class="seat-map">
+                <div class="seat-legend">
+                  <span class="seat-leg-item"><span class="seat-sample seat-available"></span> Available <span class="dyn-price" data-rwf="6849"></span></span>
+                  <span class="seat-leg-item"><span class="seat-sample seat-selected"></span> Selected</span>
+                  <span class="seat-leg-item"><span class="seat-sample seat-occupied"></span> Occupied</span>
+                  <span class="seat-leg-item"><span class="seat-sample seat-extra"></span> Extra Legroom +<span class="dyn-price" data-rwf="20548"></span></span>
+                </div>
+                <div class="seat-grid" id="seatGrid">
+                  <!-- Generated by JS -->
+                </div>
+                <p class="seat-selected-text" id="seatSelectedText">No seat selected — one will be assigned at check-in</p>
+              </div>
+            </div>
+
+            <!-- Extra Baggage -->
+            <div class="extra-section">
+              <div class="extra-header">
+                <div>
+                  <h3>Extra Baggage</h3>
+                  <p>Your fare includes 7 kg carry-on + 1 x 23 kg checked bag</p>
+                </div>
+              </div>
+              <div class="extra-options">
+                <label class="extra-option">
+                  <input type="radio" name="baggage" value="0" checked/>
+                  <div class="extra-option-content">
+                    <strong>No extra baggage</strong>
+                    <span class="extra-option-price">Included</span>
+                  </div>
+                </label>
+                <label class="extra-option">
+                  <input type="radio" name="baggage" value="30"/>
+                  <div class="extra-option-content">
+                    <strong>+1 bag (23 kg)</strong>
+                    <span class="extra-option-price">+ <span class="dyn-price" data-rwf="41096"></span></span>
+                  </div>
+                </label>
+                <label class="extra-option">
+                  <input type="radio" name="baggage" value="55"/>
+                  <div class="extra-option-content">
+                    <strong>+2 bags (23 kg each)</strong>
+                    <span class="extra-option-price">+ <span class="dyn-price" data-rwf="75342"></span></span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Meal Preference -->
+            <div class="extra-section">
+              <div class="extra-header">
+                <div>
+                  <h3>Meal Preference</h3>
+                  <p>A complimentary meal is included on your flight</p>
+                </div>
+              </div>
+              <div class="extra-options">
+                <label class="extra-option">
+                  <input type="radio" name="meal" value="standard" checked/>
+                  <div class="extra-option-content">
+                    <strong>Standard Meal</strong>
+                    <span class="extra-option-price">Included</span>
+                  </div>
+                </label>
+                <label class="extra-option">
+                  <input type="radio" name="meal" value="vegetarian"/>
+                  <div class="extra-option-content">
+                    <strong>Vegetarian</strong>
+                    <span class="extra-option-price">Included</span>
+                  </div>
+                </label>
+                <label class="extra-option">
+                  <input type="radio" name="meal" value="halal"/>
+                  <div class="extra-option-content">
+                    <strong>Halal</strong>
+                    <span class="extra-option-price">Included</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-outline" onclick="goToStep(1)">Back</button>
+              <button class="btn-primary btn-lg" onclick="goToStep(3)">
+                Continue to Payment
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment -->
+        <div class="booking-main hidden" id="bookingStep3">
+          <div class="card">
+            <h2>Payment</h2>
+            <p class="card-sub">Review your booking and complete payment.</p>
+
+            <!-- Price Breakdown -->
+            <div class="price-breakdown">
+              <h3>Price Summary</h3>
+              <div class="price-row">
+                <span>Base fare (1 Adult, Round Trip)</span>
+                <span class="dyn-price" id="payBaseFare" data-rwf="424658">$310.00</span>
+              </div>
+              <div class="price-row">
+                <span>Taxes & airport fees</span>
+                <span class="dyn-price" id="payTaxes" data-rwf="66438">$48.50</span>
+              </div>
+              <div class="price-row" id="extrasRow" style="display:none">
+                <span>Extras</span>
+                <span id="extrasAmount" class="dyn-price" data-rwf="0">$0.00</span>
+              </div>
+              <div class="price-row price-total">
+                <span>Total</span>
+                <span id="totalPrice" class="dyn-price" data-rwf="491096">$358.50</span>
+              </div>
+              <p class="price-note" id="priceNote">All prices in <span id="priceNoteCurrency">USD</span>. No hidden fees.</p>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+              <h3>Select Payment Method</h3>
+              <div class="payment-tabs">
+                <label class="payment-tab active">
+                  <input type="radio" name="payment" value="mobile" checked/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">📱</span>
+                    <strong>Mobile Money</strong>
+                    <span class="payment-desc">MTN, Airtel Money</span>
+                    <span class="payment-popular">Popular in Rwanda</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="card"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">💳</span>
+                    <strong>Credit/Debit Card</strong>
+                    <span class="payment-desc">Visa, Mastercard, Amex</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="bank"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">🏦</span>
+                    <strong>Bank Transfer</strong>
+                    <span class="payment-desc">Direct bank payment</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="irembo"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">🏛</span>
+                    <strong>Irembo</strong>
+                    <span class="payment-desc">Rwanda Gov Payment</span>
+                    <span class="payment-popular">Rwanda</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="cellulant"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">🌍</span>
+                    <strong>Cellulant</strong>
+                    <span class="payment-desc">Pan-African gateway</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="nigeriapsp"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">🇳🇬</span>
+                    <strong>Nigeria PSP</strong>
+                    <span class="payment-desc">Paystack / Flutterwave</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="iatapay"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">🛫</span>
+                    <strong>IATA Pay</strong>
+                    <span class="payment-desc">IATA payment service</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="wallet"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">👛</span>
+                    <strong>Wallet</strong>
+                    <span class="payment-desc">Use wallet balance</span>
+                    <span class="payment-wallet-badge" id="walletTabBadge" style="display:none"></span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="miles"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">✈</span>
+                    <strong>Pay with Miles</strong>
+                    <span class="payment-desc">Use DreamMiles balance</span>
+                    <span class="payment-miles-badge">DreamMiles</span>
+                  </div>
+                </label>
+                <label class="payment-tab">
+                  <input type="radio" name="payment" value="split"/>
+                  <div class="payment-tab-content">
+                    <span class="payment-icon">🔀</span>
+                    <strong>Split Payment</strong>
+                    <span class="payment-desc">Miles + another method</span>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Miles Balance Banner -->
+              <div class="miles-balance-banner" id="milesBalanceBanner" style="display:none">
+                <div class="miles-balance-info">
+                  <div class="miles-balance-icon">🌟</div>
+                  <div class="miles-balance-details">
+                    <strong>Your DreamMiles Balance: <span id="milesBalance">45,000</span></strong>
+                    <span class="miles-conversion-rate">100 DreamMiles = <span class="dyn-price" data-rwf="1370"></span></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile Money Form -->
+              <div class="payment-form" id="payMobile">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Provider</label>
+                    <select>
+                      <option>MTN Mobile Money</option>
+                      <option>Airtel Money</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+250 7XX XXX XXX"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card Form -->
+              <div class="payment-form" id="payCard" style="display:none">
+                <div class="form-grid">
+                  <div class="form-group" style="grid-column:1/-1">
+                    <label>Card Number</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="text" placeholder="MM/YY" maxlength="5"/>
+                  </div>
+                  <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" placeholder="123" maxlength="4"/>
+                  </div>
+                  <div class="form-group" style="grid-column:1/-1">
+                    <label>Cardholder Name</label>
+                    <input type="text" placeholder="As shown on card"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bank Transfer Form -->
+              <div class="payment-form" id="payBank" style="display:none">
+                <div class="bank-info-card" style="background:var(--sky-light);padding:16px;border-radius:var(--radius);margin-bottom:12px">
+                  <p style="margin:0 0 8px;font-weight:700">Bank Transfer Details</p>
+                  <p style="margin:0;font-size:13px;line-height:1.8">
+                    Bank: <strong>Bank of Kigali</strong><br/>
+                    Account: <strong>0001-2345-6789</strong><br/>
+                    SWIFT: <strong>BKIGRWRW</strong><br/>
+                    Reference: Use your booking reference
+                  </p>
+                </div>
+                <div class="form-group">
+                  <label>Your Bank Name</label>
+                  <input type="text" placeholder="e.g. Bank of Kigali"/>
+                </div>
+              </div>
+
+              <!-- Irembo Form -->
+              <div class="payment-form" id="payIrembo" style="display:none">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+250 7XX XXX XXX"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Irembo Reference (optional)</label>
+                    <input type="text" placeholder="e.g. IRB-123456"/>
+                  </div>
+                </div>
+                <p class="payment-form-note" style="font-size:12px;color:var(--gray);margin-top:8px">You'll receive an Irembo payment prompt on your phone.</p>
+              </div>
+
+              <!-- Cellulant Form -->
+              <div class="payment-form" id="payCellulant" style="display:none">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Country</label>
+                    <select id="cellulantCountry">
+                      <option value="KE">🇰🇪 Kenya</option>
+                      <option value="NG">🇳🇬 Nigeria</option>
+                      <option value="TZ">🇹🇿 Tanzania</option>
+                      <option value="GH">🇬🇭 Ghana</option>
+                      <option value="UG">🇺🇬 Uganda</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+2XX XXX XXX XXX"/>
+                  </div>
+                </div>
+                <p class="payment-form-note" style="font-size:12px;color:var(--gray);margin-top:8px">Payment processed via Cellulant secure gateway.</p>
+              </div>
+
+              <!-- Nigeria PSP Form -->
+              <div class="payment-form" id="payNigeriapsp" style="display:none">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="your@email.com"/>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+234 XXX XXX XXXX"/>
+                  </div>
+                </div>
+                <p class="payment-form-note" style="font-size:12px;color:var(--gray);margin-top:8px">Redirects to Paystack secure payment page.</p>
+              </div>
+
+              <!-- IATA Pay Form -->
+              <div class="payment-form" id="payIatapay" style="display:none">
+                <div class="form-group">
+                  <label>IATA Pay Account Email</label>
+                  <input type="email" placeholder="your@iatapay-account.com"/>
+                </div>
+                <p class="payment-form-note" style="font-size:12px;color:var(--gray);margin-top:8px">Secure instant bank payment via IATA Pay.</p>
+              </div>
+
+              <!-- Wallet Form -->
+              <div class="payment-form" id="payWallet" style="display:none">
+                <div class="wallet-card" id="walletPayCard">
+                  <div class="wallet-balance-display">
+                    <div class="wallet-icon">👛</div>
+                    <div class="wallet-info">
+                      <strong>Wallet Balance</strong>
+                      <span class="wallet-amount" id="walletBalance">RWF 0</span>
+                    </div>
+                  </div>
+                  <div class="wallet-calc">
+                    <div class="wallet-calc-row">
+                      <span>Flight total</span>
+                      <span id="walletFlightTotal" class="dyn-price" data-rwf="491096"></span>
+                    </div>
+                    <div class="wallet-calc-row">
+                      <span>Wallet deduction</span>
+                      <span id="walletDeduction">RWF 0</span>
+                    </div>
+                    <div class="wallet-calc-row wallet-calc-remain">
+                      <span>Remaining to pay</span>
+                      <span id="walletRemainPay">RWF 0</span>
+                    </div>
+                  </div>
+                  <div class="wallet-status" id="walletStatus"></div>
+                  <div class="wallet-topup-method" id="walletTopupMethod" style="display:none">
+                    <label class="form-group-label">Pay remaining with:</label>
+                    <div class="split-method-options">
+                      <label class="split-method-option"><input type="radio" name="walletCashMethod" value="card" checked/><span>💳 Card</span></label>
+                      <label class="split-method-option"><input type="radio" name="walletCashMethod" value="mobile"/><span>📱 Mobile</span></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="wallet-login-prompt" id="walletLoginPrompt" style="display:none">
+                  <p>Please <a href="#" onclick="toggleLoginModal();return false">log in</a> or create an account to use your wallet.</p>
+                </div>
+              </div>
+
+              <!-- Promo Code -->
+              <div class="promo-code-section">
+                <button class="promo-toggle" onclick="togglePromoCode()" id="promoToggle">
+                  🏷 Have a promo code? <span class="topbar-chevron">▾</span>
+                </button>
+                <div class="promo-form hidden" id="promoForm">
+                  <div class="promo-input-row">
+                    <input type="text" id="promoInput" placeholder="Enter promo code" maxlength="20"/>
+                    <button class="btn-outline btn-sm" onclick="applyPromoCode()">Apply</button>
+                  </div>
+                  <div class="promo-result hidden" id="promoResult"></div>
+                  <div class="promo-applied hidden" id="promoApplied">
+                    <span id="promoAppliedText"></span>
+                    <button class="promo-remove" onclick="removePromoCode()">✕</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pay with Miles Form -->
+              <div class="payment-form" id="payMiles" style="display:none">
+                <div class="miles-redemption-card">
+                  <div class="miles-calc">
+                    <div class="miles-calc-row">
+                      <span>Flight total</span>
+                      <span id="milesFlightTotal" class="dyn-price" data-rwf="491096"></span>
+                    </div>
+                    <div class="miles-calc-row">
+                      <span>Miles required</span>
+                      <span id="milesRequired">35,850 miles</span>
+                    </div>
+                    <div class="miles-calc-row miles-calc-result">
+                      <span>Your balance after</span>
+                      <span id="milesRemaining">9,150 miles</span>
+                    </div>
+                  </div>
+                  <div class="miles-status miles-status-ok" id="milesStatus">
+                    <span>&#10003;</span>
+                    <span>You have enough DreamMiles for this booking!</span>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top:16px">
+                  <label>DreamMiles Member Number</label>
+                  <input type="text" placeholder="e.g. DM-123456789" id="milesMemberNumber"/>
+                </div>
+              </div>
+
+              <!-- Split Payment Form -->
+              <div class="payment-form" id="paySplit" style="display:none">
+                <div class="split-payment-card">
+                  <h4>Choose Your Split</h4>
+                  <p class="split-sub">Drag the slider to set how much you pay with miles.</p>
+
+                  <div class="split-slider-wrapper">
+                    <div class="split-labels">
+                      <span class="split-label-miles">DreamMiles</span>
+                      <span class="split-label-cash">Cash</span>
+                    </div>
+                    <input type="range" id="splitSlider" min="0" max="100" value="50" step="5" class="split-slider"/>
+                    <div class="split-amounts">
+                      <div class="split-amount split-amount-miles">
+                        <strong id="splitMilesAmount">17,925 miles</strong>
+                        <span id="splitMilesDollar" class="dyn-price" data-rwf="245548"></span>
+                      </div>
+                      <div class="split-amount split-amount-cash">
+                        <strong id="splitCashAmount" class="dyn-price" data-rwf="245548"></strong>
+                        <span>remaining</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="split-status" id="splitStatus">
+                    <span>&#10003;</span>
+                    <span>You have enough miles for this split.</span>
+                  </div>
+
+                  <div class="split-cash-method">
+                    <label class="form-group-label">Pay remaining with:</label>
+                    <div class="split-method-options">
+                      <label class="split-method-option">
+                        <input type="radio" name="splitCashMethod" value="card" checked/>
+                        <span>💳 Card</span>
+                      </label>
+                      <label class="split-method-option">
+                        <input type="radio" name="splitCashMethod" value="mobile"/>
+                        <span>📱 Mobile Money</span>
+                      </label>
+                      <label class="split-method-option">
+                        <input type="radio" name="splitCashMethod" value="bank"/>
+                        <span>🏦 Bank</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Mobile Money sub-form for split -->
+                  <div class="split-sub-form" id="splitMobileForm" style="display:none">
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label>Provider</label>
+                        <select>
+                          <option>MTN Mobile Money</option>
+                          <option>Airtel Money</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="+250 7XX XXX XXX"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top:16px">
+                  <label>DreamMiles Member Number</label>
+                  <input type="text" placeholder="e.g. DM-123456789" id="splitMemberNumber"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <label class="checkbox-label">
+              <input type="checkbox" id="termsCheck"/>
+              <span>I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a> <span class="required">*</span></span>
+            </label>
+
+            <div class="form-actions">
+              <button class="btn-outline" onclick="goToStep(2)">Back</button>
+              <button class="btn-t2t" onclick="openT2TModal()" id="t2tBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Hold This Fare</span>
+              </button>
+              <button class="btn-primary btn-lg btn-pay" onclick="processPayment()" id="payBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span id="payBtnText">Pay <span class="dyn-price" data-rwf="491096"></span> Securely</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Processing Modal -->
+        <div class="modal-overlay hidden" id="paymentModal">
+          <div class="modal">
+            <div class="processing-spinner"></div>
+            <h3>Processing your payment...</h3>
+            <p>Please do not close or refresh this page.</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="paymentProgress"></div>
+            </div>
+            <p class="processing-step" id="processingStep">Verifying payment details...</p>
+          </div>
+        </div>
+
+        <!-- Time-to-Think Modal -->
+        <div class="modal-overlay hidden" id="t2tModal">
+          <div class="modal t2t-modal">
+            <button class="t2t-close" onclick="closeT2TModal()">&times;</button>
+            <div class="t2t-header">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0057b8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <h3>Time to Think</h3>
+              <p>Not ready to pay? Hold your fare and decide later.</p>
+            </div>
+            <div class="t2t-options" id="t2tOptions">
+              <label class="t2t-option selected" data-duration="24h">
+                <input type="radio" name="t2tDuration" value="24h" checked/>
+                <div class="t2t-option-content">
+                  <div class="t2t-option-top">
+                    <strong>24 Hours</strong>
+                    <span class="t2t-fee dyn-price" data-rwf="15000"></span>
+                  </div>
+                  <span class="t2t-option-desc">Perfect for a quick decision</span>
+                </div>
+              </label>
+              <label class="t2t-option" data-duration="48h">
+                <input type="radio" name="t2tDuration" value="48h"/>
+                <div class="t2t-option-content">
+                  <div class="t2t-option-top">
+                    <strong>48 Hours</strong>
+                    <span class="t2t-fee dyn-price" data-rwf="25000"></span>
+                  </div>
+                  <span class="t2t-option-desc">Most popular — take your time</span>
+                  <span class="t2t-popular-badge">Popular</span>
+                </div>
+              </label>
+              <label class="t2t-option" data-duration="72h">
+                <input type="radio" name="t2tDuration" value="72h"/>
+                <div class="t2t-option-content">
+                  <div class="t2t-option-top">
+                    <strong>72 Hours</strong>
+                    <span class="t2t-fee dyn-price" data-rwf="35000"></span>
+                  </div>
+                  <span class="t2t-option-desc">Maximum flexibility</span>
+                </div>
+              </label>
+            </div>
+            <div class="t2t-info">
+              <p>✓ Your fare and seats are guaranteed during the hold period</p>
+              <p>✓ Hold fee is deducted from total when you complete payment</p>
+              <p>✓ Full refund of hold fee if fares increase during hold</p>
+            </div>
+            <button class="btn-primary btn-lg t2t-confirm-btn" onclick="confirmT2THold()" id="t2tConfirmBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span id="t2tConfirmText">Hold Fare for <span class="dyn-price" data-rwf="15000"></span></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- T2T Processing Modal -->
+        <div class="modal-overlay hidden" id="t2tProcessingModal">
+          <div class="modal">
+            <div class="processing-spinner"></div>
+            <h3>Reserving your fare...</h3>
+            <p>Please do not close or refresh this page.</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="t2tProgress"></div>
+            </div>
+            <p class="processing-step" id="t2tProcessingStep">Locking fare and seats...</p>
+          </div>
+        </div>
+
+        <!-- T2T Hold Confirmation -->
+        <div class="card hidden" id="t2tConfirmation">
+          <div class="t2t-confirmed">
+            <div class="t2t-confirmed-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0057b8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h2>Fare Held Successfully!</h2>
+            <p class="t2t-ref">Hold Reference: <strong id="t2tHoldRef"></strong></p>
+            <div class="t2t-countdown-wrap">
+              <p>Time remaining to complete your booking:</p>
+              <div class="t2t-countdown" id="t2tCountdown">
+                <div class="t2t-countdown-block">
+                  <span class="t2t-cd-num" id="t2tHours">23</span>
+                  <span class="t2t-cd-label">Hours</span>
+                </div>
+                <span class="t2t-cd-sep">:</span>
+                <div class="t2t-countdown-block">
+                  <span class="t2t-cd-num" id="t2tMinutes">59</span>
+                  <span class="t2t-cd-label">Minutes</span>
+                </div>
+                <span class="t2t-cd-sep">:</span>
+                <div class="t2t-countdown-block">
+                  <span class="t2t-cd-num" id="t2tSeconds">59</span>
+                  <span class="t2t-cd-label">Seconds</span>
+                </div>
+              </div>
+            </div>
+            <div class="t2t-hold-summary" id="t2tHoldSummary"></div>
+            <div class="t2t-actions">
+              <button class="btn-primary btn-lg" onclick="convertT2TToPayment()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Complete Payment Now
+              </button>
+              <button class="btn-outline" onclick="navigateTo('home')">Return Home</button>
+            </div>
+            <p class="t2t-email-note">A hold confirmation email has been sent with payment instructions.</p>
+          </div>
+        </div>
+
+        <!-- Booking Sidebar -->
+        <div class="booking-sidebar">
+          <div class="card sidebar-summary">
+            <h3>Booking Summary</h3>
+            <div class="summary-route">
+              <div class="summary-segment">
+                <span class="summary-dir">Outbound</span>
+                <strong>KGL → NBO</strong>
+                <span>Wed, 26 Mar &middot; 08:30</span>
+                <span class="summary-flight">WB 400 &middot; Economy</span>
+              </div>
+              <div class="summary-segment">
+                <span class="summary-dir">Return</span>
+                <strong>NBO → KGL</strong>
+                <span>Wed, 2 Apr &middot; 14:15</span>
+                <span class="summary-flight">WB 401 &middot; Economy</span>
+              </div>
+            </div>
+            <div class="summary-price">
+              <span>Total</span>
+              <strong id="sidebarTotal" class="dyn-price" data-rwf="491096"></strong>
+            </div>
+            <p class="summary-note">Includes all taxes and fees</p>
+          </div>
+
+          <div class="card sidebar-help">
+            <h4>Need help?</h4>
+            <p>Our team is here to assist you.</p>
+            <button class="btn-outline btn-sm" onclick="openChat()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              Chat with us
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: CONFIRMATION ============ -->
+  <section class="page" id="page-confirmation">
+    <div class="container">
+      <div class="confirmation-card">
+        <div class="confirm-success">
+          <div class="confirm-check">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h1>Booking Confirmed!</h1>
+          <p class="confirm-ref">Booking Reference: <strong>WB-2025-NBO-78421</strong></p>
+          <p>A confirmation email has been sent to your email address.</p>
+        </div>
+
+        <div class="confirm-details">
+          <div class="confirm-trip">
+            <div class="confirm-segment">
+              <span class="confirm-badge">Outbound</span>
+              <div class="confirm-flight-info">
+                <div class="confirm-city">
+                  <span class="confirm-time">08:30</span>
+                  <strong>Kigali (KGL)</strong>
+                </div>
+                <div class="confirm-duration">
+                  <span class="confirm-line"></span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.4-.1.9.3 1.1l6.2 3.6-3.5 3.5-2.2-.8c-.4-.1-.8 0-1.1.3-.1.2-.2.5-.1.7l1.5 3 3 1.5c.2.1.5.1.7-.1.3-.3.4-.7.3-1.1l-.8-2.2 3.5-3.5 3.6 6.2c.2.4.7.5 1.1.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+                  <span>1h 25m &middot; Direct</span>
+                  <span class="confirm-line"></span>
+                </div>
+                <div class="confirm-city">
+                  <span class="confirm-time">09:55</span>
+                  <strong>Nairobi (NBO)</strong>
+                </div>
+              </div>
+              <span class="confirm-flight-num">WB 400 &middot; Economy Classic &middot; Wed, 26 Mar 2025</span>
+            </div>
+
+            <div class="confirm-segment">
+              <span class="confirm-badge">Return</span>
+              <div class="confirm-flight-info">
+                <div class="confirm-city">
+                  <span class="confirm-time">14:15</span>
+                  <strong>Nairobi (NBO)</strong>
+                </div>
+                <div class="confirm-duration">
+                  <span class="confirm-line"></span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.4-.1.9.3 1.1l6.2 3.6-3.5 3.5-2.2-.8c-.4-.1-.8 0-1.1.3-.1.2-.2.5-.1.7l1.5 3 3 1.5c.2.1.5.1.7-.1.3-.3.4-.7.3-1.1l-.8-2.2 3.5-3.5 3.6 6.2c.2.4.7.5 1.1.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+                  <span>1h 30m &middot; Direct</span>
+                  <span class="confirm-line"></span>
+                </div>
+                <div class="confirm-city">
+                  <span class="confirm-time">15:45</span>
+                  <strong>Kigali (KGL)</strong>
+                </div>
+              </div>
+              <span class="confirm-flight-num">WB 401 &middot; Economy Classic &middot; Wed, 2 Apr 2025</span>
+            </div>
+          </div>
+
+          <div class="confirm-passenger">
+            <h3>Passenger</h3>
+            <p><strong>Mr John Doe</strong></p>
+            <p>Seat: 14A (Window) &middot; Meal: Standard &middot; Baggage: 1 x 23 kg</p>
+          </div>
+
+          <div class="confirm-price">
+            <h3>Payment</h3>
+            <p>Total Paid: <strong class="dyn-price" data-rwf="491096"></strong></p>
+            <p>Payment Method: MTN Mobile Money</p>
+          </div>
+        </div>
+
+        <!-- Miles Celebration -->
+        <div class="miles-celebration">
+          <div class="miles-icon">&#127881;</div>
+          <div>
+            <strong>You just earned 1,200 DreamMiles!</strong>
+            <p>You're 3,800 miles away from Silver status. <a href="#">View your miles</a></p>
+            <div class="miles-bar">
+              <div class="miles-bar-fill" style="width:24%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="confirm-actions">
+          <h3>What's Next?</h3>
+          <div class="action-grid">
+            <button class="action-card" onclick="navigateTo('checkin')">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+              <strong>Online Check-in</strong>
+              <span>Opens 24h before departure</span>
+            </button>
+            <button class="action-card">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <strong>Track Your Flight</strong>
+              <span>Real-time status updates</span>
+            </button>
+            <button class="action-card" onclick="navigateTo('manage')">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <strong>Manage Booking</strong>
+              <span>Change seats, add bags</span>
+            </button>
+            <button class="action-card">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00529b" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <strong>Email Itinerary</strong>
+              <span>Send to another email</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="confirm-notifications">
+          <div class="alert alert-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <div>
+              <strong>Flight notifications are ON</strong>
+              <p>You'll receive SMS and email alerts for gate changes, delays, and boarding.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: MANAGE BOOKING ============ -->
+  <section class="page" id="page-manage">
+    <div class="container">
+      <div class="manage-card">
+        <h1>Manage Your Booking</h1>
+        <p>Access your booking to check-in, choose seats, add baggage, or view your itinerary.</p>
+        <div class="manage-form">
+          <div class="form-group">
+            <label>Booking Reference</label>
+            <input type="text" placeholder="e.g. WB-2025-NBO-78421" maxlength="20"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="As per booking"/>
+          </div>
+          <button class="btn-primary btn-lg">Retrieve Booking</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: CHECK-IN ============ -->
+  <section class="page" id="page-checkin">
+    <div class="container">
+      <div class="manage-card">
+        <h1>Online Check-in</h1>
+        <p>Check in from 24 hours to 3 hours before departure. Have your passport ready.</p>
+        <div class="manage-form">
+          <div class="form-group">
+            <label>Booking Reference</label>
+            <input type="text" placeholder="e.g. WB-2025-NBO-78421" maxlength="20"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="As per booking"/>
+          </div>
+          <button class="btn-primary btn-lg">Check In Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: FLIGHT STATUS ============ -->
+  <section class="page" id="page-status">
+    <div class="container">
+      <div class="manage-card">
+        <h1>Flight Status</h1>
+        <p>Check the real-time status of any RwandAir flight.</p>
+        <div class="status-tabs">
+          <button class="search-tab active">By Flight Number</button>
+          <button class="search-tab">By Route</button>
+        </div>
+        <div class="manage-form">
+          <div class="form-group">
+            <label>Flight Number</label>
+            <input type="text" placeholder="e.g. WB 400"/>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date"/>
+          </div>
+          <button class="btn-primary btn-lg">Check Status</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: DESTINATIONS ============ -->
+  <section class="page" id="page-destinations">
+    <div class="page-hero page-hero-blue">
+      <div class="container">
+        <h1>Our Destinations</h1>
+        <p>RwandAir connects Kigali to 30+ cities across Africa, the Middle East, Europe, and Asia.</p>
+      </div>
+    </div>
+    <div class="container section">
+      <!-- Route Map Visual -->
+      <div class="route-map-banner">
+        <div class="route-map-stat">
+          <strong>30+</strong><span>Destinations</span>
+        </div>
+        <div class="route-map-stat">
+          <strong>4</strong><span>Continents</span>
+        </div>
+        <div class="route-map-stat">
+          <strong>25+</strong><span>Countries</span>
+        </div>
+        <div class="route-map-stat">
+          <strong>1</strong><span>Hub: Kigali</span>
+        </div>
+      </div>
+
+      <!-- Africa -->
+      <div class="dest-region">
+        <h2>Africa</h2>
+        <div class="dest-list-grid">
+          <div class="dest-list-card" onclick="selectDestination('Nairobi')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/NBO.jpg')"></div>
+            <div><strong>Nairobi</strong><span>Kenya &middot; NBO</span></div>
+            <span class="dlc-freq">Daily</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Johannesburg')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/JNB.jpg')"></div>
+            <div><strong>Johannesburg</strong><span>South Africa &middot; JNB</span></div>
+            <span class="dlc-freq">5x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Lagos')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/LOS.jpg')"></div>
+            <div><strong>Lagos</strong><span>Nigeria &middot; LOS</span></div>
+            <span class="dlc-freq">4x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Accra')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/ACC.jpg')"></div>
+            <div><strong>Accra</strong><span>Ghana &middot; ACC</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Entebbe')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/EBB.jpg')"></div>
+            <div><strong>Entebbe</strong><span>Uganda &middot; EBB</span></div>
+            <span class="dlc-freq">Daily</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Dar es Salaam')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DAR.jpg')"></div>
+            <div><strong>Dar es Salaam</strong><span>Tanzania &middot; DAR</span></div>
+            <span class="dlc-freq">Daily</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Lusaka')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/LUN.jpg')"></div>
+            <div><strong>Lusaka</strong><span>Zambia &middot; LUN</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Harare')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/HRE.jpg')"></div>
+            <div><strong>Harare</strong><span>Zimbabwe &middot; HRE</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Kinshasa')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/FIH.jpg')"></div>
+            <div><strong>Kinshasa</strong><span>DR Congo &middot; FIH</span></div>
+            <span class="dlc-freq">4x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Bujumbura')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/BJM.jpg')"></div>
+            <div><strong>Bujumbura</strong><span>Burundi &middot; BJM</span></div>
+            <span class="dlc-freq">Daily</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Addis Ababa')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/ADD.jpg')"></div>
+            <div><strong>Addis Ababa</strong><span>Ethiopia &middot; ADD</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Douala')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DLA.jpg')"></div>
+            <div><strong>Douala</strong><span>Cameroon &middot; DLA</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle East -->
+      <div class="dest-region">
+        <h2>Middle East</h2>
+        <div class="dest-list-grid">
+          <div class="dest-list-card" onclick="selectDestination('Dubai')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DXB.jpg')"></div>
+            <div><strong>Dubai</strong><span>UAE &middot; DXB</span></div>
+            <span class="dlc-freq">Daily</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Europe -->
+      <div class="dest-region">
+        <h2>Europe</h2>
+        <div class="dest-list-grid">
+          <div class="dest-list-card" onclick="selectDestination('London')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/LHR.jpg')"></div>
+            <div><strong>London</strong><span>United Kingdom &middot; LHR</span></div>
+            <span class="dlc-freq">4x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Brussels')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/BRU.jpg')"></div>
+            <div><strong>Brussels</strong><span>Belgium &middot; BRU</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Paris')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/CDG.jpg')"></div>
+            <div><strong>Paris</strong><span>France &middot; CDG</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Asia -->
+      <div class="dest-region">
+        <h2>Asia</h2>
+        <div class="dest-list-grid">
+          <div class="dest-list-card" onclick="selectDestination('Mumbai')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/BOM.jpg')"></div>
+            <div><strong>Mumbai</strong><span>India &middot; BOM</span></div>
+            <span class="dlc-freq">3x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Guangzhou')">
+            <div class="dlc-flag" style="background-image:url('https://www.rwandair.com/dist/phoenix/V1.0/img/CAN.jpg')"></div>
+            <div><strong>Guangzhou</strong><span>China &middot; CAN</span></div>
+            <span class="dlc-freq">2x weekly</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-cta">
+        <p>Ready to explore?</p>
+        <button class="btn-primary btn-lg" onclick="navigateTo('home')">
+          Search Flights
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: DESTINATION DETAIL ============ -->
+  <section class="page" id="page-destination-detail">
+    <!-- Skeleton loading state -->
+    <div id="destDetailSkeleton">
+      <div class="dest-hero-skeleton skeleton-pulse"></div>
+      <div class="container">
+        <div class="dest-facts-bar-skeleton">
+          <div class="skeleton-pulse" style="width:120px;height:48px;border-radius:8px"></div>
+          <div class="skeleton-pulse" style="width:120px;height:48px;border-radius:8px"></div>
+          <div class="skeleton-pulse" style="width:120px;height:48px;border-radius:8px"></div>
+          <div class="skeleton-pulse" style="width:120px;height:48px;border-radius:8px"></div>
+        </div>
+        <div class="dest-grid" style="margin-top:32px">
+          <div class="dest-main">
+            <div class="skeleton-pulse" style="width:60%;height:24px;margin-bottom:12px;border-radius:4px"></div>
+            <div class="skeleton-pulse" style="width:100%;height:14px;margin-bottom:8px;border-radius:4px"></div>
+            <div class="skeleton-pulse" style="width:100%;height:14px;margin-bottom:8px;border-radius:4px"></div>
+            <div class="skeleton-pulse" style="width:80%;height:14px;margin-bottom:24px;border-radius:4px"></div>
+            <div class="skeleton-pulse" style="width:50%;height:24px;margin-bottom:12px;border-radius:4px"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="skeleton-pulse" style="height:100px;border-radius:8px"></div>
+              <div class="skeleton-pulse" style="height:100px;border-radius:8px"></div>
+              <div class="skeleton-pulse" style="height:100px;border-radius:8px"></div>
+              <div class="skeleton-pulse" style="height:100px;border-radius:8px"></div>
+            </div>
+          </div>
+          <div class="dest-sidebar">
+            <div class="skeleton-pulse" style="height:200px;border-radius:12px;margin-bottom:16px"></div>
+            <div class="skeleton-pulse" style="height:160px;border-radius:12px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actual content (hidden until loaded) -->
+    <div id="destDetailContent" class="hidden">
+      <!-- Hero Banner -->
+      <div class="dest-hero" id="destHero">
+        <div class="dest-hero-overlay">
+          <div class="container">
+            <nav class="dest-breadcrumb" id="destBreadcrumb">
+              <a onclick="navigateTo('home')">Home</a> <span>/</span>
+              <a onclick="navigateTo('destinations')">Destinations</a> <span>/</span>
+              <span id="destBreadcrumbCity">City</span>
+            </nav>
+            <h1 id="destCityName"></h1>
+            <p id="destTagline" class="dest-tagline"></p>
+            <div class="dest-hero-cta">
+              <button class="btn-primary btn-lg dest-hero-btn" onclick="destSearchFlights()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16v-2a4 4 0 00-4-4H7"/><path d="M3 8V6a4 4 0 014-4h10"/><path d="M7 14l-4-4 4-4"/></svg>
+                Search Flights <span id="destHeroPrice"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Quick Facts Bar -->
+        <div class="dest-facts-bar">
+          <div class="dest-fact">
+            <span class="dest-fact-icon">&#128340;</span>
+            <div><strong>Flight Time</strong><span id="destFlightTime"></span></div>
+          </div>
+          <div class="dest-fact">
+            <span class="dest-fact-icon">&#128176;</span>
+            <div><strong>From</strong><span id="destFromPrice"></span></div>
+          </div>
+          <div class="dest-fact">
+            <span class="dest-fact-icon">&#127777;</span>
+            <div><strong>Weather</strong><span id="destWeather"></span></div>
+          </div>
+          <div class="dest-fact">
+            <span class="dest-fact-icon">&#128177;</span>
+            <div><strong>Currency</strong><span id="destCurrency"></span></div>
+          </div>
+        </div>
+
+        <!-- Two-column layout -->
+        <div class="dest-grid">
+          <!-- Left column: main content -->
+          <div class="dest-main">
+            <article class="dest-section">
+              <div class="dest-section-header">
+                <h2>AI Travel Guide</h2>
+                <span class="dest-ai-badge">&#10024; Generated with AI</span>
+              </div>
+              <div id="destDescription" class="dest-description"></div>
+            </article>
+
+            <section class="dest-section">
+              <h2>Top Attractions</h2>
+              <div id="destAttractions" class="dest-attractions-grid"></div>
+            </section>
+
+            <section class="dest-section">
+              <h2>Local Cuisine</h2>
+              <div id="destCuisine" class="dest-cuisine-grid"></div>
+            </section>
+
+            <section class="dest-section">
+              <h2>Travel Tips</h2>
+              <ul id="destTips" class="dest-tips-list"></ul>
+            </section>
+          </div>
+
+          <!-- Right sidebar -->
+          <div class="dest-sidebar">
+            <div class="dest-flight-card" id="destFlightCard">
+              <div class="dest-flight-card-header">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.4-.1.9.3 1.1l5.4 3.1-2.3 2.3-2 .2c-.3 0-.5.1-.7.3l-.2.3c-.2.3 0 .7.3.8l2.7 1 1 2.7c.1.3.5.5.8.3l.3-.2c.2-.2.3-.4.3-.7l.2-2 2.3-2.3 3.1 5.4c.2.4.7.5 1.1.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+                <h3>Fly to <span id="destFlightCity"></span></h3>
+              </div>
+              <p class="dest-flight-route">Direct flights from Kigali (KGL)</p>
+              <div id="destFlightInfo" class="dest-flight-info"></div>
+              <button class="btn-primary btn-block" onclick="destSearchFlights()">Search Flights</button>
+            </div>
+
+            <div class="dest-highlights-card">
+              <h3>Highlights</h3>
+              <ul id="destHighlights" class="dest-highlights-list"></ul>
+            </div>
+
+            <div class="dest-besttime-card">
+              <h3>Best Time to Visit</h3>
+              <p id="destBestTime"></p>
+            </div>
+
+            <div class="dest-info-card">
+              <h3>Practical Info</h3>
+              <div class="dest-info-row"><strong>Language</strong><span id="destLanguage"></span></div>
+              <div class="dest-info-row"><strong>Timezone</strong><span id="destTimezone"></span></div>
+              <div class="dest-info-row"><strong>Airport</strong><span id="destAirport"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Related Destinations -->
+        <div class="dest-related">
+          <h2>Explore More Destinations</h2>
+          <div id="destRelated" class="dest-related-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: TRAVEL INFO ============ -->
+  <section class="page" id="page-travelinfo">
+    <div class="page-hero page-hero-blue">
+      <div class="container">
+        <h1>Travel Information</h1>
+        <p>Everything you need to know before you fly with RwandAir.</p>
+      </div>
+    </div>
+    <div class="container section">
+      <div class="info-grid">
+        <!-- Baggage -->
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="6" y="7" width="12" height="14" rx="1"/><path d="M9 7V5a3 3 0 016 0v2"/><line x1="6" y1="12" x2="18" y2="12"/></svg>
+          </div>
+          <h3>Baggage Allowance</h3>
+          <table class="info-table">
+            <thead>
+              <tr><th>Fare</th><th>Hand</th><th>Checked</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Economy Lite</td><td>7 kg</td><td>&#8212;</td></tr>
+              <tr><td>Economy Classic</td><td>7 kg</td><td>1 x 23 kg</td></tr>
+              <tr><td>Business</td><td>7 kg</td><td>2 x 32 kg</td></tr>
+            </tbody>
+          </table>
+          <div class="info-extras">
+            <h4>Excess Baggage</h4>
+            <p>Extra bags can be purchased during booking or at the airport. Pre-purchase online to save up to 40%.</p>
+            <h4>Restricted Items</h4>
+            <p>Sharp objects, flammable materials, and liquids over 100ml are not permitted in hand baggage.</p>
+          </div>
+        </div>
+
+        <!-- Travel Documents -->
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 18h10"/></svg>
+          </div>
+          <h3>Travel Documents</h3>
+          <div class="info-extras">
+            <h4>Passport</h4>
+            <p>Your passport must be valid for at least 6 months beyond your travel date. Ensure the name on your booking matches your passport exactly.</p>
+            <h4>Visas</h4>
+            <p>Check visa requirements for your destination before travel. Many African countries offer visa-on-arrival or e-visa options. Visit <strong>irembo.gov.rw</strong> for Rwanda visas.</p>
+            <h4>Health Requirements</h4>
+            <p>Some destinations require a Yellow Fever vaccination certificate. Check the latest health advisories before you travel.</p>
+          </div>
+        </div>
+
+        <!-- Check-in Info -->
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+          </div>
+          <h3>Check-in</h3>
+          <div class="info-extras">
+            <h4>Online Check-in</h4>
+            <p>Opens <strong>24 hours</strong> before departure and closes <strong>3 hours</strong> before. Get your boarding pass on your phone or print it.</p>
+            <h4>Airport Check-in</h4>
+            <p>Airport counters open <strong>3 hours</strong> before departure for international flights and close <strong>1 hour</strong> before.</p>
+            <h4>Boarding</h4>
+            <p>Gates close <strong>30 minutes</strong> before departure. Please arrive at the gate on time.</p>
+          </div>
+        </div>
+
+        <!-- Special Assistance -->
+        <div class="info-card">
+          <div class="info-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+          </div>
+          <h3>Special Assistance</h3>
+          <div class="info-extras">
+            <h4>Passengers with Disabilities</h4>
+            <p>Wheelchair assistance and special seating can be arranged. Please request at least 48 hours before departure.</p>
+            <h4>Unaccompanied Minors</h4>
+            <p>Children aged 5-12 travelling alone are supervised by our cabin crew throughout the journey. Fee applies.</p>
+            <h4>Travelling with Pets</h4>
+            <p>Small pets may travel in the cabin in an approved carrier. Larger animals can be transported in the cargo hold.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: LOYALTY ============ -->
+  <section class="page" id="page-loyalty">
+    <div class="page-hero page-hero-gold">
+      <div class="container">
+        <h1>DreamMiles Loyalty Program</h1>
+        <p>Earn miles every time you fly. Redeem them for flights, upgrades, and more.</p>
+      </div>
+    </div>
+    <div class="container section">
+      <!-- Tiers -->
+      <div class="section-header">
+        <h2>Membership Tiers</h2>
+        <p class="section-sub">Fly more, earn more. Every tier unlocks new benefits.</p>
+      </div>
+      <div class="tier-grid">
+        <div class="tier-card">
+          <div class="tier-badge tier-blue">Blue</div>
+          <div class="tier-body">
+            <h3>Blue Member</h3>
+            <p class="tier-req">Join for free</p>
+            <ul class="tier-perks">
+              <li>Earn 1 mile per $1 spent</li>
+              <li>Redeem miles for flights</li>
+              <li>Exclusive member offers</li>
+              <li>Birthday bonus miles</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tier-card">
+          <div class="tier-badge tier-silver">Silver</div>
+          <div class="tier-body">
+            <h3>Silver Member</h3>
+            <p class="tier-req">5,000 miles / year</p>
+            <ul class="tier-perks">
+              <li>All Blue benefits</li>
+              <li>25% bonus miles</li>
+              <li>Priority check-in</li>
+              <li>1 extra bag (23 kg)</li>
+              <li>Preferred seating</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tier-card tier-card-featured">
+          <div class="tier-badge tier-gold">Gold</div>
+          <div class="tier-body">
+            <h3>Gold Member</h3>
+            <p class="tier-req">15,000 miles / year</p>
+            <ul class="tier-perks">
+              <li>All Silver benefits</li>
+              <li>50% bonus miles</li>
+              <li>Lounge access worldwide</li>
+              <li>Priority boarding</li>
+              <li>2 extra bags</li>
+              <li>Complimentary upgrades (subject to availability)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Earn & Redeem -->
+      <div class="earn-redeem-grid">
+        <div class="er-card">
+          <h3>How to Earn Miles</h3>
+          <div class="er-items">
+            <div class="er-item">
+              <div class="er-icon">&#9992;</div>
+              <div>
+                <strong>Fly with RwandAir</strong>
+                <span>Earn miles on every flight based on distance and fare class</span>
+              </div>
+            </div>
+            <div class="er-item">
+              <div class="er-icon">&#128179;</div>
+              <div>
+                <strong>Partner Airlines</strong>
+                <span>Earn miles when flying with our partner airline network</span>
+              </div>
+            </div>
+            <div class="er-item">
+              <div class="er-icon">&#127980;</div>
+              <div>
+                <strong>Hotel & Car Partners</strong>
+                <span>Book hotels and rental cars through our partners to earn miles</span>
+              </div>
+            </div>
+            <div class="er-item">
+              <div class="er-icon">&#128179;</div>
+              <div>
+                <strong>Credit Card Partners</strong>
+                <span>Use DreamMiles co-branded credit cards for everyday purchases</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="er-card">
+          <h3>How to Redeem Miles</h3>
+          <div class="er-items">
+            <div class="er-item">
+              <div class="er-icon">&#127906;</div>
+              <div>
+                <strong>Award Flights</strong>
+                <span>Book free flights using your miles on any RwandAir route</span>
+              </div>
+            </div>
+            <div class="er-item">
+              <div class="er-icon">&#128186;</div>
+              <div>
+                <strong>Cabin Upgrades</strong>
+                <span>Upgrade from Economy to Business Class with miles</span>
+              </div>
+            </div>
+            <div class="er-item">
+              <div class="er-icon">&#127891;</div>
+              <div>
+                <strong>Extra Baggage</strong>
+                <span>Purchase additional baggage allowance with miles</span>
+              </div>
+            </div>
+            <div class="er-item">
+              <div class="er-icon">&#128176;</div>
+              <div>
+                <strong>Miles + Cash</strong>
+                <span>Combine miles with cash for maximum flexibility</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dest-cta">
+        <p>Start earning DreamMiles today</p>
+        <button class="btn-primary btn-lg" onclick="navigateTo('home')">
+          Book a Flight
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: HELP ============ -->
+  <section class="page" id="page-help">
+    <div class="page-hero page-hero-blue">
+      <div class="container">
+        <h1>Help & Contact</h1>
+        <p>We're here to help. Find answers or get in touch with our team.</p>
+      </div>
+    </div>
+    <div class="container section">
+      <!-- Contact Cards -->
+      <div class="contact-grid">
+        <div class="contact-card" onclick="openChat()">
+          <div class="contact-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <h3>Live Chat</h3>
+          <p>Chat with our support team in real-time. Available 24/7.</p>
+          <span class="contact-action">Start Chat &rarr;</span>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <h3>Call Us</h3>
+          <p>Speak to an agent directly.</p>
+          <strong class="contact-phone">+250 788 177 000</strong>
+          <span class="contact-hours">Mon-Sun, 6:00 AM - 10:00 PM (CAT)</span>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3>Email</h3>
+          <p>Send us an email and we'll respond within 24 hours.</p>
+          <strong class="contact-email">callcentre@rwandair.com</strong>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon" style="color:#25d366">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          </div>
+          <h3>WhatsApp</h3>
+          <p>Message us on WhatsApp for quick assistance.</p>
+          <span class="contact-action" style="color:#25d366">Open WhatsApp &rarr;</span>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>How do I change or cancel my booking?</summary>
+            <p>You can modify or cancel your booking through the "Manage Booking" section. Enter your booking reference and last name to access your reservation. Changes and cancellations are subject to fare rules and may incur fees depending on your fare type. Economy Classic fares can be changed with a fee, while Business Class fares offer full flexibility.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What is the baggage allowance?</summary>
+            <p>Economy Lite includes 7 kg hand baggage only. Economy Classic includes 7 kg hand baggage plus 1 checked bag (23 kg). Business Class includes 7 kg hand baggage plus 2 checked bags (32 kg each). Extra baggage can be purchased online during booking at a discounted rate.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How early should I arrive at the airport?</summary>
+            <p>For international flights, arrive at least 3 hours before departure. For domestic flights, arrive at least 2 hours before. Check-in counters close 1 hour before departure for international flights.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I select my seat in advance?</summary>
+            <p>Yes! Economy Classic and Business Class passengers can select their seat for free during booking. Economy Lite passengers can purchase seat selection as an add-on. Seat selection is also available during online check-in.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What payment methods do you accept?</summary>
+            <p>We accept credit/debit cards (Visa, Mastercard, Amex), Mobile Money (MTN and Airtel Money), and bank transfers. Mobile Money is the most popular payment method for bookings originating from Rwanda.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How do I request a refund?</summary>
+            <p>Refund eligibility depends on your fare type. To request a refund, contact our call centre or submit a request through the "Help" section. Business Class fares are fully refundable. Economy Classic fares may be refundable with a fee. Economy Lite fares are non-refundable.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PAGE: ABOUT US ============ -->
+  <section class="page" id="page-about">
+    <div class="about-us">
+      <div class="container">
+        <a href="#" class="about-back-link" onclick="navigateTo('home'); return false;">&larr; Back to Home</a>
+        <h2 class="section-title">About Us</h2>
+        <p class="section-subtitle">Heart of Africa. Gateway to the World.</p>
+
+        <div class="about-intro">
+          <p>We began operations on 1st December 2002 as the new national carrier under the name Rwandair Express for Rwanda. In March 2009, we registered a new trademark "RwandAir" which is our current operating name.</p>
+          <p>Operating from Kigali as our hub at the heart of Africa, RwandAir is one of the fastest growing airlines and operates one of the youngest fleets on the African continent. The airline reaches out to over twenty cities in Western, Central, Eastern and Southern Africa, the Middle East, Asia and Europe.</p>
+          <p>RwandAir is a member airline of IATA, and an EASA, IOSA and ISAGO certified operator.</p>
+        </div>
+
+        <div class="about-pillars">
+          <div class="about-pillar">
+            <div class="about-pillar-icon">&#127775;</div>
+            <h4>Purpose</h4>
+            <p>Positioning Rwanda as Africa's gateway to the world for people, trade and opportunity while showcasing the nation's resilience and hospitality.</p>
+          </div>
+          <div class="about-pillar">
+            <div class="about-pillar-icon">&#128065;</div>
+            <h4>Vision</h4>
+            <p>To be Africa's premier hub airline, powered by sustainable innovation and a culture that puts people first.</p>
+          </div>
+          <div class="about-pillar">
+            <div class="about-pillar-icon">&#127919;</div>
+            <h4>Mission</h4>
+            <p>To deliver safe, reliable and seamless movement of people and goods through agile operations and strategic partnerships, creating sustainable value for our customers and other stakeholders.</p>
+          </div>
+        </div>
+
+        <h3 class="about-values-title">Our Values</h3>
+        <div class="about-values-grid">
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#10084;</span>
+              <h4>People &amp; Empathy</h4>
+            </div>
+            <ul>
+              <li>Put yourself in the other person's shoes and situation.</li>
+              <li>Listen to understand, not just to respond.</li>
+              <li>Practice respect, trust, and openness to create a safe environment.</li>
+              <li>Speak and act with kindness in all interactions.</li>
+              <li>Offer help and support where you can.</li>
+              <li>Show appreciation and recognition for others' contributions.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#129309;</span>
+              <h4>Integrity &amp; Accountability</h4>
+            </div>
+            <ul>
+              <li>Take full ownership of your actions, decisions, and outcomes.</li>
+              <li>Say what you mean, mean what you say, and deliver on your promises.</li>
+              <li>Act with integrity, always doing the right thing for the organization, even when it's difficult.</li>
+              <li>Show up consistently and see your commitments through to the end.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128269;</span>
+              <h4>Transparency</h4>
+            </div>
+            <ul>
+              <li>Build psychological safety where all opinions are valued and can be shared without fear of blame.</li>
+              <li>Communicate clearly, proactively, and on time.</li>
+              <li>Make processes and information accessible, encouraging knowledge transfer.</li>
+              <li>Give and receive productive feedback respectfully and constructively.</li>
+              <li>Be open about career paths, opportunities, and how performance is recognized.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#129504;</span>
+              <h4>Teamwork</h4>
+            </div>
+            <ul>
+              <li>Align and work together towards a common goal.</li>
+              <li>Communicate clearly, proactively, and often.</li>
+              <li>Collaborate openly across all departments, breaking down silos.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128161;</span>
+              <h4>Sustainable Innovation</h4>
+            </div>
+            <ul>
+              <li>Be human-centric.</li>
+              <li>Stay curious and consistently ask "why" to find new ideas.</li>
+              <li>Create a safe environment to collaborate, test boundaries, and take educated risks.</li>
+              <li>Embrace technology and use data to find innovative, solution-focused answers.</li>
+              <li>Challenge the status quo with creative solutions and inspire others by being the change.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128640;</span>
+              <h4>Excellence</h4>
+            </div>
+            <ul>
+              <li>Live the company values with professionalism.</li>
+              <li>Be curious, learn fast, and improve faster.</li>
+              <li>Strive for continuous improvement, prioritizing progress over perfection.</li>
+              <li>Be resilient: embrace change, adapt well to it, and overcome setbacks.</li>
+              <li>Develop and promote talent based on merit and professional skills.</li>
+              <li>Drive motivation and inclusion at all levels.</li>
+              <li>Drive sustainable profitability and growth through our commitment to this excellence.</li>
+            </ul>
+          </div>
+
+          <div class="about-value-card">
+            <div class="about-value-header">
+              <span class="about-value-icon">&#128737;</span>
+              <h4>Safety &amp; Compliance</h4>
+            </div>
+            <ul>
+              <li>Make safety and security, compliance, and environmental protection a non-negotiable priority in all decisions.</li>
+              <li>Establish and follow strong, clear procedures and processes without fail.</li>
+              <li>Train all staff and communicate standards, risks, and responsibilities clearly and continuously.</li>
+              <li>Understand and manage the internal and external impact of our actions.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAT WIDGET ============ -->
+  <div class="chat-fab" id="chatFab" onclick="toggleChat()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="chat-badge">1</span>
+  </div>
+
+  <div class="chat-window hidden" id="chatWindow">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <strong>RwandAir AI Assistant</strong>
+        <span class="chat-online">Online now</span>
+      </div>
+      <button class="chat-close" onclick="toggleChat()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="chat-context-bar" id="chatContextBar">📍 The booking page · 💱 RWF</div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg bot">
+        <div class="chat-bubble">
+          Hi there! I'm your RwandAir AI assistant. I can help you book flights, check baggage allowances, manage bookings, and more. How can I help you today?
+        </div>
+      </div>
+      <div class="chat-quick-replies">
+        <button onclick="chatQuickReply('Book a flight')">Book a flight</button>
+        <button onclick="chatQuickReply('Check booking status')">Check booking status</button>
+        <button onclick="chatQuickReply('Baggage allowance')">Baggage allowance</button>
+        <button onclick="chatQuickReply('Check-in help')">Check-in help</button>
+      </div>
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter')sendChat()"/>
+      <button onclick="sendChat()" class="chat-send">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg>
+      </button>
+    </div>
+    <div class="chat-channels">
+      <span>Also available on:</span>
+      <a href="#" class="channel-link whatsapp">WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS MODAL (Currency / Language) ============ -->
+  <div class="modal-overlay hidden" id="settingsOverlay" onclick="toggleSettingsModal()">
+    <div class="modal-panel settings-modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="toggleSettingsModal()">&times;</button>
+      <div class="modal-body">
+        <label class="modal-label">Country</label>
+        <div class="modal-select-wrapper">
+          <select id="countrySelect" onchange="updateCountry()">
+            <option value="RW" data-flag="🇷🇼" selected>🇷🇼  RWANDA</option>
+            <option value="KE" data-flag="🇰🇪">🇰🇪  KENYA</option>
+            <option value="UG" data-flag="🇺🇬">🇺🇬  UGANDA</option>
+            <option value="TZ" data-flag="🇹🇿">🇹🇿  TANZANIA</option>
+            <option value="CD" data-flag="🇨🇩">🇨🇩  DR CONGO</option>
+            <option value="ZA" data-flag="🇿🇦">🇿🇦  SOUTH AFRICA</option>
+            <option value="NG" data-flag="🇳🇬">🇳🇬  NIGERIA</option>
+            <option value="GB" data-flag="🇬🇧">🇬🇧  UNITED KINGDOM</option>
+            <option value="AE" data-flag="🇦🇪">🇦🇪  UAE</option>
+            <option value="US" data-flag="🇺🇸">🇺🇸  UNITED STATES</option>
+            <option value="IN" data-flag="🇮🇳">🇮🇳  INDIA</option>
+            <option value="FR" data-flag="🇫🇷">🇫🇷  FRANCE</option>
+            <option value="BE" data-flag="🇧🇪">🇧🇪  BELGIUM</option>
+          </select>
+        </div>
+
+        <label class="modal-label">Currency</label>
+        <div class="modal-select-wrapper">
+          <select id="currencySelect" onchange="updateCurrency()">
+            <option value="RWF" selected>RWF - Rwandan Franc</option>
+            <option value="USD">USD - US Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="KES">KES - Kenyan Shilling</option>
+            <option value="AED">AED - UAE Dirham</option>
+          </select>
+        </div>
+
+        <label class="modal-label">Language</label>
+        <div class="modal-select-wrapper">
+          <select id="languageSelect" onchange="updateLanguage()">
+            <option value="EN" selected>EN - English</option>
+            <option value="FR">FR - French</option>
+            <option value="CN">CN - Chinese</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" style="width:100%;margin-top:16px;justify-content:center" onclick="applySettings()">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SEARCH WIDGET MODAL ============ -->
+  <div class="search-widget-overlay hidden" id="searchWidgetOverlay" onclick="closeSearchWidget()">
+    <div class="search-widget-modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeSearchWidget()">&times;</button>
+      <div class="swm-dest-header" id="swmDestHeader">
+        <div class="swm-dest-img" id="swmDestImg"></div>
+        <div class="swm-dest-info">
+          <h2 id="swmDestCity">Nairobi</h2>
+          <p id="swmDestMeta">Kenya &middot; NBO</p>
+        </div>
+      </div>
+      <div class="swm-body">
+        <div class="swm-label">Book your flight</div>
+        <div class="swm-form">
+          <div class="swm-row">
+            <div class="swm-field">
+              <label>From</label>
+              <input type="text" id="swmFrom" value="Kigali (KGL)" readonly class="swm-input"/>
+            </div>
+            <div class="swm-field">
+              <label>To</label>
+              <input type="text" id="swmTo" readonly class="swm-input swm-input-highlight"/>
+            </div>
+          </div>
+          <div class="swm-row">
+            <div class="swm-field">
+              <label>Trip</label>
+              <select id="swmTrip" class="swm-input" onchange="toggleSwmReturn()">
+                <option value="roundtrip">Round Trip</option>
+                <option value="oneway">One Way</option>
+              </select>
+            </div>
+            <div class="swm-field">
+              <label>Depart</label>
+              <input type="date" id="swmDepart" class="swm-input"/>
+            </div>
+            <div class="swm-field" id="swmReturnWrap">
+              <label>Return</label>
+              <input type="date" id="swmReturn" class="swm-input"/>
+            </div>
+          </div>
+          <div class="swm-row">
+            <div class="swm-field">
+              <label>Passengers</label>
+              <select id="swmPax" class="swm-input">
+                <option value="1">1 Adult</option>
+                <option value="2">2 Adults</option>
+                <option value="3">3 Adults</option>
+                <option value="4">4 Adults</option>
+              </select>
+            </div>
+            <div class="swm-field">
+              <label>Class</label>
+              <select id="swmClass" class="swm-input">
+                <option value="economy">Economy</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary btn-lg swm-search-btn" onclick="searchFromWidget()">
+            Search Flights
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LOGIN MODAL ============ -->
+  <div class="modal-overlay hidden" id="loginOverlay" onclick="toggleLoginModal()">
+    <div class="modal-panel login-modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="toggleLoginModal()">&times;</button>
+      <div class="modal-body">
+        <h2 style="margin-bottom:20px">Welcome back!</h2>
+        <div class="form-group">
+          <input type="text" id="loginUsername" placeholder="DreamMiles number or email" class="form-input"/>
+        </div>
+        <div class="form-group" style="position:relative">
+          <input type="password" id="loginPassword" placeholder="Password" class="form-input"/>
+          <button class="password-toggle" onclick="togglePasswordVisibility()" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center" onclick="doLogin()">Log in</button>
+        <div class="login-footer">
+          <label class="toggle-label"><input type="checkbox" id="rememberMe"/> <span>Remember me</span></label>
+          <a href="#" class="login-link">Forgot Password?</a>
+        </div>
+      </div>
+      <!-- Logged-in state (hidden by default) -->
+      <div class="modal-body hidden" id="loggedInView">
+        <div class="user-profile-header">
+          <div class="user-avatar" id="userAvatar">JU</div>
+          <div>
+            <div class="user-name" id="userName">Jean Uwimana</div>
+            <div class="user-tier" id="userTier">Silver Member</div>
+          </div>
+        </div>
+        <div class="miles-card">
+          <div class="miles-label">DreamMiles Balance</div>
+          <div class="miles-balance" id="milesBalance">48,500</div>
+          <div class="miles-expiring" id="milesExpiring">5,000 miles expiring Sep 2026</div>
+        </div>
+        <div class="user-menu">
+          <a href="#" onclick="navigateTo('loyalty');toggleLoginModal()">My DreamMiles</a>
+          <a href="#" onclick="navigateTo('manage');toggleLoginModal()">My Bookings</a>
+          <a href="#" onclick="navigateTo('checkin');toggleLoginModal()">Online Check-in</a>
+          <a href="#" class="logout-link" onclick="doLogout()">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CART PANEL ============ -->
+  <div class="modal-overlay hidden" id="cartOverlay" onclick="toggleCart()">
+    <div class="cart-panel" onclick="event.stopPropagation()">
+      <div class="cart-header">
+        <div class="cart-header-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          <span>My Cart</span>
+        </div>
+        <button class="modal-close" onclick="toggleCart()">&times;</button>
+      </div>
+      <div class="cart-body" id="cartBody">
+        <div class="cart-empty" id="cartEmpty">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          <p>Your cart is empty</p>
+          <span>Search for flights to get started</span>
+        </div>
+        <div class="cart-items hidden" id="cartItems"></div>
+      </div>
+      <div class="cart-footer hidden" id="cartFooter">
+        <div class="cart-total-row">
+          <span>Base fare</span><span id="cartBaseFare">RWF 0</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Taxes</span><span id="cartTaxes">RWF 0</span>
+        </div>
+        <div class="cart-total-row cart-total-final">
+          <span>Total price</span><span id="cartTotal">RWF 0</span>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;margin-top:12px" onclick="continueBookingFromCart()">Continue Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ RETARGETING POPUPS ============ -->
+  <!-- Exit-Intent Popup -->
+  <div class="retarget-overlay hidden" id="exitIntentPopup">
+    <div class="retarget-modal">
+      <button class="modal-close" onclick="closeExitIntent()">&times;</button>
+      <div class="retarget-icon">✈️</div>
+      <h2>Wait — don't miss this fare!</h2>
+      <p>Sign up for price alerts and we'll notify you when prices drop on your searched routes.</p>
+      <div class="retarget-form">
+        <input type="email" id="exitIntentEmail" placeholder="Enter your email" class="retarget-input"/>
+        <button class="btn-primary" onclick="submitExitIntent()">Get Price Alerts</button>
+      </div>
+      <p class="retarget-note">No spam. Unsubscribe anytime.</p>
+    </div>
+  </div>
+
+  <!-- Email Acquisition Popup -->
+  <div class="retarget-overlay hidden" id="emailCapturePopup">
+    <div class="retarget-modal retarget-modal-promo">
+      <button class="modal-close" onclick="closeEmailCapture()">&times;</button>
+      <div class="retarget-promo-badge">LIMITED OFFER</div>
+      <h2>Get 10% Off Your First Booking</h2>
+      <p>Join thousands of travelers who save with RwandAir. Enter your email to receive an exclusive discount code.</p>
+      <div class="retarget-form">
+        <input type="email" id="emailCaptureInput" placeholder="Enter your email" class="retarget-input"/>
+        <button class="btn-primary" onclick="submitEmailCapture()">Claim My Discount</button>
+      </div>
+      <p class="retarget-note">By signing up you agree to receive promotional emails.</p>
+    </div>
+  </div>
+
+  <!-- Cart Abandonment Toast -->
+  <div class="abandon-toast hidden" id="abandonToast">
+    <div class="abandon-toast-content">
+      <span class="abandon-toast-icon">🛒</span>
+      <div class="abandon-toast-text">
+        <strong>You have an unfinished booking!</strong>
+        <p>Complete your booking before prices change.</p>
+      </div>
+      <button class="btn-primary btn-sm" onclick="resumeBooking()">Resume</button>
+      <button class="abandon-toast-close" onclick="closeAbandonToast()">&times;</button>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
