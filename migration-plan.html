@@ -267,7 +267,7 @@
       <span class="arch-arrow">&rarr;</span>
       <span class="arch-box arch-middleware">wb-api.rwandair.com<br/>(Middleware / BFF)</span>
       <span class="arch-arrow">&rarr;</span>
-      <span class="arch-box arch-amadeus">Amadeus Digital APIs<br/>(GDS / NDC)</span>
+      <span class="arch-box arch-amadeus">Amadeus Digital APIs<br/>(Reservations)</span>
     </div>
     <div style="margin-top: 16px;">
       <span class="arch-box arch-middleware">wb-api.rwandair.com</span>
@@ -394,13 +394,13 @@
       <td><span class="risk-high">HIGH</span></td>
       <td>Rebooking availability search, fare difference calculation, ADM/ACM processing, residual value handling</td>
     </tr>
-    <tr>
-      <td><strong>Online Check-in</strong></td>
+    <tr style="background:#fef2f2">
+      <td><strong>Online Check-in</strong><br/><span style="color:#dc2626;font-size:11px;font-weight:700">OUT OF SCOPE</span></td>
       <td><code>/api/checkin/lookup</code><br/>Fake boarding passes</td>
-      <td>Amadeus Check-in API<br/>or WB DCS integration</td>
-      <td><span class="effort med">2 weeks</span></td>
-      <td><span class="risk-med">MED</span></td>
-      <td>Departure Control System integration, seat map from Amadeus, boarding pass PDF generation, BCBP barcode</td>
+      <td>Amadeus DCS / Altea Departure Control</td>
+      <td><span class="effort" style="background:#fee2e2;color:#dc2626">N/A</span></td>
+      <td><span class="risk-tag" style="background:#fee2e2;color:#dc2626">N/A</span></td>
+      <td>Check-in service is currently out of service. Will be addressed in a future phase once DCS availability is restored. Prototype UI retained for demo purposes only.</td>
     </tr>
     <tr>
       <td><strong>Flight Status</strong></td>
@@ -553,7 +553,7 @@
   <ul class="bullet-list">
     <li><strong>Instant rollback</strong> via DNS/load balancer switch back to current booking.rwandair.com</li>
     <li><strong>Data sync</strong> &mdash; any bookings created on new platform are in Amadeus PNR, accessible from both systems</li>
-    <li><strong>Feature flags</strong> &mdash; individual modules (T2T, wallet payment, check-in) can be toggled off independently</li>
+    <li><strong>Feature flags</strong> &mdash; individual modules (T2T, wallet payment, loyalty) can be toggled off independently</li>
   </ul>
   <div class="slide-number">8 / 12</div>
 </div>
@@ -584,7 +584,8 @@
         <li>Manage booking</li>
         <li>Cancel &amp; refund</li>
         <li>Change / rebook</li>
-        <li>Check-in</li>
+        <li>Flight status</li>
+        <li><s style="color:#94a3b8">Check-in (out of service)</s></li>
       </ul>
     </div>
     <div class="timeline-phase p3">
