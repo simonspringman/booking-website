@@ -54,7 +54,8 @@ function showPanel(panel) {
     orders: 'Orders Dashboard', passengers: 'Passengers Dashboard',
     ancillaries: 'Ancillaries Dashboard', holds: 'Time-to-Think Dashboard',
     channels: 'Channels Dashboard', offices: 'Office IDs Dashboard',
-    payments: 'Payments Dashboard', users: 'User Management'
+    payments: 'Payments Dashboard', clevel: 'C-Level Executive Dashboards',
+    users: 'User Management'
   };
   document.getElementById('panelTitle').textContent = titles[panel] || panel;
   loadPanelData(panel);
@@ -75,6 +76,7 @@ function loadPanelData(panel) {
   tbody.innerHTML = '<tr>' + '<td><div class="admin-skeleton w80"></div></td>'.repeat(5) + '</tr>'.repeat(5);
 
   if (panel === 'users') { loadUsers(); return; }
+  if (panel === 'clevel') { loadCLevel(); return; }
 
   fetch('/api/admin/' + panel + '?date=' + date, {
     headers: { 'Authorization': 'Bearer ' + adminToken }
@@ -254,6 +256,52 @@ function deleteUser(id) {
   fetch('/api/admin/users/' + id, {
     method: 'DELETE', headers: { 'Authorization': 'Bearer ' + adminToken }
   }).then(function() { loadUsers(); });
+}
+
+// ---- C-LEVEL DASHBOARDS ----
+function loadCLevel() {
+  var summary = document.getElementById('adminSummary');
+  var thead = document.getElementById('adminTableHead');
+  var tbody = document.getElementById('adminTableBody');
+
+  var reports = [
+    { file: 'ceo-dashboard.html', icon: '👤', title: 'CEO Dashboard', desc: 'Strategic overview — KPIs, revenue trends, digital transformation progress, route network, 90-day outlook.', slides: 10, audience: 'Chief Executive Officer' },
+    { file: 'cfo-revenue-report.html', icon: '💰', title: 'CFO Revenue & ROI Report', desc: 'Financial deep-dive — revenue by channel, payment mix, route profitability, ancillary revenue, ROI projections, budget vs actuals.', slides: 10, audience: 'Chief Financial Officer' },
+    { file: 'cto-tech-report.html', icon: '⚙', title: 'CTO Technical Status', desc: 'Architecture, API migration status, platform capabilities, tech stack, security & compliance, technical debt, performance targets.', slides: 11, audience: 'Chief Technology Officer' },
+    { file: 'coo-operations-report.html', icon: '📋', title: 'COO Operations Report', desc: 'Booking funnel, route performance, channel distribution, T2T holds, customer service metrics, passenger & office operations.', slides: 10, audience: 'Chief Operating Officer' },
+    { file: 'board-summary.html', icon: '🏛', title: 'Board Summary', desc: 'Concise board-level briefing — executive summary, KPIs, financial highlights, strategic progress, risk register, decisions required.', slides: 8, audience: 'Board of Directors' },
+    { file: 'migration-plan.html', icon: '🚀', title: 'Migration Plan', desc: 'Production migration roadmap — Amadeus Digital APIs integration, 5 phases, 14–18 weeks timeline, team requirements, risk matrix.', slides: 12, audience: 'All C-Level / Technical Leadership' }
+  ];
+
+  summary.innerHTML = summaryCard('Total Reports', reports.length, '', 'blue') +
+    summaryCard('Total Slides', reports.reduce(function(s, r) { return s + r.slides; }, 0), '', 'green') +
+    summaryCard('Period', 'Q1 2026', '', 'yellow');
+
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  var container = document.getElementById('adminSummary');
+  var cardsHtml = '<div style="grid-column:1/-1;margin-top:16px">' +
+    '<p style="color:#64748b;font-size:14px;margin-bottom:20px">Download executive presentations as self-contained HTML files. Open in any browser, print-friendly, no internet required.</p>' +
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">';
+
+  reports.forEach(function(r) {
+    cardsHtml += '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px">' +
+      '<div style="font-size:32px">' + r.icon + '</div>' +
+      '<div style="font-size:16px;font-weight:700;color:#0f172a">' + r.title + '</div>' +
+      '<div style="font-size:12px;color:#64748b;flex:1">' + r.desc + '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">' +
+        '<span style="font-size:11px;color:#94a3b8">' + r.slides + ' slides &bull; ' + r.audience + '</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:4px">' +
+        '<a href="/' + r.file + '" target="_blank" style="flex:1;text-align:center;padding:8px 12px;background:#00529b;color:#fff;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600">Open ↗</a>' +
+        '<a href="/' + r.file + '" download style="flex:1;text-align:center;padding:8px 12px;background:#e2e8f0;color:#0f172a;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600">Download ↓</a>' +
+      '</div>' +
+    '</div>';
+  });
+
+  cardsHtml += '</div></div>';
+  container.innerHTML += cardsHtml;
 }
 
 // ---- CSV EXPORT ----
