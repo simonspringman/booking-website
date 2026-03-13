@@ -38,6 +38,21 @@
             <a href="#" class="currency-option" onclick="setCurrency('RWF','FRw',this);return false">RWF FRw</a>
           </div>
         </div>
+        <div class="cart-wrapper" id="cartWrapper">
+          <button class="btn-cart" onclick="toggleCartDropdown(event)" aria-label="Abandoned bookings cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+          </button>
+          <div class="cart-dropdown" id="cartDropdown">
+            <div class="cart-dropdown-header">
+              <span>Saved Bookings</span>
+              <button class="cart-close-btn" onclick="toggleCartDropdown(event)">&times;</button>
+            </div>
+            <div class="cart-dropdown-body" id="cartDropdownBody">
+              <p class="cart-empty-msg">No abandoned bookings yet.</p>
+            </div>
+          </div>
+        </div>
         <button class="btn-login" onclick="toggleLoginModal()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           Log in
@@ -207,7 +222,7 @@
 
     <!-- Stopover Kigali -->
     <div class="stopover-banner">
-      <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/stopover-home.jpg" alt="Stopover Kigali" class="stopover-img">
+      <img src="img/stopover-home.jpg" alt="Stopover Kigali" class="stopover-img">
       <div class="stopover-overlay">
         <div class="container">
           <h2>Stopover Kigali</h2>
@@ -379,9 +394,29 @@
           </div>
           <div>
             <h4>External Links</h4>
-            <a href="https://www.migration.gov.rw/" target="_blank">Immigration and Emigration</a>
-            <a href="https://rdb.rw/" target="_blank">Rwanda Development Board</a>
-            <a href="https://www.visitrwanda.com/" target="_blank">Visit Rwanda</a>
+            <a href="https://www.migration.gov.rw/" target="_blank" rel="noopener noreferrer">Immigration and Emigration</a>
+            <a href="https://rdb.rw/" target="_blank" rel="noopener noreferrer">Rwanda Development Board</a>
+            <a href="https://www.visitrwanda.com/" target="_blank" rel="noopener noreferrer">Visit Rwanda</a>
+          </div>
+        </div>
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/RwandAir" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://twitter.com/FlyRwandAir" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/flyrwandair" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/rwandair" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://www.youtube.com/RwandAir" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
           </div>
         </div>
         <div class="footer-bottom">
@@ -417,6 +452,48 @@
       </div>
     </div>
   </section>
+
+  <!-- Hold Fare Modal -->
+  <div class="modal-overlay hidden" id="holdFareModal">
+    <div class="modal hold-modal">
+      <div class="hold-modal-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Time to Think</h3>
+      <p class="hold-modal-sub">Lock in today's fares for 48 hours for just <strong>$5</strong>.</p>
+      <div class="hold-modal-details">
+        <div class="hold-detail-row">
+          <span>Flight</span>
+          <strong id="holdFlightInfo">WB 400 (06:30 - 07:55)</strong>
+        </div>
+        <div class="hold-detail-row">
+          <span>Lite fare</span>
+          <strong id="holdPriceLite">$155</strong>
+        </div>
+        <div class="hold-detail-row">
+          <span>Economy fare</span>
+          <strong id="holdPriceClassic">$210</strong>
+        </div>
+        <div class="hold-detail-row">
+          <span>Business fare</span>
+          <strong id="holdPriceBusiness">$580</strong>
+        </div>
+        <div class="hold-detail-row hold-fee-row">
+          <span>Hold fee</span>
+          <strong>$5.00</strong>
+        </div>
+      </div>
+      <ul class="hold-benefits">
+        <li>Price guaranteed — no increases for 48 hours</li>
+        <li>Hold fee is fully refundable if you book</li>
+        <li>Reminder sent 6 hours before expiry</li>
+      </ul>
+      <div class="hold-modal-actions">
+        <button class="btn-primary btn-lg" onclick="confirmHoldFare()">Hold Fare for $5</button>
+        <button class="btn-outline" onclick="cancelHoldFare()">No thanks</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============ PAGE: BOOKING ============ -->
   <section class="page" id="page-booking">
@@ -864,6 +941,20 @@
               </div>
             </div>
 
+            <!-- Time to Think -->
+            <div class="ttt-banner">
+              <div class="ttt-banner-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="ttt-banner-content">
+                <strong>Need more time? Hold this fare for 48 hours</strong>
+                <p>Lock in today's price for just $5. The hold fee is fully refundable when you complete your booking.</p>
+              </div>
+              <button class="btn-outline ttt-banner-btn" onclick="holdCurrentFare()">
+                Hold for $5
+              </button>
+            </div>
+
             <!-- Terms -->
             <label class="checkbox-label">
               <input type="checkbox" id="termsCheck"/>
@@ -1217,15 +1308,15 @@
       <div class="dest-region">
         <h2>Middle East</h2>
         <div class="dest-list-grid">
-          <div class="dest-list-card" onclick="selectDestination('Dubai')">
-            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DXB.jpg') center/cover"></div>
-            <div><strong>Dubai</strong><span>UAE &middot; DXB</span></div>
-            <span class="dlc-freq">Daily</span>
-          </div>
           <div class="dest-list-card" onclick="selectDestination('Doha')">
             <div class="dlc-flag" style="background:url('https://images.unsplash.com/photo-1518684079-3c830dcef090?w=400&h=250&fit=crop') center/cover"></div>
             <div><strong>Doha</strong><span>Qatar &middot; DOH</span></div>
             <span class="dlc-freq">4x weekly</span>
+          </div>
+          <div class="dest-list-card" onclick="selectDestination('Dubai')">
+            <div class="dlc-flag" style="background:url('https://www.rwandair.com/dist/phoenix/V1.0/img/DXB.jpg') center/cover"></div>
+            <div><strong>Dubai</strong><span>UAE &middot; DXB</span></div>
+            <span class="dlc-freq">Daily</span>
           </div>
         </div>
       </div>
@@ -1359,6 +1450,62 @@
             <h4>Travelling with Pets</h4>
             <p>Small pets may travel in the cabin in an approved carrier. Larger animals can be transported in the cargo hold.</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Additional Services -->
+      <div class="section-header" style="margin-top: 48px;">
+        <h2>Additional Services</h2>
+        <p class="section-sub">Enhance your travel experience with these extra services.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/><path d="M6 14h4"/></svg>
+          </div>
+          <h3>Travel Insurance</h3>
+          <p>Protect your trip with comprehensive coverage for cancellations, medical emergencies, and lost baggage.</p>
+          <span class="service-price">From $12/trip</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Extra Baggage</h3>
+          <p>Need more space? Pre-purchase additional checked bags online and save up to 40% compared to airport rates.</p>
+          <span class="service-price">From $30/bag</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <h3>Priority Boarding</h3>
+          <p>Be among the first to board and secure overhead bin space with priority boarding access.</p>
+          <span class="service-price">From $15/flight</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
+          <h3>Seat Selection</h3>
+          <p>Choose your preferred seat in advance — window, aisle, or extra legroom — for a more comfortable flight.</p>
+          <span class="service-price">From $8/seat</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <h3>Lounge Access</h3>
+          <p>Relax before your flight in our premium lounge with complimentary food, drinks, Wi-Fi, and shower facilities.</p>
+          <span class="service-price">From $35/visit</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <h3>Meet & Assist</h3>
+          <p>Personal airport assistance from check-in through boarding — ideal for first-time flyers and VIP travellers.</p>
+          <span class="service-price">From $25/person</span>
         </div>
       </div>
     </div>
@@ -1545,7 +1692,7 @@
       <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/dreammiles-banner2.jpg" alt="DreamMiles" class="dm-hero-img">
       <div class="dm-hero-overlay">
         <div class="container">
-          <img src="https://www.rwandair.com/dist/phoenix/V1.0/img/dreammiles-logo.png" alt="DreamMiles logo" class="dm-logo">
+          <img src="img/dreammiles-logo.png" alt="DreamMiles logo" class="dm-logo">
           <h1>Welcome to DreamMiles</h1>
           <p>Where exclusive privileges await. We reward travellers exclusively for flying with us.</p>
         </div>
@@ -1937,13 +2084,13 @@
     <div class="chat-body" id="chatBody">
       <div class="chat-msg bot">
         <div class="chat-bubble">
-          Hello! I'm your RwandAir assistant. How can I help you today?
+          Hello! I'm your RwandAir assistant. I can help you search and book affordable flights, check bookings, and more. What would you like to do?
         </div>
       </div>
-      <div class="chat-quick-replies">
-        <button onclick="chatQuickReply('Check booking status')">Check booking status</button>
-        <button onclick="chatQuickReply('Baggage allowance')">Baggage allowance</button>
-        <button onclick="chatQuickReply('Refund request')">Refund request</button>
+      <div class="chat-quick-replies" id="chatQuickReplies">
+        <button onclick="chatQuickReply('Book a flight')">Book a flight</button>
+        <button onclick="chatQuickReply('Check booking status')">Check booking</button>
+        <button onclick="chatQuickReply('Baggage allowance')">Baggage info</button>
         <button onclick="chatQuickReply('Check-in help')">Check-in help</button>
       </div>
     </div>
@@ -1982,10 +2129,10 @@
       </form>
       <div class="login-modal-footer">
         <p>Don't have an account? <a href="#">Create account</a></p>
-        <div class="login-dreammiles">
+        <a href="#" class="login-dreammiles" onclick="toggleLoginModal();navigateTo('loyalty');return false;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Join <strong>DreamMiles</strong> for exclusive rewards and benefits
-        </div>
+        </a>
       </div>
     </div>
   </div>
