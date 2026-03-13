@@ -486,6 +486,53 @@ function renderLegHtml(f) {
     </div>`;
 }
 
+function fareTooltipHtml(fareClass) {
+  const specs = {
+    lite: {
+      label: 'Lite',
+      items: [
+        { text: 'Hand baggage (7 kg)', cls: 'included' },
+        { text: 'Checked baggage', cls: 'excluded' },
+        { text: 'Seat selection', cls: 'excluded' },
+        { text: 'Changeable (fee applies)', cls: 'partial' },
+        { text: 'Non-refundable', cls: 'excluded' },
+        { text: 'DreamMiles earning: 25%', cls: 'included' }
+      ],
+      note: 'Best for short trips, carry-on only'
+    },
+    economy: {
+      label: 'Economy',
+      items: [
+        { text: 'Hand baggage (7 kg)', cls: 'included' },
+        { text: 'Checked baggage (23 kg)', cls: 'included' },
+        { text: 'Seat selection', cls: 'included' },
+        { text: 'Changeable (fee applies)', cls: 'partial' },
+        { text: 'Refundable (fee applies)', cls: 'partial' },
+        { text: 'DreamMiles earning: 100%', cls: 'included' }
+      ],
+      note: 'Best value for most travellers'
+    },
+    business: {
+      label: 'Business',
+      items: [
+        { text: 'Hand baggage (7 kg)', cls: 'included' },
+        { text: 'Checked baggage (2 × 32 kg)', cls: 'included' },
+        { text: 'Seat selection (premium)', cls: 'included' },
+        { text: 'Fully changeable', cls: 'included' },
+        { text: 'Fully refundable', cls: 'included' },
+        { text: 'Lounge access', cls: 'included' },
+        { text: 'Priority boarding', cls: 'included' },
+        { text: 'DreamMiles earning: 150%', cls: 'included' }
+      ],
+      note: 'Premium comfort & full flexibility'
+    }
+  };
+  var s = specs[fareClass];
+  return '<div class="fare-tooltip"><strong>' + s.label + '</strong><ul>' +
+    s.items.map(function(item) { return '<li class="' + item.cls + '">' + item.text + '</li>'; }).join('') +
+    '</ul><span class="fare-tooltip-note">' + s.note + '</span></div>';
+}
+
 function renderFlightResults(from, to) {
   const container = document.getElementById('flightResults');
   const departDate = document.getElementById('searchDepart').value;
@@ -526,16 +573,19 @@ function renderFlightResults(from, to) {
           <div class="flight-bundle-footer">
             <div class="flight-bundle-prices">
               <div class="flight-price-opt" onclick="event.stopPropagation();selectBundlePrice(${i},'lite')">
+                ${fareTooltipHtml('lite')}
                 <div class="price-class">Lite</div>
                 <div class="price-amount">$${b.priceLite}</div>
                 <div class="price-note">round trip</div>
               </div>
               <div class="flight-price-opt" onclick="event.stopPropagation();selectBundlePrice(${i},'economy')">
+                ${fareTooltipHtml('economy')}
                 <div class="price-class">Economy</div>
                 <div class="price-amount">$${b.priceClassic}</div>
                 <div class="price-note">round trip</div>
               </div>
               <div class="flight-price-opt" onclick="event.stopPropagation();selectBundlePrice(${i},'business')">
+                ${fareTooltipHtml('business')}
                 <div class="price-class">Business</div>
                 <div class="price-amount">$${b.priceBusiness}</div>
                 <div class="price-note">round trip</div>
@@ -582,14 +632,17 @@ function renderFlightResults(from, to) {
           </div>
           <div class="flight-prices">
             <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'lite')">
+              ${fareTooltipHtml('lite')}
               <div class="price-class">Lite</div>
               <div class="price-amount">$${f.priceLite}</div>
             </div>
             <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'economy')">
+              ${fareTooltipHtml('economy')}
               <div class="price-class">Economy</div>
               <div class="price-amount">$${f.priceClassic}</div>
             </div>
             <div class="flight-price-opt" onclick="event.stopPropagation();selectFlightPrice(${i},'business')">
+              ${fareTooltipHtml('business')}
               <div class="price-class">Business</div>
               <div class="price-amount">$${f.priceBusiness}</div>
             </div>
@@ -760,42 +813,75 @@ function goToStep(step) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ---- SEAT MAP ----
+// ---- SEAT MAP (Airbus A330-200) ----
 function renderSeatMap() {
-  const grid = document.getElementById('seatGrid');
-  if (!grid || grid.children.length > 0) return;
+  var container = document.getElementById('seatGrid');
+  if (!container || container.children.length > 0) return;
 
-  const rows = 8;
-  const cols = ['A', 'B', 'C', '', 'D', 'E', 'F']; // '' = aisle
-
-  for (let r = 1; r <= rows; r++) {
-    cols.forEach((col, ci) => {
-      const btn = document.createElement('button');
-      if (col === '') {
-        btn.className = 'seat-btn aisle';
-        btn.textContent = r.toString();
-      } else {
-        const seatId = r + col;
-        const isOccupied = Math.random() < 0.3;
-        const isExtraLeg = r <= 2;
-
-        if (isOccupied) {
-          btn.className = 'seat-btn occupied';
-          btn.textContent = seatId;
-          btn.disabled = true;
-        } else if (isExtraLeg) {
-          btn.className = 'seat-btn extra-legroom';
-          btn.textContent = seatId;
-          btn.onclick = () => selectSeat(btn, seatId, true);
-        } else {
-          btn.className = 'seat-btn available';
-          btn.textContent = seatId;
-          btn.onclick = () => selectSeat(btn, seatId, false);
-        }
-      }
-      grid.appendChild(btn);
-    });
+  // Seed random for consistent layout per session
+  var occupied = {};
+  function isOcc(id) {
+    if (occupied[id] === undefined) occupied[id] = Math.random() < 0.28;
+    return occupied[id];
   }
+
+  // Cabin sections for RwandAir A330-200
+  var sections = [
+    { name: 'Business Class', cls: 'business', rows: [1,2,3,4,5], cols: ['A','C','','D','F'], locked: true },
+    { name: 'Premium Economy', cls: 'premium', rows: [6,7,8], cols: ['A','B','','C','D','E','','F','G'], locked: true },
+    { name: 'Economy', cls: 'economy', rows: [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25], cols: ['A','B','','C','D','E','F','','G','H'], locked: false }
+  ];
+
+  var exitRows = [12, 13]; // exit row extra legroom
+  var html = '';
+
+  // Nose
+  html += '<div class="seat-map-nose"></div>';
+
+  // Column headers for widest section (economy 2-4-2)
+  html += '<div class="seat-cols-header">';
+  html += '<span>A</span><span>B</span><span class="seat-aisle-hdr"></span>';
+  html += '<span>C</span><span>D</span><span>E</span><span>F</span>';
+  html += '<span class="seat-aisle-hdr"></span><span>G</span><span>H</span>';
+  html += '</div>';
+
+  sections.forEach(function(sec) {
+    html += '<div class="seat-section-label ' + sec.cls + '">' + sec.name + '</div>';
+
+    sec.rows.forEach(function(r) {
+      html += '<div class="seat-row">';
+      sec.cols.forEach(function(col) {
+        if (col === '') {
+          html += '<div class="seat-aisle"><span class="seat-row-num">' + r + '</span></div>';
+        } else {
+          var seatId = r + col;
+          var isExit = exitRows.indexOf(r) >= 0 && !sec.locked;
+
+          if (sec.locked) {
+            var occLocked = isOcc(seatId);
+            html += '<button class="seat-btn ' + sec.cls + (occLocked ? ' occupied' : '') + '" disabled title="' + sec.name + ' — ' + seatId + '">' + seatId + '</button>';
+          } else if (isOcc(seatId)) {
+            html += '<button class="seat-btn occupied" disabled>' + seatId + '</button>';
+          } else if (isExit) {
+            html += '<button class="seat-btn extra-legroom" onclick="selectSeat(this,\'' + seatId + '\',true)">' + seatId + '</button>';
+          } else {
+            html += '<button class="seat-btn available" onclick="selectSeat(this,\'' + seatId + '\',false)">' + seatId + '</button>';
+          }
+        }
+      });
+      html += '</div>';
+    });
+
+    // Facility markers between sections
+    if (sec.cls !== 'economy') {
+      html += '<div class="seat-facility"><span>WC</span><span>Galley</span><span>WC</span></div>';
+    }
+  });
+
+  // Tail
+  html += '<div class="seat-map-tail"></div>';
+
+  container.innerHTML = html;
 }
 
 function selectSeat(btn, seatId, isExtra) {
@@ -2424,7 +2510,7 @@ function toggleCurrencyDropdown(e) {
   document.getElementById('currencyDropdown').classList.toggle('open');
 }
 function setCurrency(code, symbol, el) {
-  document.getElementById('currencyLabel').textContent = code + ' ' + symbol;
+  document.getElementById('currencyLabel').textContent = code;
   document.querySelectorAll('.currency-option').forEach(o => o.classList.remove('active'));
   if (el) el.classList.add('active');
   document.getElementById('currencyDropdown').classList.remove('open');
