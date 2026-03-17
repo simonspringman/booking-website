@@ -1,44 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 60" width="360" height="60">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 60" width="380" height="60">
   <defs>
-    <clipPath id="emblemClip">
-      <circle cx="28" cy="30" r="24"/>
-    </clipPath>
+    <clipPath id="emblemClip"><circle cx="28" cy="30" r="23"/></clipPath>
   </defs>
   <!-- Emblem -->
   <g>
-    <!-- Blue circle background -->
-    <circle cx="28" cy="30" r="24" fill="#0054A6"/>
-    <!-- Lighter blue inner -->
-    <circle cx="28" cy="29" r="20" fill="#1A9FDA"/>
-    <!-- Green swoosh -->
-    <path d="M6,40 Q18,56 46,46 Q36,58 8,46 Z" fill="#7AB648"/>
-    <!-- Light blue accent -->
-    <path d="M5,32 Q8,46 22,50 Q12,44 8,32 Z" fill="#00AEEF"/>
-    <!-- Sun white glow -->
-    <circle cx="28" cy="27" r="14" fill="rgba(255,255,255,0.15)"/>
+    <!-- Outer dark blue circle -->
+    <circle cx="28" cy="30" r="24" fill="#003F87"/>
+    <!-- Inner sky blue circle -->
+    <circle cx="28" cy="30" r="21" fill="#1B98D4"/>
+    <!-- Light blue arc accent on left -->
+    <path d="M7,34 C8,42 14,49 24,52 C14,48 9,40 7,34Z" fill="#00A1DE" opacity="0.9"/>
+    <!-- Green swoosh/arc -->
+    <path d="M4,38 C10,52 28,56 52,44 C46,52 28,56 10,48 C6,46 4,42 4,38Z" fill="#6DB544" clip-path="url(#emblemClip)"/>
+    <!-- Sun glow -->
+    <circle cx="28" cy="26" r="12" fill="rgba(255,255,200,0.12)"/>
     <!-- Sun body -->
-    <circle cx="28" cy="27" r="8" fill="#FFD500"/>
-    <circle cx="28" cy="27" r="5.5" fill="#FFF200"/>
-    <!-- Sun rays -->
-    <g fill="#FFD500" clip-path="url(#emblemClip)">
-      <polygon points="28,8 29.5,17 26.5,17"/>
-      <polygon points="28,37 29.5,46 26.5,46"/>
-      <polygon points="9,27 18,25.5 18,28.5"/>
-      <polygon points="38,25.5 47,27 38,28.5"/>
-      <polygon points="14.5,14.5 21,19.5 18.5,21.5"/>
-      <polygon points="35,32.5 41.5,37.5 38.5,35.5"/>
-      <polygon points="41.5,14.5 38.5,21.5 35,19.5"/>
-      <polygon points="18.5,32.5 21,37.5 14.5,35.5"/>
-      <polygon points="17,11 21.5,18 19,19"/>
-      <polygon points="35,35 39.5,42 37,40"/>
-      <polygon points="39,11 39.5,18 37,19"/>
-      <polygon points="19,35 21.5,42 17,40"/>
-      <polygon points="11,20 19,21.5 18,24"/>
-      <polygon points="38,30 46,32 38,34"/>
-      <polygon points="11,34 19,32 18,30"/>
-      <polygon points="38,24 46,20 38,21.5"/>
+    <circle cx="28" cy="26" r="6" fill="#FDD216"/>
+    <circle cx="28" cy="26" r="4" fill="#FEEA00"/>
+    <!-- Sun rays - 16 sharp triangular rays -->
+    <g fill="#FDD216" clip-path="url(#emblemClip)">
+      <!-- N --> <polygon points="28,11 29.2,19 26.8,19"/>
+      <!-- NNE --> <polygon points="34,12.5 31,19.5 29.5,18.5"/>
+      <!-- NE --> <polygon points="39,16 33,21 31.5,19.5"/>
+      <!-- ENE --> <polygon points="42,21 34.5,23.5 34,21.5"/>
+      <!-- E --> <polygon points="43,26 35,24.8 35,27.2"/>
+      <!-- ESE --> <polygon points="42,31 34.5,28.5 34,30.5"/>
+      <!-- SE --> <polygon points="39,36 33,31 31.5,32.5"/>
+      <!-- SSE --> <polygon points="34,39.5 31,32.5 29.5,33.5"/>
+      <!-- S --> <polygon points="28,41 29.2,33 26.8,33"/>
+      <!-- SSW --> <polygon points="22,39.5 25,32.5 26.5,33.5"/>
+      <!-- SW --> <polygon points="17,36 23,31 24.5,32.5"/>
+      <!-- WSW --> <polygon points="14,31 21.5,28.5 22,30.5"/>
+      <!-- W --> <polygon points="13,26 21,24.8 21,27.2"/>
+      <!-- WNW --> <polygon points="14,21 21.5,23.5 22,21.5"/>
+      <!-- NW --> <polygon points="17,16 23,21 24.5,19.5"/>
+      <!-- NNW --> <polygon points="22,12.5 25,19.5 26.5,18.5"/>
     </g>
+    <!-- Sun center highlight -->
+    <circle cx="27" cy="25" r="2" fill="rgba(255,255,255,0.3)"/>
   </g>
   <!-- RwandAirCARGO text -->
-  <text x="62" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic" fill="#00529b" letter-spacing="-0.5"><tspan font-weight="600">RwandAir</tspan><tspan font-weight="700" fill="#005fa3">CARGO</tspan></text>
+  <text x="60" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-style="italic" fill="#00529b" letter-spacing="-0.5"><tspan font-weight="600">RwandAir</tspan><tspan font-weight="700">CARGO</tspan></text>
 </svg>
