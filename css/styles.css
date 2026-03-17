@@ -2337,6 +2337,7 @@ hr { border: none; border-top: 1px solid var(--gray-200); margin: 12px 0; }
 .cargo-topbar-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1400px; margin: 0 auto; gap: 24px; }
 .cargo-logo { display: flex; align-items: center; cursor: pointer; }
 .cargo-logo-img { height: 36px; }
+.cargo-logo-text { font-family: Georgia, 'Times New Roman', serif; font-size: 18px; font-weight: 700; font-style: italic; color: #00529b; margin-left: -2px; letter-spacing: -0.5px; }
 .cargo-search-bar { display: flex; align-items: center; gap: 8px; background: var(--gray-100); border-radius: var(--radius-full); padding: 8px 16px; flex: 1; max-width: 400px; }
 .cargo-search-input { border: none; background: transparent; outline: none; font-family: var(--font); font-size: 14px; width: 100%; }
 .cargo-user-info { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; }
